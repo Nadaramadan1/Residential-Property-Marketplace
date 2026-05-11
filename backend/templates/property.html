@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Properties</title>
+</head>
+
+<body>
+
+    <h1>Properties Dashboard</h1>
+
+    <!-- SEARCH -->
+    <input id="style" placeholder="style">
+    <input id="location" placeholder="location">
+    <input id="min_price" placeholder="min price">
+    <input id="max_price" placeholder="max price">
+    <button onclick="search()">Search</button>
+    <button onclick="resetData()">Reset</button>
+
+    <hr>
+
+    <!-- EDIT FORM -->
+    <h3>Edit Property</h3>
+
+    <div id="editForm" style="display:none; border:1px solid #ccc; padding:10px;">
+        <input id="edit_style" placeholder="Style"><br><br>
+        <input id="edit_address" placeholder="Address"><br><br>
+        <input id="edit_price" placeholder="Price"><br><br>
+        <input id="edit_status" placeholder="Status"><br><br>
+
+        <button onclick="saveUpdate()">Save</button>
+    </div>
+
+    <hr>
+
+    <!-- TABLE -->
+    <table border="1" id="table"></table>
+
+    <script>
+        const base = "http://127.0.0.1:8000/properties/";
+
+        // نخزن الـ id هنا
+        let currentId = null;
+
+        // ===== LOAD =====
+        function loadData() {
+            fetch(base + "list/")
+                .then(res => res.json())
+                .then(data => render(data));
+        }
+
+        // ===== SEARCH =====
+        function search() {
+            let style = document.getElementById("style").value;
+            let location = document.getElementById("location").value;
+            let min_price = document.getElementById("min_price").value;
+            let max_price = document.getElementById("max_price").value;
+
+            fetch(base + `search/?style=${style}&location=${location}&min_price=${min_price}&max_price=${max_price}`)
+                .then(res => res.json())
+                .then(data => render(data));
+        }
+
+        // ===== DELETE =====
+        function deleteProperty(id) {
+            fetch(base + "delete/" + id + "/", {
+                method: "DELETE"
+            }).then(() => loadData());
+        }
+
+        // ===== OPEN EDIT =====
+
+
+        function openEdit(p) {
+            currentId = p.property_id;
+
+            document.getElementById("edit_style").value = p.style;
+            document.getElementById("edit_address").value = p.address;
+            document.getElementById("edit_price").value = p.market_value;
+            document.getElementById("edit_status").value = p.property_status;
+
+            document.getElementById("editForm").style.display = "block";
+        }
+        // ===== SAVE UPDATE =====
+        function saveUpdate() {
+            fetch(base + "update/" + currentId + "/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    style: document.getElementById("edit_style").value,
+                    address: document.getElementById("edit_address").value,
+                    market_value: document.getElementById("edit_price").value,
+                    property_status: document.getElementById("edit_status").value
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data.message);
+
+                    document.getElementById("editForm").style.display = "none";
+
+                    loadData(); // يعيد تحميل الجدول
+                });
+        }
+        function resetData() {
+            console.log("Reset clicked");
+
+            // امسحي inputs
+            document.getElementById("style").value = "";
+            document.getElementById("location").value = "";
+
+            // رجعي كل الداتا من السيرفر
+            loadData();
+        }
+        // ===== RENDER =====
+        function render(data) {
+            let table = document.getElementById("table");
+
+            table.innerHTML = `
+        <tr>
+            <th>ID</th>
+            <th>Style</th>
+            <th>Address</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    `;
+
+            data.forEach(p => {
+                table.innerHTML += `
+            <tr>
+                <td>${p.property_id}</td>
+                <td>${p.style}</td>
+                <td>${p.address}</td>
+                <td>${p.market_value}</td>
+                <td>${p.property_status}</td>
+                <td>
+                    <button onclick='openEdit(${JSON.stringify(p)})'>Edit</button>
+                    <button onclick="deleteProperty(${p.property_id})">Delete</button>
+                </td>
+            </tr>
+        `;
+            });
+
+        }
+
+        loadData();
+    </script>
+
+</body>
+
+</html>
