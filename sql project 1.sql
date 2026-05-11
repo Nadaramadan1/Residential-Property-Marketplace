@@ -68,7 +68,7 @@ GO
 
 
 CREATE TABLE REPRESENTATIVE (
-    REPRESENTATIVE_ID INT NOT NULL,
+    REPRESENTATIVE_ID INT IDENTITY(1,1) ,
     FULL_NAME VARCHAR(100) NOT NULL,
     PHONE VARCHAR(20),
     EMAIL VARCHAR(100),
@@ -81,7 +81,7 @@ GO
 
 
 CREATE TABLE CLIENT (
-    CLIENT_ID INT NOT NULL,
+    CLIENT_ID INT IDENTITY(1,1),
     FULL_NAME VARCHAR(100) NOT NULL,
     CLIENT_CONTACT_PREFERENCE VARCHAR(100),
     CLIENT_PHONE VARCHAR(20),
@@ -93,7 +93,7 @@ GO
 
 
 CREATE TABLE PROPERTY (
-    PROPERTY_ID INT NOT NULL,
+    PROPERTY_ID INT IDENTITY(1,1),
     REPRESENTATIVE_ID INT,
     STYLE VARCHAR(100) NOT NULL,
     LATITUDE FLOAT NOT NULL,
@@ -109,7 +109,7 @@ GO
 
 
 CREATE TABLE TOUR (
-    TOUR_ID INT NOT NULL,
+    TOUR_ID INT IDENTITY(1,1) NOT NULL,
     CLIENT_ID INT,
     PROPERTY_ID INT,
     REPRESENTATIVE_ID INT,
@@ -122,7 +122,7 @@ GO
 
 
 CREATE TABLE AGREEMENT (
-    AGREE_ID INT NOT NULL,
+    AGREE_ID INT IDENTITY(1,1) NOT NULL,
     CLIENT_ID INT,
     PROPERTY_ID INT,
     FINAL_PRICE DECIMAL(12,2),
@@ -134,7 +134,7 @@ GO
 
 
 CREATE TABLE TRANSACTIONS (
-    TRANSACTION_ID INT NOT NULL,
+    TRANSACTION_ID INT IDENTITY(1,1) NOT NULL,
     CLIENT_ID INT,
     TOUR_ID INT,
     REPRESENTATIVE_ID INT,
@@ -263,58 +263,65 @@ GO
 
 
 
-INSERT INTO REPRESENTATIVE VALUES
-(1, 'Ahmed Hassan', '01011111111', 'ahmed@realestate.com', 'LIC1001'),
-(2, 'Sara Ali', '01022222222', 'sara@realestate.com', 'LIC1002'),
-(3, 'Omar Khaled', '01033333333', 'omar@realestate.com', 'LIC1003');
+INSERT INTO REPRESENTATIVE (FULL_NAME, PHONE, EMAIL, LICENSE_NUMBER) VALUES
+( 'Ahmed Hassan', '01011111111', 'ahmed@realestate.com', 'LIC1001'),
+( 'Sara Ali', '01022222222', 'sara@realestate.com', 'LIC1002'),
+( 'Omar Khaled', '01033333333', 'omar@realestate.com', 'LIC1003');
 GO
 
 
 
-INSERT INTO CLIENT VALUES
-(1, 'Mohamed Adel', 'Phone', '01111111111', 'mohamed@gmail.com'),
-(2, 'Nour Tarek', 'Email', '01222222222', 'nour@gmail.com'),
-(3, 'Youssef Samy', 'Phone', '01333333333', 'youssef@gmail.com'),
-(4, 'Mariam Ali', 'Email', '01444444444', 'mariam@gmail.com'),
-(5, 'Khaled Mostafa', 'Phone', '01555555555', 'khaled@gmail.com');
+INSERT INTO CLIENT (FULL_NAME, CLIENT_CONTACT_PREFERENCE, CLIENT_PHONE, CLIENT_EMAIL)
+VALUES
+( 'Mohamed Adel', 'Phone', '01111111111', 'mohamed@gmail.com'),
+( 'Nour Tarek', 'Email', '01222222222', 'nour@gmail.com'),
+( 'Youssef Samy', 'Phone', '01333333333', 'youssef@gmail.com'),
+('Mariam Ali', 'Email', '01444444444', 'mariam@gmail.com'),
+('Khaled Mostafa', 'Phone', '01555555555', 'khaled@gmail.com');
 GO
 
 
 
-INSERT INTO PROPERTY VALUES
-(1, 1, 'Villa', 30.0444, 31.2357, 'Nasr City, Cairo', 5500000, 'Available'),
-(2, 1, 'Apartment', 30.0500, 31.2400, 'Heliopolis, Cairo', 2500000, 'Sold'),
-(3, 2, 'Duplex', 29.9765, 31.1313, '6th October', 4300000, 'Available'),
-(4, 2, 'Studio', 30.0131, 31.2089, 'Maadi, Cairo', 1800000, 'Available'),
-(5, 3, 'Villa', 31.2001, 29.9187, 'Alexandria', 6200000, 'Sold'),
-(6, 3, 'Apartment', 30.1000, 31.3000, 'New Cairo', 3200000, 'Available');
+INSERT INTO PROPERTY (REPRESENTATIVE_ID, STYLE, LATITUDE, LONGITUDE, ADDRESS, MARKET_VALUE, PROPERTY_STATUS)
+VALUES
+(1,'Villa',30.0444,31.2357,'Nasr City, Cairo',5500000,'Available'),
+(1,'Apartment',30.0500,31.2400,'Heliopolis, Cairo',2500000,'Sold'),
+(2,'Duplex',29.9765,31.1313,'6th October',4300000,'Available'),
+(2,'Studio',30.0131,31.2089,'Maadi, Cairo',1800000,'Available'),
+(3,'Villa',31.2001,29.9187,'Alexandria',6200000,'Sold'),
+(3,'Apartment',30.1000,31.3000,'New Cairo',3200000,'Available');
 GO
 
 
 
-INSERT INTO TOUR VALUES
-(1, 1, 1, 1, '2026-04-05', '10:00'),
-(2, 2, 1, 1, '2026-04-10', '12:00'),
-(3, 3, 2, 1, '2026-04-12', '14:00'),
-(4, 1, 3, 2, '2026-04-15', '11:00'),
-(5, 4, 3, 2, '2026-04-18', '13:00'),
-(6, 5, 5, 3, '2026-04-20', '15:00'),
-(7, 2, 5, 3, '2026-04-25', '09:00');
+INSERT INTO TOUR INSERT INTO TOUR (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
+VALUES
+( 1, 1, 1, '2026-04-05', '10:00'),
+( 2, 1, 1, '2026-04-10', '12:00'),
+( 3, 2, 1, '2026-04-12', '14:00'),
+( 1, 3, 2, '2026-04-15', '11:00'),
+( 4, 3, 2, '2026-04-18', '13:00'),
+( 5, 5, 3, '2026-04-20', '15:00'),
+( 2, 5, 3, '2026-04-25', '09:00');
 GO
 
 
 
-INSERT INTO AGREEMENT VALUES
-(1, 2, 2, 2450000, '2026-04-28'),
-(2, 5, 5, 6100000, '2026-04-30');
+INSERT INTO AGREEMENT
+(CLIENT_ID, PROPERTY_ID, FINAL_PRICE, EFFECTIVE_DATE)
+ VALUES
+(2, 2, 2450000, '2026-04-28'),
+(5, 5, 6100000, '2026-04-30');
 GO
 
 
 
-INSERT INTO TRANSACTIONS VALUES
-(1, 2, 3, 1, 2450000, 'Completed', '2026-04-28'),
-(2, 5, 6, 3, 6100000, 'Completed', '2026-04-30'),
-(3, 1, 1, 1, 0, 'Pending', '2026-04-05');
+INSERT INTO TRANSACTIONS
+(CLIENT_ID, TOUR_ID, REPRESENTATIVE_ID, TRANSACTION_AMOUNT, TRANSACTION_STATUS, TRANSACTION_DATE)
+VALUES
+( 2, 3, 1, 2450000, 'Completed', '2026-04-28'),
+( 5, 6, 3, 6100000, 'Completed', '2026-04-30'),
+( 1, 1, 1, 0, 'Pending', '2026-04-05');
 GO
 
 
