@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Representatives</title>
+</head>
+<body>
+<h2>Representatives List</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>License Number</th>
+    </tr>
+
+    {% for representative in representatives %}
+    <tr>
+        <td>{{ representative.0 }}</td>
+        <td>{{ representative.1 }}</td>
+        <td>{{ representative.2 }}</td>
+        <td>{{ representative.3 }}</td>
+        <td>{{ representative.4 }}</td>
+        <td>
+            <a href="{% url 'update_representative' representative %}">
+                Edit
+            </a>
+        </td>
+        
+        <td>
+            <a href="{% url 'delete_representative' representative %}">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

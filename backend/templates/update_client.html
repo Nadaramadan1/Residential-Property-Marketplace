@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Client</title>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="name" value="{{ client.1 }}" placeholder="Name">
+    <br><br>
+
+    <input type="text" name="contact_preference" value="{{ client.2 }}" placeholder="Contact Preference">
+    <br><br>
+
+    <input type="text" name="phone" value="{{ client.3 }}" placeholder="Phone">
+    <br><br>
+
+    <input type="email" name="email" value="{{ client.4 }}" placeholder="Email">
+    <br><br>
+
+    <button type="submit">Update</button>
+
+</form>
+
+</body>
+</html>
