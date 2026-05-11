@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
+    'properties',
+    'transactions',
     
 ]
 
@@ -76,14 +79,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'PropertyMarketplace',
-        'HOST': 'DESKTOP-Q4QQDN9\\SQLEXPRESS',
-        'PORT': '',
-        'USER': '',          
-        'PASSWORD': '',     
+        'NAME': 'RealEstate',
+        'HOST': 'DESKTOP-DFTKAGN',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes',  # Windows Authentication
+            'trusted_connection': 'yes',
         },
     }
 }
