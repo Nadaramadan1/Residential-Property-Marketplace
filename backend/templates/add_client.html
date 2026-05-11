@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="name" placeholder="Client Name">
+
+    <select name="contact_preference">
+        <option value="Phone">Phone</option>
+        <option value="Email">Email</option>
+    </select>
+
+    <input type="text" name="phone" placeholder="Phone">
+
+    <input type="email" name="email" placeholder="Email">
+
+
+    <button type="submit">Add Client</button>
+</form>
+
+</body>
+</html>
