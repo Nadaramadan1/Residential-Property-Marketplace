@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+</head>
+<body>
+<h2>Clients List</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>contact preference</th>
+        <th>Phone</th>
+        <th>Email</th>
+    </tr>
+
+    {% for client in clients %}
+    <tr>
+        <td>{{ client.0 }}</td>
+        <td>{{ client.1 }}</td>
+        <td>{{ client.2 }}</td>
+        <td>{{ client.3 }}</td>
+        <td>{{ client.4 }}</td>
+        <td>
+            <a href="{% url 'update_client' client.0 %}">
+                Edit
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'delete_client' client.0 %}">
+                Delete
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

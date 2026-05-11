@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> cc9477a9afb8cd52f918d8ef940a2401944b71ac
+
 IF DB_ID('RealEstate') IS NULL
 BEGIN
     CREATE DATABASE RealEstate;
