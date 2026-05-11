@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PrimeSquare | Profile &amp; Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "primary-fixed": "#d5e3ff",
+                        "secondary": "#5c5f60",
+                        "on-secondary-container": "#626566",
+                        "on-secondary-fixed-variant": "#454748",
+                        "inverse-on-surface": "#f1f0f5",
+                        "primary-container": "#003366",
+                        "secondary-container": "#e1e3e4",
+                        "tertiary": "#381300",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c6d1",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1a1c1f",
+                        "surface-container-low": "#f4f3f8",
+                        "primary": "#001e40",
+                        "tertiary-container": "#592300",
+                        "on-surface-variant": "#43474f",
+                        "inverse-surface": "#2f3034",
+                        "inverse-primary": "#a7c8ff",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#799dd6",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-container": "#eeedf2",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-container-highest": "#e2e2e7",
+                        "surface-bright": "#f9f9fe",
+                        "surface": "#f9f9fe",
+                        "on-secondary-fixed": "#191c1d",
+                        "background": "#f9f9fe",
+                        "on-background": "#1a1c1f",
+                        "surface-dim": "#dad9de",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e8e8ed",
+                        "surface-tint": "#3a5f94",
+                        "secondary-fixed": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#001b3c",
+                        "outline": "#737780",
+                        "surface-variant": "#e2e2e7",
+                        "primary-fixed-dim": "#a7c8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "stack-md": "16px",
+                        "margin-page": "40px",
+                        "container-max": "1280px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "section-padding": "80px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h3": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .bento-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .navy-gradient {
+            background: linear-gradient(to right, #001e40, #003366);
+        }
+    </style>
+</head>
+<body class="bg-surface-bright text-on-surface font-body-md">
+<!-- TopAppBar -->
+<header class="bg-gradient-to-r from-primary to-primary-container fixed full-width top-0 w-full z-50 shadow-md">
+<div class="flex justify-between items-center px-margin-page py-unit w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-lg">
+<span class="font-h2 text-h2 font-bold tracking-tight text-on-primary">PrimeSquare</span>
+<nav class="hidden md:flex gap-gutter">
+<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Buy</a>
+<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Rent</a>
+<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Sell</a>
+<a class="text-on-primary border-b-2 border-on-primary-container pb-1 font-bold" href="#">Agents</a>
+<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Mortgage</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<a href="/profile/" class="text-on-primary-fixed-variant font-label-caps hover:text-on-primary-container transition-all">Sign In</a>
+<a href="/property-manager/" class="bg-on-primary text-primary px-stack-md py-stack-sm rounded-lg font-label-caps scale-98 active:scale-95 transition-transform">List Property</a>
+</div>
+</div>
+</header>
+<main class="pt-[100px] pb-section-padding px-margin-page max-w-container-max mx-auto">
+<!-- Hero Profile Header -->
+<section class="mb-section-padding flex flex-col md:flex-row gap-gutter items-center md:items-end">
+<div class="relative">
+<img class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-on-primary shadow-lg object-cover" data-alt="A professional portrait of a real estate representative in a navy blue suit, smiling confidently. The lighting is soft and natural, reflecting a high-end corporate modernist aesthetic. The background is a blurred modern office interior with clean lines and a bright, airy atmosphere consistent with a light-mode UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsr5zNsX0wBctWGjj9znS_PsgEhiJ-z6BZ0L9udRS7z0iaa-aTVJBfn43tsfEUvgcG2pgQPXrZugzGB-tIRyKoJkeNjhDVQfqyvvpbq_9AmIfmXczlpVOrcZygR-eHP4NySizIu3_GWtKgMBFxP_ecIDX6-FI2PKnjD2k33C6O82TE8PJQirCo7FYWB_g1IVqr33rJs2yAKKYnhSGYhlnm4uj6lWWLjoiXwtFOVVnDNPhaiQd-HPJx8XP8qims1VM99L-fhwVYZ5dt"/>
+<div class="absolute bottom-2 right-2 bg-primary p-2 rounded-full text-on-primary">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-stack-sm mb-stack-sm">
+<h1 class="font-h1 text-h1 text-primary">Julian Sterling</h1>
+<span class="bg-primary-container text-on-primary-container px-stack-md py-1 rounded-full font-label-caps text-[10px]">Senior Property Specialist</span>
+</div>
+<p class="text-on-surface-variant font-body-md max-w-2xl">Expert in luxury residential listings across the Metropolitan area. Helping families find their forever homes for over 12 years.</p>
+</div>
+<div class="flex gap-stack-md">
+<button class="flex items-center gap-2 border border-primary text-primary px-stack-lg py-stack-md rounded-lg font-label-caps hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">edit</span> Edit Profile
+                </button>
+<button class="flex items-center gap-2 navy-gradient text-on-primary px-stack-lg py-stack-md rounded-lg font-label-caps shadow-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">share</span> Share Portfolio
+                </button>
+</div>
+</section>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Tour Schedule (Large Span) -->
+<div class="md:col-span-8 bento-card p-stack-lg">
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">calendar_today</span> Upcoming Property Tours
+                    </h3>
+<a href="/property-listing/" class="text-primary font-label-caps hover:underline">View All</a>
+</div>
+<div class="space-y-stack-md">
+<div class="flex items-center gap-gutter p-stack-md rounded-xl hover:bg-surface-container transition-colors group">
+<div class="w-20 h-20 overflow-hidden rounded-lg">
+<img class="w-full h-full object-cover" data-alt="A modern luxury kitchen with marble countertops and minimalist navy blue cabinetry. The lighting is bright and architectural, showcasing professional real estate photography style. The image captures a clean, premium residential interior with high-end finishes and an open-concept layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsI365RChBMpp33dY8L9J54q1IvkvHz8jXaeetdir9MFgMD2UuAXi-Bbr5ZxY8V1QzVA7xkGSamuG8KtyiATpS2pEwmE_C6TWBWQlX4DPI87dwawPu4kG2ebAp_ttjrtYnKfdzAjDpdC3idWdwXmKQvRi8U6al5744VBujdU5DaG99oE7_7oSIcHnYsAau4S9qCDJBOsJCsuOBHxIgZ37xU1yDTiTrdp5rpcoFYrw2d90amdbiJJtBgr-gqUMkXaSPDdbVQVCQUlzu"/>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-on-tertiary-fixed-variant">Tomorrow at 10:00 AM</p>
+<h4 class="font-h3 text-h3 text-on-surface">The Glass Pavilion - Penthouse A</h4>
+<p class="text-on-surface-variant font-body-sm">452 Skyline Blvd, Metropolitan Heights</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full font-label-caps text-[10px]">Confirmed</span>
+<button class="text-primary-container group-hover:translate-x-1 transition-transform">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-gutter p-stack-md rounded-xl hover:bg-surface-container transition-colors group">
+<div class="w-20 h-20 overflow-hidden rounded-lg">
+<img class="w-full h-full object-cover" data-alt="A luxurious modern villa with a crystal-clear infinity pool at sunset. The architectural design is sleek with sharp geometric lines and extensive glass walls. Warm interior lighting glows against the deep navy blue evening sky, creating a trustworthy and sophisticated atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWeqqsmMJ2Gl3VY1TUUSwOGXrY99w6JaDX2bo3-f0P1GhHoRv1E4yZBgwt4E9g36nM-xQkEEUEQ1TuSq82elEnqWNVKGt2zRqekFIIY5HIzKmAkvR0NOMzpnbZA1Y0MTRd031ne8CdNxdWw-wQy8WjjLhcIdP-61QJe2i7TgGXVt_NhgvhaFjII1e_SFMdLESrFyF8eOq-N1YIjgqf2fesTLNkybCHE3gy-e7Xbi10Q2nuCvK5KgfZUpsoZe8_C1NNHW6a0IobbztQ"/>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-on-tertiary-fixed-variant">Friday at 2:30 PM</p>
+<h4 class="font-h3 text-h3 text-on-surface">Harbor View Estate</h4>
+<p class="text-on-surface-variant font-body-sm">12 Cove Road, Bayfront District</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-caps text-[10px]">Pending</span>
+<button class="text-primary-container group-hover:translate-x-1 transition-transform">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Performance Stats (Medium Span) -->
+<div class="md:col-span-4 bento-card p-stack-lg navy-gradient text-on-primary">
+<h3 class="font-h3 text-h3 mb-stack-lg flex items-center gap-2">
+<span class="material-symbols-outlined">trending_up</span> Monthly Reach
+                </h3>
+<div class="grid grid-cols-2 gap-stack-lg">
+<div class="space-y-1">
+<p class="font-label-caps opacity-80 uppercase tracking-widest text-[10px]">Listing Views</p>
+<p class="text-[32px] font-bold">14.2k</p>
+<p class="text-[12px] text-on-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +12%
+                        </p>
+</div>
+<div class="space-y-1">
+<p class="font-label-caps opacity-80 uppercase tracking-widest text-[10px]">Inquiries</p>
+<p class="text-[32px] font-bold">84</p>
+<p class="text-[12px] text-on-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +5%
+                        </p>
+</div>
+<div class="space-y-1">
+<p class="font-label-caps opacity-80 uppercase tracking-widest text-[10px]">Saved by</p>
+<p class="text-[32px] font-bold">312</p>
+<p class="text-[12px] text-on-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +24%
+                        </p>
+</div>
+<div class="space-y-1">
+<p class="font-label-caps opacity-80 uppercase tracking-widest text-[10px]">Sold Value</p>
+<p class="text-[32px] font-bold">$8.4M</p>
+</div>
+</div>
+</div>
+<!-- Saved Properties (Medium Span) -->
+<div class="md:col-span-6 bento-card p-stack-lg">
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">favorite</span> Saved Properties
+                    </h3>
+<a href="/property-listing/" class="text-primary font-label-caps hover:underline">Explore More</a>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div class="group cursor-pointer">
+<div class="h-32 overflow-hidden rounded-lg mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sprawling white Mediterranean-style mansion under a bright blue sky. The property is surrounded by lush green lawns and professional landscaping. The sunlight is crisp and direct, highlighting the clean, white architectural details and providing a sense of expansive, professional excellence in residential living." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD11idhfcQfkslXNUgDJ5VYmlX9SvHcTXtVtnMb3NqNqvCWBCs6KVJ8VPGagCJHz1NTm6e1o7DD2YkUGRz8ZD871uRRJynhPwxg_a3YE5vWeaafZp9gLpGsqvz9S2GSRCzPsdY9CFCFQ5IqXhtBw3pYCdl3brdQz-tdbX4dzrvL49SABliuR334zjOolM661p6hHiisrX6GGGGd12KjFxwEs_2RBF7zJ9SBBvN--7HFv3I2WkL4BgSb1nX7YrXYcZWyf0CcdsKU18m7"/>
+<span class="absolute top-2 left-2 bg-on-primary text-primary px-2 py-0.5 rounded font-label-caps text-[9px] shadow-sm">Reduced</span>
+</div>
+<p class="font-h3 text-h3 text-primary text-body-md">$2,450,000</p>
+<p class="text-on-surface-variant text-[12px]">3 BD | 2 BA | 2,400 sqft</p>
+</div>
+<div class="group cursor-pointer">
+<div class="h-32 overflow-hidden rounded-lg mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A contemporary family home with large windows and a minimalist wooden facade. Nestled in a quiet suburban neighborhood with high-key, soft white lighting. The image evokes stability and professional trust, capturing a bright, modern light-mode aesthetic through clean architectural lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnKpyDPqsd0Xuw1zxQAHFV3_TmUzNyJdDPuo3UrvClI7z4iw7GXW_B5O6_xH_dY8yzEVWYUFHirj5Ba5LSZc1Ga6leSMHzj1QhqXmHYEw98S2EtZHLN4quw2Gev6Bu1NwG9R2WfuLFvDfjkXvifmvYbiv6nCFkc6Jokq1frs-3wY-2UpGqx2OOPYlDNzcOJKCGVM37vNtMvFCr5F2Rlbn9Jazf6SvPfPb6anZVif4X4mbD7hzMFYR1J9QthXCY7HQFVf85tit_wx-E"/>
+<span class="absolute top-2 left-2 bg-primary text-on-primary px-2 py-0.5 rounded font-label-caps text-[9px] shadow-sm">New</span>
+</div>
+<p class="font-h3 text-h3 text-primary text-body-md">$1,180,000</p>
+<p class="text-on-surface-variant text-[12px]">4 BD | 3 BA | 3,100 sqft</p>
+</div>
+</div>
+</div>
+<!-- Profile Settings & Preferences (Medium Span) -->
+<div class="md:col-span-6 bento-card p-stack-lg">
+<h3 class="font-h3 text-h3 text-primary mb-stack-lg flex items-center gap-2">
+<span class="material-symbols-outlined">settings</span> Profile Settings
+                </h3>
+<div class="space-y-stack-md">
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">notifications_active</span>
+<div>
+<p class="font-body-md font-semibold text-on-surface">Email Notifications</p>
+<p class="text-[12px] text-on-surface-variant">Daily digest of new matching listings</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-secondary-fixed-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">visibility</span>
+<div>
+<p class="font-body-md font-semibold text-on-surface">Public Profile Visibility</p>
+<p class="text-[12px] text-on-surface-variant">Allow potential buyers to see your portfolio</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-secondary-fixed-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md pt-stack-md">
+<a href="/agreement/" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Privacy Policy</a>
+<a href="/agreement/" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Security Center</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-page py-section-padding max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1">
+<span class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary">PrimeSquare</span>
+<p class="mt-stack-md font-body-sm text-on-surface-variant">Elevating the standards of residential real estate through transparency and excellence.</p>
+</div>
+<div>
+<h4 class="font-label-caps text-on-surface mb-stack-md">Resources</h4>
+<ul class="space-y-2 font-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Property Guides</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Market Trends</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-on-surface mb-stack-md">Support</h4>
+<ul class="space-y-2 font-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Contact Support</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-on-surface mb-stack-md">Contact</h4>
+<p class="font-body-sm text-on-surface-variant">info@primesquare.com</p>
+<p class="font-body-sm text-on-surface-variant">+1 (555) 000-8888</p>
+</div>
+</div>
+<div class="px-margin-page py-stack-lg border-t border-outline-variant max-w-container-max mx-auto text-center">
+<p class="font-body-sm text-on-surface-variant">© 2024 PrimeSquare Real Estate. Excellence in Residential Living.</p>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Property</title>
+</head>
+<body>
+
+<h2>Add New Property</h2>
+
+<select id="rep_id">
+    <option value="1">Representative 1</option>
+    <option value="2">Representative 2</option>
+    <option value="3">Representative 3</option>
+</select>
+<input id="style" placeholder="Style"><br><br>
+<input id="lat" placeholder="Latitude"><br><br>
+<input id="lng" placeholder="Longitude"><br><br>
+<input id="address" placeholder="Address"><br><br>
+<input id="price" placeholder="Market Value"><br><br>
+<input id="status" placeholder="Status"><br><br>
+
+<button onclick="addProperty()">Add Property</button>
+
+<p id="msg"></p>
+
+<script>
+const base = "http://127.0.0.1:8000/properties/";
+
+function addProperty(){
+
+    fetch(base + "add/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            representative_id: document.getElementById("rep_id").value,
+            style: document.getElementById("style").value,
+            latitude: document.getElementById("lat").value,
+            longitude: document.getElementById("lng").value,
+            address: document.getElementById("address").value,
+            market_value: document.getElementById("price").value,
+            property_status: document.getElementById("status").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("msg").innerText = data.message;
+
+        // clear form
+        document.getElementById("rep_id").value = "";
+        document.getElementById("style").value = "";
+        document.getElementById("lat").value = "";
+        document.getElementById("lng").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("status").value = "";
+    })
+    .catch(err => {
+        console.log(err);
+        document.getElementById("msg").innerText = "Error adding property ❌";
+    });
+
+}
+</script>
+
+</body>
+</html>
