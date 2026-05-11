@@ -59,13 +59,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [BASE_DIR / 'templates'], 
-=======
  
         'DIRS': [BASE_DIR / 'templates'],
  
->>>>>>> e9792c851276adf8e29650f33abd41a96bfedffa
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,17 +80,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
  
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'RealEstate',
-        'HOST': 'localhost',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes',
-        },
-    }
-}
+DATABASES = {}
  
 
 
