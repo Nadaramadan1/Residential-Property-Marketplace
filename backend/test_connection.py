@@ -1,15 +1,39 @@
 import pyodbc
 
-conn = pyodbc.connect(
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=DESKTOP-Q4QQDN9\\SQLEXPRESS;'
-    'DATABASE=PropertyMarketplace;'
-    'Trusted_Connection=yes;'
-)
+def get_db_connection():
+    try:
+        conn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};'
+            'SERVER=DESKTOP-MEKUU7J\\SQLEXPRESS;' 
+            'DATABASE=PropertyMarketplace;'       
+            'Trusted_Connection=yes;'             
+        )
+        return conn
+    except Exception as e:
+        print(f"connection failed {e}")
+        return None
 
-cursor = conn.cursor()
-cursor.execute("SELECT 1 AS test")
-row = cursor.fetchone()
-print("✅ Connection successful! Result:", row[0])
-
-conn.close()
+def execute_query(sql_statement, params=None, is_select=True):
+    connection = get_db_connection()
+    if not connection:
+        return None
+    
+    cursor = connection.cursor()
+    try:
+        if params:
+            cursor.execute(sql_statement, params)
+        else:
+            cursor.execute(sql_statement)
+            
+        if is_select:
+            columns = [column[0] for column in cursor.description]
+            results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            return results
+        else:
+            connection.commit()
+            return True
+    except Exception as e:
+        print(f"wrong in query execution: {e}")
+        return None
+    finally:
+        connection.close()
