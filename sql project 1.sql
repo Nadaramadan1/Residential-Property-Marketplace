@@ -1,5 +1,3 @@
-
-
 IF DB_ID('RealEstate') IS NULL
 BEGIN
     CREATE DATABASE RealEstate;
