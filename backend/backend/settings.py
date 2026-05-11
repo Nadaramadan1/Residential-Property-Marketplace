@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'users',
     'properties',
     'transactions',
-    
+    'reports',
+
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+ 
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
@@ -87,6 +89,7 @@ DATABASES = {
         },
     }
 }
+ 
 
 
 # Password validation

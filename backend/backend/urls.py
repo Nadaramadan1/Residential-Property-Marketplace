@@ -23,6 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
  
     path('users/', include('users.urls')),
+<<<<<<< HEAD
+    path('reports/', include('reports.urls')),
+]
+=======
     path('properties/', include('properties.urls')),
       
  
@@ -38,3 +42,4 @@ urlpatterns = [
     path('tour-scheduling/', views.tour_scheduling, name='tour_scheduling'),
     path('profile/', views.user_rep_profile, name='user_rep_profile'),
 ] 
+>>>>>>> e9792c851276adf8e29650f33abd41a96bfedffa
