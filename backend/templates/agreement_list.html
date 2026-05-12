@@ -13,28 +13,99 @@
 
 <div class="mb-3">
     <a href="{% url 'add_agreement_page' %}" class="btn btn-primary">+ New Agreement</a>
+    <button onclick="loadAgreements()" class="btn btn-secondary">Refresh</button>
 </div>
 
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th><th>Client</th><th>Property</th><th>Style</th>
-                <th>Final Price (EGP)</th><th>Effective Date</th>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Property</th>
+                <th>Style</th>
+                <th>Final Price (EGP)</th>
+                <th>Effective Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for agree in agreements %}
             <tr>
-                <td>{{ agree.0 }}</td>
-                <td>{{ agree.1 }}</td>
-                <td>{{ agree.2 }}</td>
-                <td>{{ agree.3 }}</td>
-                <td>{{ agree.4 }}</td>
-                <td>{{ agree.5 }}</td>
+                <td colspan="6" class="text-center">Loading...</td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    function loadClients() {
+        fetch('/tours/clients/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('client_id');
+                select.innerHTML = '<option value="">Select Client</option>';
+                data.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.client_id;
+                    option.textContent = client.full_name;
+                    select.appendChild(option);
+                });
+            });
+    }
+    
+    function loadProperties() {
+        fetch('/tours/properties/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('property_id');
+                select.innerHTML = '<option value="">Select Property (Available only)</option>';
+                data.forEach(prop => {
+                    const option = document.createElement('option');
+                    option.value = prop.property_id;
+                    option.textContent = `${prop.address} - ${prop.style} (${prop.market_value} EGP)`;
+                    select.appendChild(option);
+                });
+            });
+    }
+    
+    document.getElementById('agreementForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const data = {
+            client_id: document.getElementById('client_id').value,
+            property_id: document.getElementById('property_id').value,
+            final_price: document.getElementById('final_price').value,
+            effective_date: document.getElementById('effective_date').value
+        };
+        
+        fetch('/tours/agreements/add/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = `<div class="alert alert-success">${data.message} - Agreement ID: ${data.agree_id}</div>`;
+                
+                // Clear form
+                document.getElementById('agreementForm').reset();
+                
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/tours/agreements/';
+                }, 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('message').innerHTML = '<div class="alert alert-danger">Error adding agreement</div>';
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        loadClients();
+        loadProperties();
+    });
+</script>
 {% endblock %}

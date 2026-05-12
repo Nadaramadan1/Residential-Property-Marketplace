@@ -14,12 +14,12 @@
 </div>
 
 <div class="form-section">
-    <form method="POST">
+    <form id="agreementForm" method="POST">
         {% csrf_token %}
         
         <div class="form-group">
             <label class="form-label">Client *</label>
-            <select name="client_id" class="form-control" required>
+            <select id="client_id" class="form-control" required>
                 <option value="">Select Client</option>
                 {% for client in clients %}
                     <option value="{{ client.0 }}">{{ client.1 }}</option>
@@ -29,7 +29,7 @@
         
         <div class="form-group">
             <label class="form-label">Property *</label>
-            <select name="property_id" class="form-control" required>
+            <select id="property_id" class="form-control" required>
                 <option value="">Select Property (Available only)</option>
                 {% for prop in properties %}
                     <option value="{{ prop.0 }}">{{ prop.1 }} - {{ prop.2 }} ({{ prop.3 }} EGP)</option>
@@ -39,12 +39,12 @@
         
         <div class="form-group">
             <label class="form-label">Final Price (EGP) *</label>
-            <input type="number" name="final_price" step="0.01" class="form-control" required>
+            <input type="number" id="final_price" step="0.01" class="form-control" required>
         </div>
         
         <div class="form-group">
             <label class="form-label">Effective Date *</label>
-            <input type="date" name="effective_date" class="form-control" required>
+            <input type="date" id="effective_date" class="form-control" required>
         </div>
         
         <div class="form-actions">
@@ -53,4 +53,77 @@
         </div>
     </form>
 </div>
+
+<script>
+    function loadClients() {
+        fetch('/tours/clients/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('client_id');
+                select.innerHTML = '<option value="">Select Client</option>';
+                data.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.client_id;
+                    option.textContent = client.full_name;
+                    select.appendChild(option);
+                });
+            });
+    }
+    
+    function loadProperties() {
+        fetch('/tours/properties/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('property_id');
+                select.innerHTML = '<option value="">Select Property (Available only)</option>';
+                data.forEach(prop => {
+                    const option = document.createElement('option');
+                    option.value = prop.property_id;
+                    option.textContent = `${prop.address} - ${prop.style} (${prop.market_value} EGP)`;
+                    select.appendChild(option);
+                });
+            });
+    }
+    
+    document.getElementById('agreementForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const data = {
+            client_id: document.getElementById('client_id').value,
+            property_id: document.getElementById('property_id').value,
+            final_price: document.getElementById('final_price').value,
+            effective_date: document.getElementById('effective_date').value
+        };
+        
+        fetch('/tours/agreements/add/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = `<div class="alert alert-success">${data.message} - Agreement ID: ${data.agree_id}</div>`;
+                
+                // Clear form
+                document.getElementById('agreementForm').reset();
+                
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/tours/agreements/';
+                }, 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('message').innerHTML = '<div class="alert alert-danger">Error adding agreement</div>';
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        loadClients();
+        loadProperties();
+    });
+</script>
 {% endblock %}

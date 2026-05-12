@@ -13,33 +13,77 @@
 
 <div class="mb-3">
     <a href="{% url 'add_tour_page' %}" class="btn btn-primary">+ Schedule New Tour</a>
+    <button onclick="loadTours()" class="btn btn-secondary">Refresh</button>
 </div>
 
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th><th>Client</th><th>Property</th><th>Style</th>
-                <th>Representative</th><th>Date</th><th>Time</th><th>Action</th>
+               <th>ID</th>
+                <th>Client</th>
+                <th>Property</th>
+                <th>Style</th>
+                <th>Representative</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for tour in tours %}
             <tr>
-                <td>{{ tour.0 }}</td>
-                <td>{{ tour.1 }}</td>
-                <td>{{ tour.2 }}</td>
-                <td>{{ tour.3 }}</td>
-                <td>{{ tour.4 }}</td>
-                <td>{{ tour.5 }}</td>
-                <td>{{ tour.6 }}</td>
-                <td>
-                    <a href="{% url 'delete_tour' tour.0 %}" class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this tour?')">Delete</a>
-                </td>
+                <td colspan="8" class="text-center">Loading...</td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    function loadTours() {
+        fetch('/tours/list/')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#toursTable tbody');
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-center">No tours found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = '';
+                data.forEach(tour => {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).textContent = tour.tour_id;
+                    row.insertCell(1).textContent = tour.client_name;
+                    row.insertCell(2).textContent = tour.property_address;
+                    row.insertCell(3).textContent = tour.property_style;
+                    row.insertCell(4).textContent = tour.representative_name;
+                    row.insertCell(5).textContent = tour.tour_date;
+                    row.insertCell(6).textContent = tour.tour_time;
+                    const actionCell = row.insertCell(7);
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.className = 'btn btn-sm btn-danger';
+                    deleteBtn.onclick = () => {
+                        if (confirm('Delete this tour?')) {
+                            fetch(`/tours/delete/${tour.tour_id}/`, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(() => {
+                                    loadTours(); // Refresh the list after delete
+                                })
+                                .catch(error => console.error('Error deleting:', error));
+                        }
+                    };
+                    actionCell.appendChild(deleteBtn);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading tours:', error);
+                const tbody = document.querySelector('#toursTable tbody');
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error loading tours</td></tr>';
+            });
+    }
+    
+    // Load tours when page loads
+    document.addEventListener('DOMContentLoaded', loadTours);
+</script>
 {% endblock %}

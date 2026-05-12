@@ -74,4 +74,107 @@
         </div>
     </form>
 </div>
+
+<script>
+    // Load dropdown data
+    function loadClients() {
+        fetch('/tours/clients/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('client_id');
+                select.innerHTML = '<option value="">Select Client</option>';
+                data.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.client_id;
+                    option.textContent = client.full_name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading clients:', error));
+    }
+    
+    function loadProperties() {
+        fetch('/tours/properties/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('property_id');
+                select.innerHTML = '<option value="">Select Property (Available only)</option>';
+                data.forEach(prop => {
+                    const option = document.createElement('option');
+                    option.value = prop.property_id;
+                    option.textContent = `${prop.address} - ${prop.style} (${prop.market_value} EGP)`;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading properties:', error));
+    }
+    
+    function loadRepresentatives() {
+        fetch('/tours/representatives/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('representative_id');
+                select.innerHTML = '<option value="">Select Representative</option>';
+                data.forEach(rep => {
+                    const option = document.createElement('option');
+                    option.value = rep.representative_id;
+                    option.textContent = rep.full_name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading representatives:', error));
+    }
+    
+    // Submit form
+    document.getElementById('tourForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const data = {
+            client_id: document.getElementById('client_id').value,
+            property_id: document.getElementById('property_id').value,
+            representative_id: document.getElementById('representative_id').value,
+            tour_date: document.getElementById('tour_date').value,
+            tour_time: document.getElementById('tour_time').value
+        };
+        
+        // Validation
+        if (!data.client_id || !data.property_id || !data.representative_id || !data.tour_date || !data.tour_time) {
+            alert('Please fill all fields');
+            return;
+        }
+        
+        fetch('/tours/add/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                // Show success message
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = `<div class="alert alert-success">${data.message} - Tour ID: ${data.tour_id}</div>`;
+                
+                // Clear form
+                document.getElementById('tourForm').reset();
+                
+                // Optional: Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/tours/';
+                }, 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('message').innerHTML = '<div class="alert alert-danger">Error adding tour</div>';
+        });
+    });
+    
+    // Load all dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadClients();
+        loadProperties();
+        loadRepresentatives();
+    });
+</script>
 {% endblock %}
