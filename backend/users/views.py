@@ -30,8 +30,8 @@ def add_client_page(request):
         
         with connection.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO CLIENT (FULL_NAME, CLIENT_CONTACT_PREFERENCE, CLIENT_PHONE, CLIENT_EMAIL)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO CLIENT (FULL_NAME, CLIENT_CONTACT_PREFERENCE, CLIENT_PHONE, CLIENT_EMAIL, REGISTRATION_DATE)
+                VALUES (%s, %s, %s, %s, GETDATE())
             """, [name, contact_pref, phone, email])
         return redirect("clients_list")
     return render(request, "add_client.html")
@@ -137,8 +137,8 @@ def add_client_api(request):
         data = json.loads(request.body)
         with connection.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO CLIENT (FULL_NAME, CLIENT_CONTACT_PREFERENCE, CLIENT_PHONE, CLIENT_EMAIL)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO CLIENT (FULL_NAME, CLIENT_CONTACT_PREFERENCE, CLIENT_PHONE, CLIENT_EMAIL, REGISTRATION_DATE)
+                VALUES (%s, %s, %s, %s, GETDATE())
             """, [data.get("name"), data.get("contact_preference"), data.get("phone"), data.get("email")])
         return JsonResponse({"message": "Client added successfully!"})
     return JsonResponse({"error": "Invalid method"}, status=400)

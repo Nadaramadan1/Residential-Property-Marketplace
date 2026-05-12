@@ -3,6 +3,8 @@ from django.urls import include, path
 from . import views
 from users import views as user_views
 from reports import views as report_views
+from Tours import views as tours_views
+from Agreement import views as agreement_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,9 +28,19 @@ urlpatterns = [
     path('tours/', tours_views.tour_page, name='tour_page'),
     path('tours/add-page/', tours_views.add_tour_page, name='add_tour_page'),
     
+    # --- Tours API ---
+    path('api/tours/', tours_views.list_tours, name='list_tours_api'),
+    path('api/tours/add/', tours_views.add_tour, name='add_tour_api'),
+    path('api/tours/update-status/<int:tour_id>/', tours_views.update_tour_status, name='update_tour_status_api'),
+    path('api/tours/delete/<int:tour_id>/', tours_views.delete_tour, name='delete_tour_api'),
+    
     # Agreement Pages
-    path('tours/agreements/', tours_views.agreement_page, name='agreement_page'),
-    path('tours/agreements/add-page/', tours_views.add_agreement_page, name='add_agreement_page'),
+    path('tours/agreements/', agreement_views.agreement_page, name='agreement_page'),
+    path('tours/agreements/add-page/', agreement_views.add_agreement_page, name='add_agreement_page'),
+    
+    # --- Agreements API ---
+    path('api/agreements/', agreement_views.list_agreements, name='list_agreements_api'),
+    path('api/agreements/add/', agreement_views.add_agreement, name='add_agreement_api'),
     
     # --- General Pages ---
     path('', views.view_home, name='home'),

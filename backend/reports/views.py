@@ -13,6 +13,7 @@ def execute_query(sql_statement, params=None):
         return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 def report_dashboard(request):
+    # 1. Most viewed style with max tours
     q1 = """
     SELECT TOP 1
         P.STYLE,
@@ -25,39 +26,39 @@ def report_dashboard(request):
     ORDER BY TOTAL_TOURS DESC, TOTAL_VIEWS DESC
     """
 
+    # 2. Property listings with no tours scheduled last month
     q2 = """
     SELECT P.PROPERTY_ID, P.ADDRESS, P.STYLE
     FROM PROPERTY P
     WHERE P.PROPERTY_ID NOT IN (
         SELECT PROPERTY_ID FROM TOUR
-        WHERE MONTH(TOUR_DATE) = MONTH(GETDATE()) - 1
-        AND YEAR(TOUR_DATE) = YEAR(GETDATE())
+        WHERE DATEDIFF(month, TOUR_DATE, GETDATE()) = 1
     )
     """
 
+    # 3. Representative with highest total value of finalized agreements last month
     q3 = """
     SELECT TOP 1
         R.FULL_NAME,
-        SUM(T.TRANSACTION_AMOUNT) AS TOTAL_SALES
-    FROM TRANSACTIONS T
-    JOIN REPRESENTATIVE R ON T.REPRESENTATIVE_ID = R.REPRESENTATIVE_ID
-    WHERE T.TRANSACTION_STATUS = 'Completed'
-    AND MONTH(T.TRANSACTION_DATE) = MONTH(GETDATE()) - 1
-    AND YEAR(T.TRANSACTION_DATE) = YEAR(GETDATE())
+        SUM(A.FINAL_PRICE) AS TOTAL_SALES_VALUE
+    FROM AGREEMENT A
+    JOIN REPRESENTATIVE R ON A.REPRESENTATIVE_ID = R.REPRESENTATIVE_ID
+    WHERE DATEDIFF(month, A.EFFECTIVE_DATE, GETDATE()) = 1
     GROUP BY R.FULL_NAME
-    ORDER BY TOTAL_SALES DESC
+    ORDER BY TOTAL_SALES_VALUE DESC
     """
 
+    # 4. Clients who registered last month but have no tours
     q4 = """
     SELECT C.CLIENT_ID, C.FULL_NAME, C.CLIENT_EMAIL
     FROM CLIENT C
-    WHERE C.CLIENT_ID NOT IN (
+    WHERE DATEDIFF(month, C.REGISTRATION_DATE, GETDATE()) = 1
+    AND C.CLIENT_ID NOT IN (
         SELECT CLIENT_ID FROM TOUR
-        WHERE MONTH(TOUR_DATE) = MONTH(GETDATE()) - 1
-        AND YEAR(TOUR_DATE) = YEAR(GETDATE())
     )
     """
 
+    # 5. Available housing units managed by each representative
     q5 = """
     SELECT
         R.FULL_NAME AS REP_NAME,
@@ -71,15 +72,17 @@ def report_dashboard(request):
     ORDER BY R.FULL_NAME
     """
 
+    # 6. Client contact info and total number of attended tours
     q6 = """
     SELECT
         C.FULL_NAME,
         C.CLIENT_PHONE,
         C.CLIENT_EMAIL,
-        COUNT(T.TOUR_ID) AS TOTAL_TOURS
+        COUNT(T.TOUR_ID) AS ATTENDED_TOURS
     FROM CLIENT C
-    LEFT JOIN TOUR T ON C.CLIENT_ID = T.CLIENT_ID
+    LEFT JOIN TOUR T ON C.CLIENT_ID = T.CLIENT_ID AND T.TOUR_STATUS = 'Completed'
     GROUP BY C.FULL_NAME, C.CLIENT_PHONE, C.CLIENT_EMAIL
+    ORDER BY ATTENDED_TOURS DESC
     """
 
     context = {

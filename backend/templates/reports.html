@@ -203,7 +203,7 @@
                 <div class="agent-avatar" style="width: 64px; height: 64px; font-size: 24px; margin: 0 auto 12px auto; box-shadow: var(--shadow-blue);">{{ item.FULL_NAME|slice:":2"|upper }}</div>
                 <h4 style="font-family: var(--font-display); font-size: 22px; color: var(--navy);">{{ item.FULL_NAME }}</h4>
                 <div style="margin-top: 12px;">
-                    <span style="font-size: 24px; font-weight: 800; color: var(--blue-700);">{{ item.TOTAL_SALES }} EGP</span>
+                    <span style="font-size: 24px; font-weight: 800; color: var(--blue-700);">{{ item.TOTAL_SALES_VALUE }} EGP</span>
                 </div>
                 <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">Total sales volume last month</p>
             </div>
@@ -337,8 +337,8 @@
                         <td><strong>{{ item.FULL_NAME }}</strong></td>
                         <td style="color: var(--text-secondary);">{{ item.CLIENT_PHONE }} · {{ item.CLIENT_EMAIL }}</td>
                         <td style="text-align: right;">
-                            <span class="badge {% if item.TOTAL_TOURS > 2 %}badge-blue{% else %}badge-gray{% endif %}">
-                                {{ item.TOTAL_TOURS }} Tours
+                            <span class="badge {% if item.ATTENDED_TOURS > 2 %}badge-blue{% else %}badge-gray{% endif %}">
+                                {{ item.ATTENDED_TOURS }} Tours
                             </span>
                         </td>
                     </tr>

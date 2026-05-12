@@ -29,7 +29,7 @@ def list_properties(request):
             "latitude": row[3],
             "longitude": row[4],
             "address": row[5],
-            "market_value": float(row[6]),
+            "market_value": float(row[6]) if row[6] is not None else 0.0,
             "property_status": row[7]
         })
     return JsonResponse(data, safe=False)
@@ -37,53 +37,79 @@ def list_properties(request):
 @csrf_exempt
 def add_property(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+            
+            # Clean and validate data
+            rep_id = data.get("representative_id")
+            style = data.get("style")
+            lat = data.get("latitude")
+            lng = data.get("longitude")
+            address = data.get("address")
+            market_value = data.get("market_value", "0")
+            status = data.get("property_status")
 
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO PROPERTY
-                (REPRESENTATIVE_ID, STYLE, LATITUDE, LONGITUDE, ADDRESS, MARKET_VALUE, PROPERTY_STATUS)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, [
-                data.get("representative_id"),
-                data.get("style"),
-                data.get("latitude"),
-                data.get("longitude"),
-                data.get("address"),
-                data.get("market_value"),
-                data.get("property_status")
-            ])
-            # get the new id, in sql server it's scope_identity or @@identity
-            cursor.execute("SELECT @@IDENTITY")
-            new_id = cursor.fetchone()[0]
+            # Remove commas from market_value if present
+            if isinstance(market_value, str):
+                market_value = market_value.replace(",", "")
+            
+            # Convert to float/int where appropriate or use None if empty
+            market_value = float(market_value) if market_value else 0
+            lat = float(lat) if lat else 0
+            lng = float(lng) if lng else 0
 
-        return JsonResponse({
-            "message": "Property added successfully",
-            "property_id": new_id
-        })
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO PROPERTY
+                    (REPRESENTATIVE_ID, STYLE, LATITUDE, LONGITUDE, ADDRESS, MARKET_VALUE, PROPERTY_STATUS)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, [rep_id, style, lat, lng, address, market_value, status])
+                
+                cursor.execute("SELECT @@IDENTITY")
+                new_id = cursor.fetchone()[0]
+
+            return JsonResponse({
+                "message": "Property added successfully",
+                "property_id": new_id
+            })
+        except Exception as e:
+            return JsonResponse({
+                "error": str(e),
+                "message": "Error adding property"
+            }, status=500)
 
 @csrf_exempt
 def update_property(request, property_id):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+            
+            style = data.get("style")
+            address = data.get("address")
+            market_value = data.get("market_value", "0")
+            status = data.get("property_status")
 
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                UPDATE PROPERTY
-                SET STYLE=%s,
-                    ADDRESS=%s,
-                    MARKET_VALUE=%s,
-                    PROPERTY_STATUS=%s
-                WHERE PROPERTY_ID=%s
-            """, [
-                data.get("style"),
-                data.get("address"),
-                data.get("market_value"),
-                data.get("property_status"),
-                property_id
-            ])
+            # Clean and validate data
+            if isinstance(market_value, str):
+                market_value = market_value.replace(",", "")
+            market_value = float(market_value) if market_value else 0
 
-        return JsonResponse({"message": "Updated successfully"})
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE PROPERTY
+                    SET STYLE=%s,
+                        ADDRESS=%s,
+                        MARKET_VALUE=%s,
+                        PROPERTY_STATUS=%s
+                    WHERE PROPERTY_ID=%s
+                """, [style, address, market_value, status, property_id])
+
+            return JsonResponse({"message": "Updated successfully"})
+        except Exception as e:
+            return JsonResponse({
+                "error": str(e),
+                "message": "Error updating property"
+            }, status=500)
 
 @csrf_exempt
 def delete_property(request, property_id):
@@ -126,7 +152,7 @@ def search_properties(request):
             "property_id": r[0],
             "style": r[2],
             "address": r[5],
-            "market_value": float(r[6]),
+            "market_value": float(r[6]) if r[6] is not None else 0.0,
         })
 
     return JsonResponse(data, safe=False)

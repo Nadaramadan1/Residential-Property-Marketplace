@@ -1,40 +1,131 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Agreements – PrimeSquare{% endblock %}
+{% block title %}Sales Ledger – PrimeSquare Agreements{% endblock %}
 
 {% block nav_agreements %}active{% endblock %}
 
+{% block extra_css %}
+<style>
+    .agreement-dashboard { padding-top: 20px; }
+    
+    .ledger-stats {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .ledger-card {
+        flex: 1;
+        background: white;
+        padding: 24px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ledger-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 4px; height: 100%;
+        background: var(--blue-600);
+    }
+
+    .ledger-val {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--navy);
+        margin: 8px 0;
+    }
+
+    .ledger-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    .price-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        color: var(--blue-700);
+        background: var(--blue-50);
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="page-header">
-    <h1>Agreements List</h1>
-    <p>All signed purchase agreements.</p>
-</div>
+<div class="agreement-dashboard">
+    <div class="page-header">
+        <h1>Sales Ledger</h1>
+        <p>A comprehensive record of all finalized property acquisitions.</p>
+    </div>
 
-<div class="mb-3">
-    <a href="{% url 'tours:add_agreement' %}" class="btn btn-primary">+ New Agreement</a>
-</div>
+    <!-- Stats Summary -->
+    <div class="ledger-stats">
+        <div class="ledger-card">
+            <div class="ledger-label">Total Transactions</div>
+            <div class="ledger-val">{{ agreements|length }}</div>
+            <div style="font-size: 11px; color: #16a34a;">+12% from last month</div>
+        </div>
+        <div class="ledger-card" style="background: var(--navy); border-color: var(--navy);">
+            <div class="ledger-label" style="color: rgba(255,255,255,0.6);">Market Status</div>
+            <div class="ledger-val" style="color: white;">Active Growth</div>
+            <div style="font-size: 11px; color: rgba(255,255,255,0.4);">Updated: Real-time</div>
+        </div>
+    </div>
 
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th><th>Client</th><th>Property</th><th>Style</th>
-                <th>Final Price (EGP)</th><th>Effective Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for agree in agreements %}
-            <tr>
-                <td>{{ agree.0 }}</td>
-                <td>{{ agree.1 }}</td>
-                <td>{{ agree.2 }}</td>
-                <td>{{ agree.3 }}</td>
-                <td>{{ agree.4 }}</td>
-                <td>{{ agree.5 }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="tour-table-card">
+        <div class="tour-table-header">
+            <h3 style="margin: 0; font-family: var(--font-display);">Finalized Agreements</h3>
+            <a href="{% url 'add_agreement_page' %}" class="btn btn-primary btn-sm">+ Draft Agreement</a>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="styled-table" style="margin: 0; width: 100%;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Client Acquisition</th>
+                        <th>Asset Location</th>
+                        <th>Valuation (EGP)</th>
+                        <th>Transfer Date</th>
+                        <th style="text-align: right;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agree in agreements %}
+                    <tr>
+                        <td style="color: var(--text-muted); font-weight: 500;">#{{ agree.0 }}</td>
+                        <td>
+                            <div style="font-weight: 700; color: var(--navy);">{{ agree.1 }}</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">Verified Buyer</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">{{ agree.2 }}</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">{{ agree.3 }}</div>
+                        </td>
+                        <td>
+                            <span class="price-tag">{{ agree.4 }}</span>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: var(--blue-700);">{{ agree.5 }}</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <span class="badge badge-blue">Executed</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="empty-state">No agreements have been finalized yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}
