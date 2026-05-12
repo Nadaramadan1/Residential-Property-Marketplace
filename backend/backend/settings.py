@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'RealEstate',
-        'HOST': 'DESKTOP-MEKUU7J',
+        'HOST': 'localhost',
         'USER': '',
         'PASSWORD': '',
         'PORT': '',
