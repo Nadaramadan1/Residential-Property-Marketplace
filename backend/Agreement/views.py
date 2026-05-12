@@ -132,7 +132,8 @@ def add_agreement(request):
 
             # 2. تحديث حالة العقار إلى مباع
             cursor.execute("""
-                UPDATE PROPERTY SET PROPERTY_STATUS = 'Sold'
+                UPDATE PROPERTY
+                SET PROPERTY_STATUS = 'Sold'
                 WHERE PROPERTY_ID = %s
             """, [property_id])
 
@@ -148,4 +149,5 @@ def add_agreement(request):
         return JsonResponse({
             "message": "Agreement and Transaction recorded successfully. Property marked as Sold.",
             "agree_id": new_id
-        })
+        })
+

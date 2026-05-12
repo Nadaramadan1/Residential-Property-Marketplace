@@ -25,8 +25,8 @@ urlpatterns = [
     path('representatives/delete/<int:id>/', user_views.delete_representative, name='delete_representative'),
 
     #Tour pages
-    path('tours/', tours_views.tour_page, name='tour_page'),
-    path('tours/add-page/', tours_views.add_tour_page, name='add_tour_page'),
+    path('tours/', Tours_views.tour_page, name='tour_page'),
+    path('tours/add-page/', Tours_views.add_tour_page, name='add_tour_page'),
     
     # --- Tours API ---
     path('api/tours/', tours_views.list_tours, name='list_tours_api'),

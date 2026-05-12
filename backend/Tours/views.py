@@ -76,10 +76,40 @@ def update_tour_status(request, tour_id):
         return JsonResponse({"message": "Tour status updated successfully"})
     return JsonResponse({"error": "Invalid method"}, status=400)
 
+    with connection.cursor() as cursor:
+        # Clients
+        cursor.execute("""
+            SELECT CLIENT_ID, FULL_NAME
+            FROM CLIENT
+            ORDER BY FULL_NAME
+        """)
+        clients = cursor.fetchall()
+
+        # Properties
+        cursor.execute("""
+            SELECT PROPERTY_ID, ADDRESS, STYLE, MARKET_VALUE
+            FROM PROPERTY
+            WHERE PROPERTY_STATUS = 'Available'
+            ORDER BY ADDRESS
+        """)
+        properties = cursor.fetchall()
+
+        # Representatives
+        cursor.execute("""
+            SELECT REPRESENTATIVE_ID, FULL_NAME
+            FROM REPRESENTATIVE
+            ORDER BY FULL_NAME
+        """)
+        reps = cursor.fetchall()
+
+    return render(request, "add_tour.html", {
+        "clients": clients,
+        "properties": properties,
+        "reps": reps
+    })
 # ===================== TOURS APIs =====================
 
 def list_tours(request):
-    """GET: جلب جميع الجولات مع بيانات العميل والعقار والموظف"""
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT t.TOUR_ID, 
@@ -115,13 +145,13 @@ def list_tours(request):
 
 @csrf_exempt
 def add_tour(request):
-    """POST: إضافة جولة جديدة"""
     if request.method == "POST":
         data = json.loads(request.body)
 
         with connection.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO TOUR (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
+                INSERT INTO TOUR 
+                (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
                 VALUES (%s, %s, %s, %s, %s)
             """, [
                 data.get("client_id"),
@@ -130,6 +160,7 @@ def add_tour(request):
                 data.get("tour_date"),
                 data.get("tour_time")
             ])
+
             cursor.execute("SELECT @@IDENTITY")
             new_id = cursor.fetchone()[0]
 
@@ -138,8 +169,9 @@ def add_tour(request):
             "tour_id": new_id
         })
 
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
-@csrf_exempt
+
 def delete_tour(request, tour_id):
     
     with connection.cursor() as cursor:
