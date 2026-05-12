@@ -85,10 +85,14 @@ DATABASES = {
         'ENGINE': 'mssql',
         'NAME': 'RealEstate',
         'HOST': 'DESKTOP-MEKUU7J',
-        'trusted_connection': 'true',
+        'USER': '',
+        'PASSWORD': '',
+        'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
-        }
+            'trusted_connection': 'yes',
+            'extra_params': 'TrustServerCertificate=yes;Encrypt=no;',
+        },
     }
 }
  

@@ -1,114 +1,245 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}PrimeSquare — Home{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block title %}PrimeSquare — Intelligent Real Estate Management{% endblock %}
 {% block nav_home %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Premium Hero Section */
+    .hero-v2 {
+        position: relative;
+        height: 560px;
+        margin: -40px -32px 60px -32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url('{% static "images/hero.png" %}') center/cover no-repeat;
+        overflow: hidden;
+    }
+
+    .hero-v2::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(15, 32, 68, 0.85) 0%, rgba(15, 32, 68, 0.4) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        padding: 0 24px;
+        color: white;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-v2 h1 {
+        font-family: var(--font-display);
+        font-size: 56px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+    }
+
+    .hero-v2 p {
+        font-size: 18px;
+        opacity: 0.9;
+        margin-bottom: 32px;
+        font-weight: 400;
+        max-width: 600px;
+        margin-inline: auto;
+    }
+
+    /* Live Stats Ribbon */
+    .stats-ribbon {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 32px;
+        font-weight: 700;
+        font-family: var(--font-display);
+        color: var(--blue-300);
+    }
+
+    .stat-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+    }
+
+    /* Modern Grid Layout */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 80px;
+    }
+
+    .nav-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--blue-400);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .nav-card::after {
+        content: '→';
+        position: absolute;
+        bottom: 32px;
+        right: 32px;
+        font-size: 20px;
+        color: var(--blue-600);
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .nav-card:hover::after {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-card:hover .card-icon {
+        transform: scale(1.1);
+    }
+
+    .card-info h3 {
+        font-family: var(--font-display);
+        font-size: 20px;
+        color: var(--navy);
+        margin-bottom: 8px;
+    }
+
+    .card-info p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Glassmorphism for specific elements */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 
-<!-- Hero -->
-<section class="hero">
-    <div class="hero-eyebrow">Real Estate Management Platform</div>
-    <h1 class="hero-title">Manage Properties<br><span>with Clarity.</span></h1>
-    <p class="hero-sub">PrimeSquare brings together properties, clients, representatives, and analytics in one calm, organized workspace.</p>
-    <div class="hero-actions">
-        <a href="/properties/" class="btn btn-primary">View Properties</a>
-        <a href="/reports/" class="btn btn-secondary">See Reports</a>
+<section class="hero-v2">
+    <div class="hero-content">
+        <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; color: var(--blue-300); font-weight: 600;">The New Standard in Realty</div>
+        <h1>Elevate Your Property<br>Portfolio Experience.</h1>
+        <p>A unified ecosystem for modern real estate professionals. Manage assets, track leads, and visualize performance with effortless precision.</p>
+        
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="/properties/" class="btn btn-primary" style="padding: 14px 28px; background: white; color: var(--navy);">Enter Workspace</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary" style="padding: 14px 28px; background: transparent; color: white; border-color: rgba(255,255,255,0.3);">View Analytics</a>
+        </div>
+
+        <div class="stats-ribbon">
+            <div class="stat-item">
+                <span class="stat-number">{{ prop_count }}</span>
+                <span class="stat-label">Properties</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ client_count }}</span>
+                <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ rep_count }}</span>
+                <span class="stat-label">Agents</span>
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- Quick-access nav cards -->
-<section class="hub-section">
-    <div class="hub-grid">
+<div class="dashboard-grid">
+    <a href="/properties/" class="nav-card">
+        <div class="card-icon" style="background: #eff6ff; color: #1d4ed8;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="card-info">
+            <h3>Inventory Management</h3>
+            <p>Access your full portfolio of luxury villas, apartments, and studios. Monitor status and market values.</p>
+        </div>
+    </a>
 
-        <a href="/properties/" class="hub-card">
-            <div class="hub-icon hub-icon-blue">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Properties</h3>
-                <p>Browse, search, edit, and manage property listings.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
+    <a href="/properties/add-page/" class="nav-card">
+        <div class="card-icon" style="background: #fdf2f7; color: #be185d;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="card-info">
+            <h3>List New Asset</h3>
+            <p>Onboard new properties quickly with our streamlined entry system. Assign representatives in one click.</p>
+        </div>
+    </a>
 
-        <a href="/properties/add/" class="hub-card">
-            <div class="hub-icon hub-icon-indigo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Add Property</h3>
-                <p>List a new property and assign a representative.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
+    <a href="{% url 'clients_list' %}" class="nav-card">
+        <div class="card-icon" style="background: #f0fdf4; color: #15803d;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="card-info">
+            <h3>Client CRM</h3>
+            <p>Maintain deep relationships with your buyers and investors. Track preferences and contact history.</p>
+        </div>
+    </a>
 
-        <a href="/clients/" class="hub-card">
-            <div class="hub-icon hub-icon-sky">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Clients</h3>
-                <p>View and manage all registered clients.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
-
-        <a href="/clients/add/" class="hub-card">
-            <div class="hub-icon hub-icon-teal">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Add Client</h3>
-                <p>Register a new client into the system.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
-
-        <a href="/representatives/" class="hub-card">
-            <div class="hub-icon hub-icon-slate">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Representatives</h3>
-                <p>Manage agents and their license details.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
-
-        <a href="/reports/" class="hub-card hub-card-featured">
-            <div class="hub-icon hub-icon-navy">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Analytics & Reports</h3>
-                <p>Insights on styles, sales, and client activity.</p>
-            </div>
-            <div class="hub-arrow">→</div>
-        </a>
-
-        <a href="#" class="hub-card hub-card-muted">
-            <div class="hub-icon hub-icon-gray">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Agreements <span class="badge badge-gray">Coming Soon</span></h3>
-                <p>Digital agreement creation and tracking.</p>
-            </div>
-        </a>
-
-        <a href="#" class="hub-card hub-card-muted">
-            <div class="hub-icon hub-icon-gray">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </div>
-            <div class="hub-text">
-                <h3>Tours <span class="badge badge-gray">Coming Soon</span></h3>
-                <p>Schedule and track property tour requests.</p>
-            </div>
-        </a>
-
-    </div>
-</section>
+    <a href="{% url 'dashboard' %}" class="nav-card">
+        <div class="card-icon" style="background: #fff7ed; color: #c2410c;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="card-info">
+            <h3>Market Intelligence</h3>
+            <p>Discover trends, top-selling styles, and agent performance through data-driven visualizations.</p>
+        </div>
+    </a>
+</div>
 
 {% endblock %}
+

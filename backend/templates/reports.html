@@ -1,248 +1,356 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Reports{% endblock %}
+{% block title %}Strategic Intelligence — PrimeSquare Analytics{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Dashboard Specific Styles */
+    .dashboard-header {
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+        margin-bottom: 60px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Card Sizes */
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    @media (max-width: 1024px) {
+        .col-4, .col-6, .col-8 { grid-column: span 12; }
+    }
+
+    .card-header-v2 {
+        padding: 24px;
+        border-bottom: 1px solid var(--gray-50);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .icon-box {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-title-group h3 {
+        font-family: var(--font-display);
+        font-size: 18px;
+        color: var(--navy);
+        margin: 0;
+    }
+
+    .card-title-group p {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin: 2px 0 0 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-body-v2 {
+        padding: 0 24px 24px 24px;
+        flex: 1;
+    }
+
+    /* Agent Profile Styles */
+    .agent-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    .agent-avatar {
+        width: 36px;
+        height: 36px;
+        background: var(--blue-600);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    /* List Item Styles */
+    .data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--gray-50);
+    }
+
+    .data-item:last-child { border-bottom: none; }
+
+    .item-main {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .item-label { font-weight: 600; color: var(--navy); font-size: 14px; }
+    .item-sub { color: var(--text-secondary); font-size: 12px; }
+
+    .item-value { font-weight: 700; color: var(--blue-700); }
+
+    /* Performance Bar */
+    .perf-bar-bg {
+        height: 6px;
+        background: var(--gray-100);
+        border-radius: 3px;
+        margin-top: 8px;
+        overflow: hidden;
+    }
+
+    .perf-bar-fill {
+        height: 100%;
+        background: var(--blue-500);
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<main class="container">
-    <!-- Reports Header & Filters -->
-    <div class="flex justify-between items-center mb-lg" style="flex-wrap: wrap; gap: 1rem;">
-        <div>
-            <h1 class="text-primary mb-sm">Performance Analytics</h1>
-            <p class="text-on-surface-variant" style="max-width: 600px;">Executive overview of market styles, agent performance, and engagement metrics for the current fiscal period.</p>
-        </div>
-        <div class="flex items-center gap-sm" style="flex-wrap: wrap;">
-            <div class="flex items-center gap-sm" style="background-color: var(--color-surface-container); border: 1px solid var(--color-outline-variant); border-radius: var(--radius-md); padding: 0.5rem 1rem;">
-                <span class="material-symbols-outlined text-on-surface-variant">calendar_today</span>
-                <span style="font-size: 0.875rem;">Oct 01, 2023 - Oct 31, 2023</span>
+
+<div class="dashboard-header">
+    <div>
+        <h1 style="font-family: var(--font-display); font-size: 36px; color: var(--navy);">Strategic Intelligence</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px;">Comprehensive performance metrics across properties, agents, and clients.</p>
+    </div>
+    <div style="text-align: right;">
+        <span class="badge badge-blue">Real-Time Data</span>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Last updated: Just now</div>
+    </div>
+</div>
+
+<div class="analytics-grid">
+
+    <!-- Inquiry 1: Most Requested Style -->
+    <div class="stat-card col-4">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: var(--blue-50); color: var(--blue-600);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             </div>
-            <div class="flex gap-sm">
-                <button class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">download</span> PDF
-                </button>
-                <button class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">csv</span> CSV
-                </button>
+            <div class="card-title-group">
+                <h3>Market Demand</h3>
+                <p>Trending Property Styles</p>
+            </div>
+        </div>
+        <div class="card-body-v2">
+            {% for item in inquiry1 %}
+            <div class="data-item">
+                <div class="item-main">
+                    <span class="item-label">{{ item.STYLE }}</span>
+                    <span class="item-sub">Based on client interest</span>
+                </div>
+                <div class="item-value">{{ item.TOTAL_TOURS }} Tours</div>
+            </div>
+            <div class="perf-bar-bg"><div class="perf-bar-fill" style="width: 85%;"></div></div>
+            {% empty %}
+            <div class="empty-state"><p>No demand data yet.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Inquiry 3: Top Sales Rep (Promoted to top) -->
+    <div class="stat-card col-4" style="border-color: var(--blue-300); background: linear-gradient(to bottom, #ffffff, var(--blue-50));">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: var(--blue-600); color: white;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="card-title-group">
+                <h3>Top Performer</h3>
+                <p>Leading Revenue Generator</p>
+            </div>
+        </div>
+        <div class="card-body-v2">
+            {% for item in inquiry3 %}
+            <div style="text-align: center; padding: 20px 0;">
+                <div class="agent-avatar" style="width: 64px; height: 64px; font-size: 24px; margin: 0 auto 12px auto; box-shadow: var(--shadow-blue);">{{ item.FULL_NAME|slice:":2"|upper }}</div>
+                <h4 style="font-family: var(--font-display); font-size: 22px; color: var(--navy);">{{ item.FULL_NAME }}</h4>
+                <div style="margin-top: 12px;">
+                    <span style="font-size: 24px; font-weight: 800; color: var(--blue-700);">{{ item.TOTAL_SALES }} EGP</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">Total sales volume last month</p>
+            </div>
+            {% empty %}
+            <div class="empty-state"><p>No sales recorded last month.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Inquiry 4: Inactive Clients -->
+    <div class="stat-card col-4">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: #fef2f2; color: #dc2626;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/></svg>
+            </div>
+            <div class="card-title-group">
+                <h3>CRM Alert</h3>
+                <p>Inactive Clients (Last 30 Days)</p>
+            </div>
+        </div>
+        <div class="card-body-v2">
+            <div style="max-height: 280px; overflow-y: auto;">
+                {% for item in inquiry4 %}
+                <div class="data-item">
+                    <div class="item-main">
+                        <span class="item-label">{{ item.FULL_NAME }}</span>
+                        <span class="item-sub">{{ item.CLIENT_EMAIL }}</span>
+                    </div>
+                    <span class="badge badge-amber">Re-engage</span>
+                </div>
+                {% empty %}
+                <div class="empty-state"><p>All clients are active.</p></div>
+                {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- Bento Grid Reports -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-lg">
-        <!-- Most Viewed Styles (High Density Card) -->
-        <div class="card" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02);">
-                <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
-                    <span class="material-symbols-outlined">architecture</span> Most Viewed Styles
-                </h3>
+    <!-- Inquiry 2: No tours last month -->
+    <div class="stat-card col-6">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: #fff7ed; color: #ea580c;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-            <div style="padding: 1.5rem;">
-                <table style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>Style</th>
-                            <th style="text-align: right;">Views</th>
-                            <th style="text-align: right;">Trend</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight: bold; color: var(--color-on-surface);">Mid-Century</td>
-                            <td style="text-align: right;">12,402</td>
-                            <td style="text-align: right; color: #d32f2f; font-size: 0.875rem;">
-                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> 14%</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold; color: var(--color-on-surface);">Contemporary</td>
-                            <td style="text-align: right;">9,850</td>
-                            <td style="text-align: right; color: var(--color-secondary); font-size: 0.875rem;">
-                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> 8%</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold; color: var(--color-on-surface);">Victorian</td>
-                            <td style="text-align: right;">4,210</td>
-                            <td style="text-align: right; color: var(--color-on-surface-variant); font-size: 0.875rem;">
-                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_flat</span> 0%</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold; color: var(--color-on-surface);">Industrial</td>
-                            <td style="text-align: right;">3,115</td>
-                            <td style="text-align: right; color: #d32f2f; font-size: 0.875rem;">
-                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_down</span> 4%</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card-title-group">
+                <h3>Idle Assets</h3>
+                <p>Properties with no tours last month</p>
             </div>
         </div>
-
-        <!-- Representative Performance (Complex Table) -->
-        <div class="card md:col-span-2" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center;">
-                <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
-                    <span class="material-symbols-outlined">badge</span> Representative Performance
-                </h3>
-                <button style="background: none; border: none; color: var(--color-secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; cursor: pointer;">
-                    View All <span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
-                </button>
-            </div>
-            <div class="table-container" style="padding: 0;">
-                <table style="width: 100%;">
-                    <thead>
-                        <tr style="background-color: var(--color-surface-container-high);">
-                            <th>Agent Name</th>
-                            <th style="text-align: right;">Listings</th>
-                            <th style="text-align: right;">Avg. Days</th>
-                            <th style="text-align: right;">Revenue</th>
-                            <th style="text-align: right;">Status</th>
-                        </tr>
-                    </thead>
+        <div class="card-body-v2">
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="styled-table">
+                    <thead><tr><th>Ref</th><th>Location & Style</th><th>Action</th></tr></thead>
                     <tbody>
+                        {% for item in inquiry2 %}
                         <tr>
+                            <td>#{{ item.PROPERTY_ID }}</td>
                             <td>
-                                <div class="flex items-center gap-md">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">SM</div>
-                                    <div>
-                                        <div style="font-weight: bold;">Sarah Mitchell</div>
-                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Senior Associate</div>
-                                    </div>
-                                </div>
+                                <strong>{{ item.ADDRESS }}</strong><br>
+                                <span style="font-size: 11px; color: var(--text-secondary);">{{ item.STYLE }}</span>
                             </td>
-                            <td style="text-align: right;">24</td>
-                            <td style="text-align: right;">18</td>
-                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$4.2M</td>
-                            <td style="text-align: right;">
-                                <span class="badge" style="background-color: rgba(10,25,47,0.1); color: var(--color-primary);">TOP PERFORMER</span>
-                            </td>
+                            <td><span class="badge badge-gray">Review Pricing</span></td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="flex items-center gap-md">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-secondary); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">JK</div>
-                                    <div>
-                                        <div style="font-weight: bold;">James Kowalski</div>
-                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Listing Specialist</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="text-align: right;">16</td>
-                            <td style="text-align: right;">32</td>
-                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$2.8M</td>
-                            <td style="text-align: right;">
-                                <span class="badge">STEADY</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="flex items-center gap-md">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-outline); color: var(--color-on-surface); display: flex; align-items: center; justify-content: center; font-weight: bold;">LR</div>
-                                    <div>
-                                        <div style="font-weight: bold;">Linda Rhodes</div>
-                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Client Relations</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="text-align: right;">11</td>
-                            <td style="text-align: right;">45</td>
-                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$1.5M</td>
-                            <td style="text-align: right;">
-                                <span class="badge" style="background-color: rgba(211,47,47,0.1); color: #d32f2f;">ACTION REQUIRED</span>
-                            </td>
-                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">All units have active engagement.</td></tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Client Activity (Asymmetric Row) -->
-    <div class="card mb-lg" style="padding: 0; overflow: hidden;">
-        <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-            <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
-                <span class="material-symbols-outlined">monitoring</span> Recent Client Activity
-            </h3>
-            <div class="flex gap-sm">
-                <input type="text" placeholder="Search clients..." style="width: auto; min-width: 200px;">
+    <!-- Inquiry 5: Available units by rep -->
+    <div class="stat-card col-6">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: #f0fdf4; color: #16a34a;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="card-title-group">
+                <h3>Portfolio Distribution</h3>
+                <p>Active Inventory per Representative</p>
             </div>
         </div>
-        <div class="table-container" style="padding: 0;">
-            <table style="width: 100%;">
+        <div class="card-body-v2">
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="styled-table">
+                    <thead><tr><th>Agent</th><th>Property Details</th><th>Value</th></tr></thead>
+                    <tbody>
+                        {% for item in inquiry5 %}
+                        <tr>
+                            <td>
+                                <div class="agent-row">
+                                    <div class="agent-avatar">{{ item.REP_NAME|slice:":1" }}</div>
+                                    <span>{{ item.REP_NAME }}</span>
+                                </div>
+                            </td>
+                            <td>{{ item.ADDRESS }}</td>
+                            <td class="item-value">{{ item.MARKET_VALUE }} EGP</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">No active inventory found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiry 6: Client tours summary -->
+    <div class="stat-card col-12">
+        <div class="card-header-v2">
+            <div class="icon-box" style="background: var(--blue-900); color: white;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="card-title-group">
+                <h3>Global Engagement</h3>
+                <p>Cumulative Client Tour Statistics</p>
+            </div>
+        </div>
+        <div class="card-body-v2">
+            <table class="styled-table">
                 <thead>
                     <tr>
-                        <th>Client</th>
-                        <th>Action</th>
-                        <th>Property Ref</th>
-                        <th>Timeline</th>
-                        <th>Conversion Prob.</th>
-                        <th>Status</th>
+                        <th>Client Identity</th>
+                        <th>Contact Channels</th>
+                        <th style="text-align: right;">Total Tour Intensity</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for item in inquiry6 %}
                     <tr>
-                        <td style="font-weight: bold;">Eleanor Shellstrop</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Scheduled Site Tour</td>
-                        <td style="font-family: monospace; color: var(--color-secondary);">PS-9902-NY</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">2 hours ago</td>
-                        <td>
-                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
-                                <div style="width: 85%; height: 100%; background-color: var(--color-primary);"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary);">
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-primary);"></span> ACTIVE
+                        <td><strong>{{ item.FULL_NAME }}</strong></td>
+                        <td style="color: var(--text-secondary);">{{ item.CLIENT_PHONE }} · {{ item.CLIENT_EMAIL }}</td>
+                        <td style="text-align: right;">
+                            <span class="badge {% if item.TOTAL_TOURS > 2 %}badge-blue{% else %}badge-gray{% endif %}">
+                                {{ item.TOTAL_TOURS }} Tours
                             </span>
                         </td>
                     </tr>
-                    <tr>
-                        <td style="font-weight: bold;">Tahani Al-Jamil</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Requested Virtual Walk</td>
-                        <td style="font-family: monospace; color: var(--color-secondary);">PS-8120-LA</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">5 hours ago</td>
-                        <td>
-                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
-                                <div style="width: 45%; height: 100%; background-color: var(--color-primary);"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary);">
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-primary);"></span> ACTIVE
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold;">Jason Mendoza</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Offer Submission</td>
-                        <td style="font-family: monospace; color: var(--color-secondary);">PS-4432-FL</td>
-                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Yesterday, 14:30</td>
-                        <td>
-                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
-                                <div style="width: 95%; height: 100%; background-color: var(--color-secondary);"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-secondary);">
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-secondary);"></span> PENDING
-                            </span>
-                        </td>
-                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="empty-state">No client engagement data recorded.</td></tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Highlight Section: Market Trends Image -->
-    <div style="margin-top: 3rem; border-radius: var(--radius-xl); overflow: hidden; position: relative; height: 400px; display: flex; align-items: center;">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFdCKTPAGwG1o-3S5iYhMNBtsH4rcR4mSxiVeR1IdSZEPypYAA06QVjrxkAWEadnRoqEWGxgnZVO1VOpCVKjrEhyS_aSnK8e-umcsWLP_mEtBZULoi36XIHQuhrMHjo6dhkdwXwcDu4V6ZHXvWgFjL1vMGlm8OT65c7K1bsOEOlcHn27dYzgXBXSsb_8YmEjCySYp9VSA4TeV2cV6WdShdouiZtolj5DUbyoP-gYO1W2nhefmt3XnjSCX0GHq0ULYOQ4HVuvHuWgVn" alt="Real Estate Market Trends" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
-        <div style="position: absolute; inset: 0; background: rgba(10, 25, 47, 0.7); backdrop-filter: blur(4px);"></div>
-        
-        <div style="position: relative; z-index: 1; padding: 0 4rem; max-width: 800px; color: white;">
-            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1.5rem;">Predictive Market Insights</h2>
-            <p style="font-size: 1.25rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">Our proprietary AI modeling suggests a 12% increase in Mid-Century modern interest over the next quarter. Optimize your listing portfolio today.</p>
-            <a href="{% url 'property_listing' %}" class="btn" style="background-color: white; color: var(--color-primary); padding: 1rem 2rem; font-size: 1rem;">Download Strategy Guide</a>
-        </div>
-    </div>
-</main>
-{% endblock content %}
+</div>
+
+{% endblock %}
+

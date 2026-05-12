@@ -13,7 +13,7 @@
             <h1>Clients</h1>
             <p>All registered clients and their contact details.</p>
         </div>
-        <a href="/clients/add/" class="btn btn-primary">
+        <a href="{% url 'add_client' %}" class="btn btn-primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Add Client
         </a>
@@ -40,21 +40,16 @@
             <tbody>
                 {% for client in clients %}
                 <tr>
-                    <td><span class="row-id">#{{ client.0 }}</span></td>
-                    <td><strong>{{ client.1 }}</strong></td>
-                    <td>
+                    <td><span class="row-id">#{{ client.0 }}</span></td> <td><strong>{{ client.1 }}</strong></td>            <td>
                         {% if client.2 == "Email" %}
                             <span class="badge badge-blue">Email</span>
                         {% else %}
                             <span class="badge badge-gray">Phone</span>
                         {% endif %}
-                    </td>
-                    <td>{{ client.3|default:"—" }}</td>
-                    <td>{{ client.4|default:"—" }}</td>
-                    <td>
+                    </td>                                               <td>{{ client.3|default:"—" }}</td>                 <td>{{ client.4|default:"—" }}</td>                 <td>
                         <div class="action-cell">
                             <a href="{% url 'update_client' client.0 %}" class="btn btn-secondary btn-sm">Edit</a>
-                            <a href="{% url 'delete_client' client.0 %}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{% url 'delete_client' client.0 %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this client?')">Delete</a>
                         </div>
                     </td>
                 </tr>
@@ -63,7 +58,7 @@
                     <td colspan="6">
                         <div class="empty-state">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            <p>No clients found. <a href="/clients/add/">Add the first one →</a></p>
+                            <p>No clients found. <a href="{% url 'add_client' %}">Add the first one →</a></p>
                         </div>
                     </td>
                 </tr>

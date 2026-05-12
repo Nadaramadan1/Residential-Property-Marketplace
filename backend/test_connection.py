@@ -4,7 +4,7 @@ def get_db_connection():
     try:
         conn = pyodbc.connect(
             'DRIVER={ODBC Driver 17 for SQL Server};'
-            'SERVER=DESKTOP-MEKUU7J\\SQLEXPRESS;' 
+            'SERVER=DESKTOP-MEKUU7J;' 
             'DATABASE=RealEstate;'      
             'Trusted_Connection=yes;'             
         )
@@ -37,3 +37,12 @@ def execute_query(sql_statement, params=None, is_select=True):
         return None
     finally:
         connection.close()
+
+if __name__ == "__main__":
+    print("Testing connection...")
+    res = execute_query("SELECT 1 as test")
+    if res:
+        print("Success! Connection established and query executed.")
+        print(f"Result: {res}")
+    else:
+        print("Failed to connect or execute query.")

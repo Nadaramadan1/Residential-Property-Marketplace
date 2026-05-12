@@ -7,7 +7,10 @@ def execute_query(sql_statement, params=None):
             cursor.execute(sql_statement, params)
         else:
             cursor.execute(sql_statement)
-        return cursor.fetchall()
+        
+        # convert rows to dictionary
+        columns = [col[0] for col in cursor.description]
+        return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 def report_dashboard(request):
     q1 = """
@@ -28,6 +31,7 @@ def report_dashboard(request):
     WHERE P.PROPERTY_ID NOT IN (
         SELECT PROPERTY_ID FROM TOUR
         WHERE MONTH(TOUR_DATE) = MONTH(GETDATE()) - 1
+        AND YEAR(TOUR_DATE) = YEAR(GETDATE())
     )
     """
 
@@ -39,6 +43,7 @@ def report_dashboard(request):
     JOIN REPRESENTATIVE R ON T.REPRESENTATIVE_ID = R.REPRESENTATIVE_ID
     WHERE T.TRANSACTION_STATUS = 'Completed'
     AND MONTH(T.TRANSACTION_DATE) = MONTH(GETDATE()) - 1
+    AND YEAR(T.TRANSACTION_DATE) = YEAR(GETDATE())
     GROUP BY R.FULL_NAME
     ORDER BY TOTAL_SALES DESC
     """
@@ -49,6 +54,7 @@ def report_dashboard(request):
     WHERE C.CLIENT_ID NOT IN (
         SELECT CLIENT_ID FROM TOUR
         WHERE MONTH(TOUR_DATE) = MONTH(GETDATE()) - 1
+        AND YEAR(TOUR_DATE) = YEAR(GETDATE())
     )
     """
 
@@ -84,4 +90,4 @@ def report_dashboard(request):
         'inquiry5': execute_query(q5),
         'inquiry6': execute_query(q6),
     }
-    return render(request, 'reports/dashboard.html', context)
+    return render(request, 'reports.html', context)
