@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tours List – PrimeSquare{% endblock %}
+
+{% block nav_tours %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Tours List</h1>
+    <p>Manage all property tours scheduled with clients.</p>
+</div>
+
+<div class="mb-3">
+    <a href="{% url 'tours:add_tour' %}" class="btn btn-primary">+ Schedule New Tour</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th><th>Client</th><th>Property</th><th>Style</th>
+                <th>Representative</th><th>Date</th><th>Time</th><th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tour in tours %}
+            <tr>
+                <td>{{ tour.0 }}</td>
+                <td>{{ tour.1 }}</td>
+                <td>{{ tour.2 }}</td>
+                <td>{{ tour.3 }}</td>
+                <td>{{ tour.4 }}</td>
+                <td>{{ tour.5 }}</td>
+                <td>{{ tour.6 }}</td>
+                <td>
+                    <a href="{% url 'tours:delete_tour' tour.0 %}" class="btn btn-sm btn-danger" 
+                       onclick="return confirm('Delete this tour?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

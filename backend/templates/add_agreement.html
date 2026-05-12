@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Agreement – PrimeSquare{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Create New Agreement</h1>
+    <p><strong>Note:</strong> This will mark the property as SOLD.</p>
+</div>
+
+<div class="form-section">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label">Client *</label>
+            <select name="client_id" class="form-control" required>
+                <option value="">Select Client</option>
+                {% for client in clients %}
+                    <option value="{{ client.0 }}">{{ client.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Property *</label>
+            <select name="property_id" class="form-control" required>
+                <option value="">Select Property (Available only)</option>
+                {% for prop in properties %}
+                    <option value="{{ prop.0 }}">{{ prop.1 }} - {{ prop.2 }} ({{ prop.3 }} EGP)</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Final Price (EGP) *</label>
+            <input type="number" name="final_price" step="0.01" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Effective Date *</label>
+            <input type="date" name="effective_date" class="form-control" required>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Agreement</button>
+            <a href="{% url 'tours:agreement_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
