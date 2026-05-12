@@ -1,28 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Representative</title>
-</head>
-<body>
-<form method="POST">
-    {% csrf_token %}
+{% extends "base.html" %}
+{% load static %}
 
-    <input type="text" name="name" value="{{ representative.1 }}" placeholder="Name">
-    <br><br>
+{% block title %}Update Representative — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block nav_reps %}active{% endblock %}
 
-    <input type="text" name="phone" value="{{ representative.2 }}" placeholder="Phone">
-    <br><br>
+{% block content %}
 
-    <input type="email" name="email" value="{{ representative.3 }}" placeholder="Email">
-    <br><br>
+<div class="page-header">
+    <h1>Edit Representative</h1>
+    <p>Update the representative's information below.</p>
+</div>
 
-    <input type="text" name="license_num" value="{{ representative.4 }}" placeholder="License number">
-    <br><br>
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
 
-    <button type="submit">Update</button>
+        <div class="form-section">
+            <h4 class="form-section-title">Representative Information</h4>
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" value="{{ representative.1 }}" placeholder="Full name">
+            </div>
+            <div class="form-two-col">
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" value="{{ representative.2 }}" placeholder="Phone number">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ representative.3 }}" placeholder="Email address">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">License Number</label>
+                <input type="text" name="license_num" class="form-control" value="{{ representative.4 }}" placeholder="License number">
+            </div>
+        </div>
 
-</form>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/representatives/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
 
-</body>
-</html>
+{% endblock %}

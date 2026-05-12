@@ -1,27 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Clients</title>
-</head>
-<body>
-<form method="POST">
-    {% csrf_token %}
+{% extends "base.html" %}
+{% load static %}
 
-    <input type="text" name="name" placeholder="Client Name">
+{% block title %}Add Client — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block nav_clients %}active{% endblock %}
 
-    <select name="contact_preference">
-        <option value="Phone">Phone</option>
-        <option value="Email">Email</option>
-    </select>
+{% block content %}
 
-    <input type="text" name="phone" placeholder="Phone">
+<div class="page-header">
+    <h1>Add Client</h1>
+    <p>Register a new client in the system.</p>
+</div>
 
-    <input type="email" name="email" placeholder="Email">
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
 
+        <div class="form-section">
+            <h4 class="form-section-title">Client Information</h4>
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="e.g. Sarah Johnson">
+            </div>
+            <div class="form-two-col">
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" placeholder="+20 10x xxx xxxx">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="client@example.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contact Preference</label>
+                <select name="contact_preference" class="form-control">
+                    <option value="Phone">Phone</option>
+                    <option value="Email">Email</option>
+                </select>
+            </div>
+        </div>
 
-    <button type="submit">Add Client</button>
-</form>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Client
+            </button>
+            <a href="/clients/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
 
-</body>
-</html>
+{% endblock %}

@@ -105,6 +105,8 @@ def delete_representative(request, id):
         cursor.execute(""" DELETE FROM REPRESENTATIVE WHERE REPRESENTATIVE_ID = %s """, [id])
         return redirect("representatives_list")
 
+def view_home(request):
+    return render(request, "home.html")
 
 
 

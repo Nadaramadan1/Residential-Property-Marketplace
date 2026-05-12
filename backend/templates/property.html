@@ -1,155 +1,199 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% load static %}
 
-<head>
-    <title>Properties</title>
-</head>
+{% block title %}Properties — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/property.css' %}">{% endblock %}
+{% block nav_properties %}active{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Properties Dashboard</h1>
-
-    <!-- SEARCH -->
-    <input id="style" placeholder="style">
-    <input id="location" placeholder="location">
-    <input id="min_price" placeholder="min price">
-    <input id="max_price" placeholder="max price">
-    <button onclick="search()">Search</button>
-    <button onclick="resetData()">Reset</button>
-
-    <hr>
-
-    <!-- EDIT FORM -->
-    <h3>Edit Property</h3>
-
-    <div id="editForm" style="display:none; border:1px solid #ccc; padding:10px;">
-        <input id="edit_style" placeholder="Style"><br><br>
-        <input id="edit_address" placeholder="Address"><br><br>
-        <input id="edit_price" placeholder="Price"><br><br>
-        <input id="edit_status" placeholder="Status"><br><br>
-
-        <button onclick="saveUpdate()">Save</button>
+<div class="page-header">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h1>Properties</h1>
+            <p>Search, manage, and update all listed properties.</p>
+        </div>
+        <a href="/properties/add/" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Property
+        </a>
     </div>
+</div>
 
-    <hr>
+<!-- Search bar -->
+<div class="card" style="margin-bottom:24px;">
+    <div class="card-body" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+        <div class="form-group" style="margin:0; flex:1; min-width:140px;">
+            <label class="form-label">Style</label>
+            <input class="form-control" id="style" placeholder="e.g. Victorian">
+        </div>
+        <div class="form-group" style="margin:0; flex:1; min-width:140px;">
+            <label class="form-label">Location</label>
+            <input class="form-control" id="location" placeholder="City or address">
+        </div>
+        <div class="form-group" style="margin:0; flex:1; min-width:120px;">
+            <label class="form-label">Min Price</label>
+            <input class="form-control" id="min_price" placeholder="0">
+        </div>
+        <div class="form-group" style="margin:0; flex:1; min-width:120px;">
+            <label class="form-label">Max Price</label>
+            <input class="form-control" id="max_price" placeholder="∞">
+        </div>
+        <div style="display:flex; gap:8px; padding-bottom:1px;">
+            <button class="btn btn-primary" onclick="search()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Search
+            </button>
+            <button class="btn btn-secondary" onclick="resetData()">Reset</button>
+        </div>
+    </div>
+</div>
 
-    <!-- TABLE -->
-    <table border="1" id="table"></table>
+<!-- Edit form (hidden by default) -->
+<div class="card" id="editFormCard" style="display:none; margin-bottom:24px; border-color:var(--blue-300);">
+    <div class="card-header">
+        <h3>Edit Property</h3>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('editFormCard').style.display='none'">Cancel</button>
+    </div>
+    <div class="card-body">
+        <div class="edit-grid">
+            <div class="form-group">
+                <label class="form-label">Style</label>
+                <input class="form-control" id="edit_style" placeholder="Style">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <input class="form-control" id="edit_address" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Market Value</label>
+                <input class="form-control" id="edit_price" placeholder="Price">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <input class="form-control" id="edit_status" placeholder="Status">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveUpdate()">Save Changes</button>
+    </div>
+</div>
 
-    <script>
-        const base = "http://127.0.0.1:8000/properties/";
+<!-- Table -->
+<div class="card">
+    <div class="card-header">
+        <h3>All Properties</h3>
+        <span class="badge badge-blue" id="count-badge">Loading…</span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="styled-table" id="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Style</th>
+                    <th>Address</th>
+                    <th>Market Value</th>
+                    <th>Status</th>
+                    <th style="text-align:center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Loading properties…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        // نخزن الـ id هنا
-        let currentId = null;
+<script>
+const base = "http://127.0.0.1:8000/properties/";
+let currentId = null;
 
-        // ===== LOAD =====
-        function loadData() {
-            fetch(base + "list/")
-                .then(res => res.json())
-                .then(data => render(data));
-        }
+function loadData() {
+    fetch(base + "list/")
+        .then(res => res.json())
+        .then(data => render(data));
+}
 
-        // ===== SEARCH =====
-        function search() {
-            let style = document.getElementById("style").value;
-            let location = document.getElementById("location").value;
-            let min_price = document.getElementById("min_price").value;
-            let max_price = document.getElementById("max_price").value;
+function search() {
+    const style = document.getElementById("style").value;
+    const location = document.getElementById("location").value;
+    const min_price = document.getElementById("min_price").value;
+    const max_price = document.getElementById("max_price").value;
+    fetch(base + `search/?style=${style}&location=${location}&min_price=${min_price}&max_price=${max_price}`)
+        .then(res => res.json())
+        .then(data => render(data));
+}
 
-            fetch(base + `search/?style=${style}&location=${location}&min_price=${min_price}&max_price=${max_price}`)
-                .then(res => res.json())
-                .then(data => render(data));
-        }
+function deleteProperty(id) {
+    if (!confirm("Delete this property?")) return;
+    fetch(base + "delete/" + id + "/", { method: "DELETE" })
+        .then(() => loadData());
+}
 
-        // ===== DELETE =====
-        function deleteProperty(id) {
-            fetch(base + "delete/" + id + "/", {
-                method: "DELETE"
-            }).then(() => loadData());
-        }
+function openEdit(p) {
+    currentId = p.property_id;
+    document.getElementById("edit_style").value = p.style;
+    document.getElementById("edit_address").value = p.address;
+    document.getElementById("edit_price").value = p.market_value;
+    document.getElementById("edit_status").value = p.property_status;
+    document.getElementById("editFormCard").style.display = "block";
+    document.getElementById("editFormCard").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
 
-        // ===== OPEN EDIT =====
-
-
-        function openEdit(p) {
-            currentId = p.property_id;
-
-            document.getElementById("edit_style").value = p.style;
-            document.getElementById("edit_address").value = p.address;
-            document.getElementById("edit_price").value = p.market_value;
-            document.getElementById("edit_status").value = p.property_status;
-
-            document.getElementById("editForm").style.display = "block";
-        }
-        // ===== SAVE UPDATE =====
-        function saveUpdate() {
-            fetch(base + "update/" + currentId + "/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    style: document.getElementById("edit_style").value,
-                    address: document.getElementById("edit_address").value,
-                    market_value: document.getElementById("edit_price").value,
-                    property_status: document.getElementById("edit_status").value
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data.message);
-
-                    document.getElementById("editForm").style.display = "none";
-
-                    loadData(); // يعيد تحميل الجدول
-                });
-        }
-        function resetData() {
-            console.log("Reset clicked");
-
-            // امسحي inputs
-            document.getElementById("style").value = "";
-            document.getElementById("location").value = "";
-
-            // رجعي كل الداتا من السيرفر
-            loadData();
-        }
-        // ===== RENDER =====
-        function render(data) {
-            let table = document.getElementById("table");
-
-            table.innerHTML = `
-        <tr>
-            <th>ID</th>
-            <th>Style</th>
-            <th>Address</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    `;
-
-            data.forEach(p => {
-                table.innerHTML += `
-            <tr>
-                <td>${p.property_id}</td>
-                <td>${p.style}</td>
-                <td>${p.address}</td>
-                <td>${p.market_value}</td>
-                <td>${p.property_status}</td>
-                <td>
-                    <button onclick='openEdit(${JSON.stringify(p)})'>Edit</button>
-                    <button onclick="deleteProperty(${p.property_id})">Delete</button>
-                </td>
-            </tr>
-        `;
-            });
-
-        }
-
+function saveUpdate() {
+    fetch(base + "update/" + currentId + "/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            style: document.getElementById("edit_style").value,
+            address: document.getElementById("edit_address").value,
+            market_value: document.getElementById("edit_price").value,
+            property_status: document.getElementById("edit_status").value
+        })
+    }).then(res => res.json()).then(() => {
+        document.getElementById("editFormCard").style.display = "none";
         loadData();
-    </script>
+    });
+}
 
-</body>
+function resetData() {
+    document.getElementById("style").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("min_price").value = "";
+    document.getElementById("max_price").value = "";
+    loadData();
+}
 
-</html>
+function statusBadge(s) {
+    const map = { available: 'badge-green', sold: 'badge-red', pending: 'badge-amber' };
+    const cls = map[(s||'').toLowerCase()] || 'badge-gray';
+    return `<span class="badge ${cls}">${s || '—'}</span>`;
+}
+
+function render(data) {
+    const tbody = document.getElementById("table-body");
+    document.getElementById("count-badge").textContent = data.length + " properties";
+    if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">No properties found.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = data.map(p => `
+        <tr>
+            <td><span style="font-weight:600;color:var(--text-muted);font-size:12px;">#${p.property_id}</span></td>
+            <td>${p.style || '—'}</td>
+            <td>${p.address || '—'}</td>
+            <td style="font-weight:600;">${Number(p.market_value).toLocaleString()} EGP</td>
+            <td>${statusBadge(p.property_status)}</td>
+            <td style="text-align:center;">
+                <div style="display:flex;gap:6px;justify-content:center;">
+                    <button class="btn btn-secondary btn-sm" onclick='openEdit(${JSON.stringify(p)})'>Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProperty(${p.property_id})">Delete</button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+loadData();
+</script>
+
+{% endblock %}

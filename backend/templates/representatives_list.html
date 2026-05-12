@@ -1,42 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Representatives</title>
-</head>
-<body>
-<h2>Representatives List</h2>
+{% extends "base.html" %}
+{% load static %}
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>License Number</th>
-    </tr>
+{% block title %}Representatives — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/lists.css' %}">{% endblock %}
+{% block nav_reps %}active{% endblock %}
 
-    {% for representative in representatives %}
-    <tr>
-        <td>{{ representative.0 }}</td>
-        <td>{{ representative.1 }}</td>
-        <td>{{ representative.2 }}</td>
-        <td>{{ representative.3 }}</td>
-        <td>{{ representative.4 }}</td>
-        <td>
-            <a href="{% url 'update_representative' representative %}">
-                Edit
-            </a>
-        </td>
-        
-        <td>
-            <a href="{% url 'delete_representative' representative %}">
-                Delete
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+{% block content %}
 
-</body>
-</html>
+<div class="page-header">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h1>Representatives</h1>
+            <p>All licensed agents and their contact information.</p>
+        </div>
+        <a href="/representatives/add/" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Representative
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Agent Directory</h3>
+        <span class="badge badge-blue">{{ representatives|length }} agent{{ representatives|length|pluralize }}</span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>License Number</th>
+                    <th style="text-align:center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rep in representatives %}
+                <tr>
+                    <td><span class="row-id">#{{ rep.0 }}</span></td>
+                    <td>
+                        <div class="agent-cell">
+                            <div class="agent-avatar">{{ rep.1|slice:":2"|upper }}</div>
+                            <strong>{{ rep.1 }}</strong>
+                        </div>
+                    </td>
+                    <td>{{ rep.2|default:"—" }}</td>
+                    <td>{{ rep.3|default:"—" }}</td>
+                    <td><code class="license-code">{{ rep.4|default:"—" }}</code></td>
+                    <td>
+                        <div class="action-cell">
+                            <a href="{% url 'update_representative' rep.0 %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'delete_representative' rep.0 %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                            <p>No representatives found. <a href="/representatives/add/">Add the first one →</a></p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

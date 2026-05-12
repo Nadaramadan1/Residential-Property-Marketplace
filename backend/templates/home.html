@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}PrimeSquare — Home{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-eyebrow">Real Estate Management Platform</div>
+    <h1 class="hero-title">Manage Properties<br><span>with Clarity.</span></h1>
+    <p class="hero-sub">PrimeSquare brings together properties, clients, representatives, and analytics in one calm, organized workspace.</p>
+    <div class="hero-actions">
+        <a href="/properties/" class="btn btn-primary">View Properties</a>
+        <a href="/reports/" class="btn btn-secondary">See Reports</a>
+    </div>
+</section>
+
+<!-- Quick-access nav cards -->
+<section class="hub-section">
+    <div class="hub-grid">
+
+        <a href="/properties/" class="hub-card">
+            <div class="hub-icon hub-icon-blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Properties</h3>
+                <p>Browse, search, edit, and manage property listings.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="/properties/add/" class="hub-card">
+            <div class="hub-icon hub-icon-indigo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Add Property</h3>
+                <p>List a new property and assign a representative.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="/clients/" class="hub-card">
+            <div class="hub-icon hub-icon-sky">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Clients</h3>
+                <p>View and manage all registered clients.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="/clients/add/" class="hub-card">
+            <div class="hub-icon hub-icon-teal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Add Client</h3>
+                <p>Register a new client into the system.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="/representatives/" class="hub-card">
+            <div class="hub-icon hub-icon-slate">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Representatives</h3>
+                <p>Manage agents and their license details.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="/reports/" class="hub-card hub-card-featured">
+            <div class="hub-icon hub-icon-navy">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Analytics & Reports</h3>
+                <p>Insights on styles, sales, and client activity.</p>
+            </div>
+            <div class="hub-arrow">→</div>
+        </a>
+
+        <a href="#" class="hub-card hub-card-muted">
+            <div class="hub-icon hub-icon-gray">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Agreements <span class="badge badge-gray">Coming Soon</span></h3>
+                <p>Digital agreement creation and tracking.</p>
+            </div>
+        </a>
+
+        <a href="#" class="hub-card hub-card-muted">
+            <div class="hub-icon hub-icon-gray">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="hub-text">
+                <h3>Tours <span class="badge badge-gray">Coming Soon</span></h3>
+                <p>Schedule and track property tour requests.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}
