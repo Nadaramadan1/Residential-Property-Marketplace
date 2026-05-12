@@ -27,8 +27,38 @@ def tour_page(request):
     })
 
 def add_tour_page(request):
-    return render(request, "add_tour.html")
 
+    with connection.cursor() as cursor:
+        # Clients
+        cursor.execute("""
+            SELECT CLIENT_ID, FULL_NAME
+            FROM CLIENT
+            ORDER BY FULL_NAME
+        """)
+        clients = cursor.fetchall()
+
+        # Properties
+        cursor.execute("""
+            SELECT PROPERTY_ID, ADDRESS, STYLE, MARKET_VALUE
+            FROM PROPERTY
+            WHERE PROPERTY_STATUS = 'Available'
+            ORDER BY ADDRESS
+        """)
+        properties = cursor.fetchall()
+
+        # Representatives
+        cursor.execute("""
+            SELECT REPRESENTATIVE_ID, FULL_NAME
+            FROM REPRESENTATIVE
+            ORDER BY FULL_NAME
+        """)
+        reps = cursor.fetchall()
+
+    return render(request, "add_tour.html", {
+        "clients": clients,
+        "properties": properties,
+        "reps": reps
+    })
 # ===================== TOURS APIs =====================
 
 def list_tours(request):
