@@ -19,24 +19,9 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-
     path('admin/', admin.site.urls),
-
     path('users/', include('users.urls')),
+    path('reports/', include('reports.urls')),
     path('properties/', include('properties.urls')),
-    path('reports-app/', include('reports.urls')),
-
-    path('reports/', views.reports, name='reports'),
-
-    path('', views.index, name='index'),
-    path('home/', views.home, name='home'),
-    path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('agreement/', views.legal_agreement, name='legal_agreement'),
-    path('property-details/', views.property_details, name='property_details'),
-    path('property-listing/', views.property_listing, name='property_listing'),
-    path('property-manager/', views.property_manager, name='property_manager'),
-    path('start/', views.start, name='start'),
-    path('tour-scheduling/', views.tour_scheduling, name='tour_scheduling'),
-    path('profile/', views.user_rep_profile, name='user_rep_profile'),
-    path('db-health/', views.database_health_check, name='db_health_check'),
 ]
+

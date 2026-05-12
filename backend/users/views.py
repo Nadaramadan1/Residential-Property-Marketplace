@@ -171,12 +171,34 @@ def update_representative_api(request, id):
         license_num = data.get("license_num")
 
         with connection.cursor() as cursor:
-            cursor.execute("""
-                UPDATE REPRESENTATIVE SET FULL_NAME = %s, PHONE = %s, EMAIL = %s, LICENSE_NUMBER = %s
-                WHERE REPRESENTATIVE_ID = %s
-            """, [name, phone, email, license_num, id])
+            cursor.execute(""" UPDATE REPRESENTATIVE SET FULL_NAME = %s , PHONE = %s, EMAIL = %s, LICENSE_NUMBER = %s
+            WHERE REPRESENTATIVE_ID = %s """, [name, phone, email, license_num, id])
 
-        return JsonResponse({"message": "Representative updated successfully!"})
+        return redirect("representatives_list")
+
+    return render(request, "update_representative.html", {"representative": representative})
+
+
+def delete_client(request, id):
+    with connection.cursor() as cursor:
+        cursor.execute(""" DELETE FROM CLIENT WHERE CLIENT_ID = %s """, [id])
+        return redirect("clients_list")
+
+def delete_representative(request, id):
+    with connection.cursor() as cursor:
+        cursor.execute(""" DELETE FROM REPRESENTATIVE WHERE REPRESENTATIVE_ID = %s """, [id])
+        return redirect("representatives_list")
+
+def view_home(request):
+    return render(request, "home.html")
+
+
+
+
+
+
+
+    return JsonResponse({"message": "Representative updated successfully!"})
     return JsonResponse({"error": "Invalid method"}, status=400)
 
 @csrf_exempt

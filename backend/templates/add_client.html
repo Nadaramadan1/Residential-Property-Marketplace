@@ -1,84 +1,54 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Add New Client{% endblock %}
+{% block title %}Add Client — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block nav_clients %}active{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 600px;">
-    <div class="card">
-        <h2 class="text-primary mb-lg text-center">Add New Client</h2>
-        
-        <form id="add-client-form" onsubmit="addClient(event)">
+
+<div class="page-header">
+    <h1>Add Client</h1>
+    <p>Register a new client in the system.</p>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <h4 class="form-section-title">Client Information</h4>
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="name" required placeholder="e.g. John Doe">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="e.g. Sarah Johnson">
             </div>
-            
+            <div class="form-two-col">
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" placeholder="+20 10x xxx xxxx">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="client@example.com">
+                </div>
+            </div>
             <div class="form-group">
-                <label>Contact Preference</label>
-                <select id="contact_preference">
+                <label class="form-label">Contact Preference</label>
+                <select name="contact_preference" class="form-control">
                     <option value="Phone">Phone</option>
                     <option value="Email">Email</option>
                 </select>
             </div>
-            
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" id="phone" required placeholder="e.g. (555) 123-4567">
-            </div>
-            
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" required placeholder="e.g. john@example.com">
-            </div>
-            
-            <div class="mt-lg flex justify-between items-center">
-                <a href="{% url 'clients_list' %}" class="btn btn-outline">Cancel</a>
-                <button type="submit" class="btn btn-primary" id="submit-btn">Add Client</button>
-            </div>
-        </form>
-        
-        <p id="msg" class="text-center mt-md font-bold text-primary"></p>
-    </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Client
+            </button>
+            <a href="/clients/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
 </div>
 
-<script>
-function addClient(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerText = 'Saving...';
-    
-    const data = {
-        name: document.getElementById('name').value,
-        contact_preference: document.getElementById('contact_preference').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value
-    };
-
-    fetch('/users/api/clients/add/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('msg').innerText = data.message || 'Client added successfully!';
-        document.getElementById('msg').style.color = 'var(--color-primary)';
-        
-        // Redirect to list after short delay
-        setTimeout(() => {
-            window.location.href = "{% url 'clients_list' %}";
-        }, 1000);
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        document.getElementById('msg').innerText = 'Error adding client.';
-        document.getElementById('msg').style.color = 'red';
-        btn.disabled = false;
-        btn.innerText = 'Add Client';
-    });
-}
-</script>
-{% endblock content %}
+{% endblock %}

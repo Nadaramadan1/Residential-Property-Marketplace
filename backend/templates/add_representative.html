@@ -1,80 +1,51 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Add New Representative{% endblock %}
+{% block title %}Add Representative — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block nav_reps %}active{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 600px;">
-    <div class="card">
-        <h2 class="text-primary mb-lg text-center">Add New Representative</h2>
-        
-        <form id="add-rep-form" onsubmit="addRepresentative(event)">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="name" required placeholder="e.g. Jane Smith">
-            </div>
-            
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" id="phone" required placeholder="e.g. (555) 987-6543">
-            </div>
-            
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" required placeholder="e.g. jane.smith@example.com">
-            </div>
-            
-            <div class="form-group">
-                <label>License Number</label>
-                <input type="text" id="license_num" required placeholder="e.g. LIC-123456">
-            </div>
-            
-            <div class="mt-lg flex justify-between items-center">
-                <a href="{% url 'representatives_list' %}" class="btn btn-outline">Cancel</a>
-                <button type="submit" class="btn btn-primary" id="submit-btn">Add Representative</button>
-            </div>
-        </form>
-        
-        <p id="msg" class="text-center mt-md font-bold text-primary"></p>
-    </div>
+
+<div class="page-header">
+    <h1>Add Representative</h1>
+    <p>Register a new agent or representative.</p>
 </div>
 
-<script>
-function addRepresentative(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerText = 'Saving...';
-    
-    const data = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        license_num: document.getElementById('license_num').value
-    };
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
 
-    fetch('/users/api/representatives/add/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('msg').innerText = data.message || 'Representative added successfully!';
-        document.getElementById('msg').style.color = 'var(--color-primary)';
-        
-        setTimeout(() => {
-            window.location.href = "{% url 'representatives_list' %}";
-        }, 1000);
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        document.getElementById('msg').innerText = 'Error adding representative.';
-        document.getElementById('msg').style.color = 'red';
-        btn.disabled = false;
-        btn.innerText = 'Add Representative';
-    });
-}
-</script>
-{% endblock content %}
+        <div class="form-section">
+            <h4 class="form-section-title">Representative Information</h4>
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="e.g. Ahmed Hassan">
+            </div>
+            <div class="form-two-col">
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" placeholder="+20 10x xxx xxxx">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="rep@example.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">License Number</label>
+                <input type="text" name="license_num" class="form-control" placeholder="e.g. RE-20240001">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Representative
+            </button>
+            <a href="/representatives/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

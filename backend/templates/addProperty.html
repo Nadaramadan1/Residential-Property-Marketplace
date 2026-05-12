@@ -1,109 +1,101 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Add New Property{% endblock %}
+{% block title %}Add Property — PrimeSquare{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block nav_properties %}active{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 800px;">
-    <div class="card">
-        <h2 class="text-primary mb-lg text-center">Add New Property</h2>
-        
-        <div class="grid grid-cols-1 grid-cols-2 gap-md">
-            <div class="form-group">
-                <label>Representative</label>
-                <select id="rep_id">
-                    <option value="1">Representative 1</option>
-                    <option value="2">Representative 2</option>
-                    <option value="3">Representative 3</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Property Style</label>
-                <input id="style" placeholder="e.g. Single Family, Condo">
-            </div>
-            
-            <div class="form-group">
-                <label>Latitude</label>
-                <input id="lat" type="number" step="any" placeholder="e.g. 40.7128">
-            </div>
-            
-            <div class="form-group">
-                <label>Longitude</label>
-                <input id="lng" type="number" step="any" placeholder="e.g. -74.0060">
-            </div>
-            
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label>Full Address</label>
-                <input id="address" placeholder="e.g. 123 Main St, New York, NY">
-            </div>
-            
-            <div class="form-group">
-                <label>Market Value (EGP)</label>
-                <input id="price" type="number" placeholder="e.g. 5000000">
-            </div>
-            
-            <div class="form-group">
-                <label>Status</label>
-                <select id="status">
-                    <option value="Available">Available</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Sold">Sold</option>
-                </select>
-            </div>
+
+<div class="page-header">
+    <h1>Add Property</h1>
+    <p>Fill in the details below to list a new property.</p>
+</div>
+
+<div class="form-card">
+    <div class="form-section">
+        <h4 class="form-section-title">Assignment</h4>
+        <div class="form-group">
+            <label class="form-label">Representative</label>
+            <select class="form-control" id="rep_id">
+                <option value="1">Representative 1</option>
+                <option value="2">Representative 2</option>
+                <option value="3">Representative 3</option>
+            </select>
         </div>
-        
-        <div class="mt-lg flex justify-between items-center">
-            <a href="{% url 'property_listing' %}" class="btn btn-outline">Cancel</a>
-            <button onclick="addProperty()" class="btn btn-primary">Add Property</button>
-        </div>
-        
-        <p id="msg" class="text-center mt-md font-bold" style="color: var(--color-primary);"></p>
     </div>
+
+    <div class="form-section">
+        <h4 class="form-section-title">Property Details</h4>
+        <div class="form-two-col">
+            <div class="form-group">
+                <label class="form-label">Style</label>
+                <input class="form-control" id="style" placeholder="e.g. Mid-Century Modern">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <input class="form-control" id="status" placeholder="Available / Sold / Pending">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Latitude</label>
+                <input class="form-control" id="lat" placeholder="e.g. 30.0444">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Longitude</label>
+                <input class="form-control" id="lng" placeholder="e.g. 31.2357">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Address</label>
+            <input class="form-control" id="address" placeholder="Full street address">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Market Value (EGP)</label>
+            <input class="form-control" id="price" placeholder="e.g. 2,500,000">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn btn-primary" onclick="addProperty()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Property
+        </button>
+        <a href="/properties/" class="btn btn-secondary">Cancel</a>
+    </div>
+
+    <div id="msg"></div>
 </div>
 
 <script>
-function addProperty(){
-    const btn = document.querySelector('button.btn-primary');
-    btn.disabled = true;
-    btn.innerText = 'Saving...';
-    
-    fetch("/properties/add/", {
+const base = "http://127.0.0.1:8000/properties/";
+
+function addProperty() {
+    fetch(base + "add/", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             representative_id: document.getElementById("rep_id").value,
-            style: document.getElementById("style").value,
-            latitude: document.getElementById("lat").value,
-            longitude: document.getElementById("lng").value,
-            address: document.getElementById("address").value,
-            market_value: document.getElementById("price").value,
-            property_status: document.getElementById("status").value
+            style:             document.getElementById("style").value,
+            latitude:          document.getElementById("lat").value,
+            longitude:         document.getElementById("lng").value,
+            address:           document.getElementById("address").value,
+            market_value:      document.getElementById("price").value,
+            property_status:   document.getElementById("status").value,
         })
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("msg").innerText = data.message || "Property added successfully!";
-        
-        // Clear form
-        document.getElementById("style").value = "";
-        document.getElementById("lat").value = "";
-        document.getElementById("lng").value = "";
-        document.getElementById("address").value = "";
-        document.getElementById("price").value = "";
-        
-        btn.disabled = false;
-        btn.innerText = 'Add Property';
+        const msg = document.getElementById("msg");
+        msg.className = "msg-box msg-success";
+        msg.textContent = data.message || "Property added successfully!";
+        ["rep_id","style","lat","lng","address","price","status"].forEach(id => document.getElementById(id).value = "");
     })
-    .catch(err => {
-        console.error(err);
-        document.getElementById("msg").innerText = "Error adding property ❌";
-        document.getElementById("msg").style.color = "red";
-        
-        btn.disabled = false;
-        btn.innerText = 'Add Property';
+    .catch(() => {
+        const msg = document.getElementById("msg");
+        msg.className = "msg-box msg-error";
+        msg.textContent = "Error adding property. Please try again.";
     });
 }
 </script>
-{% endblock content %}
+
+{% endblock %}
