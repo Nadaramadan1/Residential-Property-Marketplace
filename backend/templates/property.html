@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <title>Properties</title>
-</head>
+{% block title %}Property{% endblock %}
 
-<body>
-
-    <h1>Properties Dashboard</h1>
+{% block content %}
+<h1>Properties Dashboard</h1>
 
     <!-- SEARCH -->
     <input id="style" placeholder="style">
@@ -149,7 +145,4 @@
 
         loadData();
     </script>
-
-</body>
-
-</html>
+{% endblock content %}

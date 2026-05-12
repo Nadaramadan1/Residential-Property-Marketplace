@@ -1,34 +1,73 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Property</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h2>Add New Property</h2>
+{% block title %}Add New Property{% endblock %}
 
-<select id="rep_id">
-    <option value="1">Representative 1</option>
-    <option value="2">Representative 2</option>
-    <option value="3">Representative 3</option>
-</select>
-<input id="style" placeholder="Style"><br><br>
-<input id="lat" placeholder="Latitude"><br><br>
-<input id="lng" placeholder="Longitude"><br><br>
-<input id="address" placeholder="Address"><br><br>
-<input id="price" placeholder="Market Value"><br><br>
-<input id="status" placeholder="Status"><br><br>
-
-<button onclick="addProperty()">Add Property</button>
-
-<p id="msg"></p>
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <div class="card">
+        <h2 class="text-primary mb-lg text-center">Add New Property</h2>
+        
+        <div class="grid grid-cols-1 grid-cols-2 gap-md">
+            <div class="form-group">
+                <label>Representative</label>
+                <select id="rep_id">
+                    <option value="1">Representative 1</option>
+                    <option value="2">Representative 2</option>
+                    <option value="3">Representative 3</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Property Style</label>
+                <input id="style" placeholder="e.g. Single Family, Condo">
+            </div>
+            
+            <div class="form-group">
+                <label>Latitude</label>
+                <input id="lat" type="number" step="any" placeholder="e.g. 40.7128">
+            </div>
+            
+            <div class="form-group">
+                <label>Longitude</label>
+                <input id="lng" type="number" step="any" placeholder="e.g. -74.0060">
+            </div>
+            
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label>Full Address</label>
+                <input id="address" placeholder="e.g. 123 Main St, New York, NY">
+            </div>
+            
+            <div class="form-group">
+                <label>Market Value (EGP)</label>
+                <input id="price" type="number" placeholder="e.g. 5000000">
+            </div>
+            
+            <div class="form-group">
+                <label>Status</label>
+                <select id="status">
+                    <option value="Available">Available</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Sold">Sold</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="mt-lg flex justify-between items-center">
+            <a href="{% url 'property_listing' %}" class="btn btn-outline">Cancel</a>
+            <button onclick="addProperty()" class="btn btn-primary">Add Property</button>
+        </div>
+        
+        <p id="msg" class="text-center mt-md font-bold" style="color: var(--color-primary);"></p>
+    </div>
+</div>
 
 <script>
-const base = "http://127.0.0.1:8000/properties/";
-
 function addProperty(){
-
-    fetch(base + "add/", {
+    const btn = document.querySelector('button.btn-primary');
+    btn.disabled = true;
+    btn.innerText = 'Saving...';
+    
+    fetch("/properties/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -45,24 +84,26 @@ function addProperty(){
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("msg").innerText = data.message;
-
-        // clear form
-        document.getElementById("rep_id").value = "";
+        document.getElementById("msg").innerText = data.message || "Property added successfully!";
+        
+        // Clear form
         document.getElementById("style").value = "";
         document.getElementById("lat").value = "";
         document.getElementById("lng").value = "";
         document.getElementById("address").value = "";
         document.getElementById("price").value = "";
-        document.getElementById("status").value = "";
+        
+        btn.disabled = false;
+        btn.innerText = 'Add Property';
     })
     .catch(err => {
-        console.log(err);
+        console.error(err);
         document.getElementById("msg").innerText = "Error adding property ❌";
+        document.getElementById("msg").style.color = "red";
+        
+        btn.disabled = false;
+        btn.innerText = 'Add Property';
     });
-
 }
 </script>
-
-</body>
-</html>
+{% endblock content %}

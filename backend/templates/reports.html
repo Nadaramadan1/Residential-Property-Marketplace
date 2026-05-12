@@ -1,391 +1,248 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed-dim": "#c5c7c8",
-                        "on-primary-fixed-variant": "#1f477b",
-                        "primary-fixed": "#d5e3ff",
-                        "secondary": "#5c5f60",
-                        "on-secondary-container": "#626566",
-                        "on-secondary-fixed-variant": "#454748",
-                        "inverse-on-surface": "#f1f0f5",
-                        "primary-container": "#003366",
-                        "secondary-container": "#e1e3e4",
-                        "tertiary": "#381300",
-                        "on-tertiary": "#ffffff",
-                        "outline-variant": "#c3c6d1",
-                        "error-container": "#ffdad6",
-                        "tertiary-fixed": "#ffdbca",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed-dim": "#ffb690",
-                        "on-error-container": "#93000a",
-                        "on-surface": "#1a1c1f",
-                        "surface-container-low": "#f4f3f8",
-                        "primary": "#001e40",
-                        "tertiary-container": "#592300",
-                        "on-surface-variant": "#43474f",
-                        "inverse-surface": "#2f3034",
-                        "inverse-primary": "#a7c8ff",
-                        "on-primary": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary-container": "#799dd6",
-                        "on-tertiary-container": "#d8885c",
-                        "surface-container": "#eeedf2",
-                        "on-tertiary-fixed": "#341100",
-                        "surface-container-highest": "#e2e2e7",
-                        "surface-bright": "#f9f9fe",
-                        "surface": "#f9f9fe",
-                        "on-secondary-fixed": "#191c1d",
-                        "background": "#f9f9fe",
-                        "on-background": "#1a1c1f",
-                        "surface-dim": "#dad9de",
-                        "on-tertiary-fixed-variant": "#723610",
-                        "on-error": "#ffffff",
-                        "surface-container-high": "#e8e8ed",
-                        "surface-tint": "#3a5f94",
-                        "secondary-fixed": "#e1e3e4",
-                        "error": "#ba1a1a",
-                        "on-primary-fixed": "#001b3c",
-                        "outline": "#737780",
-                        "surface-variant": "#e2e2e7",
-                        "primary-fixed-dim": "#a7c8ff"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "unit": "8px",
-                        "stack-md": "16px",
-                        "margin-page": "40px",
-                        "container-max": "1280px",
-                        "stack-lg": "32px",
-                        "stack-sm": "8px",
-                        "gutter": "24px",
-                        "section-padding": "80px"
-                    },
-                    "fontFamily": {
-                        "h1": ["Inter"], "body-sm": ["Inter"], "display": ["Inter"], "h2": ["Inter"], "body-md": ["Inter"], "h3": ["Inter"], "label-caps": ["Inter"], "body-lg": ["Inter"]
-                    },
-                    "fontSize": {
-                        "h1": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
-                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9f9fe;
-        }
-    </style>
-</head>
-<body class="text-on-background">
-<!-- TopAppBar -->
-<header class="bg-gradient-to-r from-primary to-primary-container docked full-width top-0 shadow-md sticky z-50">
-<div class="flex justify-between items-center px-margin-page py-unit w-full max-w-container-max mx-auto">
-<div class="flex items-center gap-stack-lg">
-<span class="font-h2 text-h2 font-bold tracking-tight text-on-primary">PrimeSquare</span>
-<nav class="hidden md:flex gap-gutter">
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Buy</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Rent</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Sell</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Agents</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Mortgage</a>
-</nav>
-</div>
-<div class="flex items-center gap-stack-md">
-<a href="/profile/" class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200">Sign In</a>
-<a href="/property-manager/" class="bg-on-primary text-primary px-stack-md py-2 rounded-lg font-bold hover:bg-on-primary-container hover:text-on-primary transition-all duration-200 scale-98 active:scale-95">List Property</a>
-</div>
-</div>
-</header>
-<main class="max-w-container-max mx-auto px-margin-page py-section-padding">
-<!-- Reports Header & Filters -->
-<section class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
-<div>
-<h1 class="font-h1 text-h1 text-on-surface mb-stack-sm">Performance Analytics</h1>
-<p class="font-body-md text-on-surface-variant max-w-2xl">Executive overview of market styles, agent performance, and engagement metrics for the current fiscal period.</p>
-</div>
-<div class="flex flex-wrap items-center gap-stack-sm">
-<div class="flex items-center bg-surface-container rounded-lg border border-outline-variant px-stack-sm py-2">
-<span class="material-symbols-outlined text-on-surface-variant mr-2">calendar_today</span>
-<span class="font-body-sm text-on-surface">Oct 01, 2023 - Oct 31, 2023</span>
-</div>
-<div class="flex gap-2">
-<button class="flex items-center gap-1 bg-surface-container-high text-on-surface px-4 py-2 rounded-lg font-label-caps hover:bg-surface-container-highest transition-colors">
-<span class="material-symbols-outlined text-[18px]">download</span> PDF
-                    </button>
-<button class="flex items-center gap-1 bg-surface-container-high text-on-surface px-4 py-2 rounded-lg font-label-caps hover:bg-surface-container-highest transition-colors">
-<span class="material-symbols-outlined text-[18px]">csv</span> CSV
-                    </button>
-</div>
-</div>
-</section>
-<!-- Bento Grid Reports -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Most Viewed Styles (High Density Card) -->
-<div class="lg:col-span-4 bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-surface-container">
-<div class="p-stack-md border-b border-surface-container bg-surface-bright">
-<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
-<span class="material-symbols-outlined">architecture</span>
-                        Most Viewed Styles
-                    </h3>
-</div>
-<div class="p-stack-md">
-<table class="w-full text-left">
-<thead>
-<tr class="border-b border-surface-container">
-<th class="font-label-caps text-on-surface-variant py-3 uppercase tracking-wider">Style</th>
-<th class="font-label-caps text-on-surface-variant py-3 text-right">Views</th>
-<th class="font-label-caps text-on-surface-variant py-3 text-right">Trend</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container">
-<tr>
-<td class="py-4 font-body-md font-semibold text-on-surface">Mid-Century</td>
-<td class="py-4 text-right font-body-md text-on-surface">12,402</td>
-<td class="py-4 text-right text-error font-body-sm">
-<span class="flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[16px]">trending_up</span> 14%</span>
-</td>
-</tr>
-<tr>
-<td class="py-4 font-body-md font-semibold text-on-surface">Contemporary</td>
-<td class="py-4 text-right font-body-md text-on-surface">9,850</td>
-<td class="py-4 text-right text-on-tertiary-fixed-variant font-body-sm">
-<span class="flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[16px]">trending_up</span> 8%</span>
-</td>
-</tr>
-<tr>
-<td class="py-4 font-body-md font-semibold text-on-surface">Victorian</td>
-<td class="py-4 text-right font-body-md text-on-surface">4,210</td>
-<td class="py-4 text-right text-on-surface-variant font-body-sm">
-<span class="flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[16px]">trending_flat</span> 0%</span>
-</td>
-</tr>
-<tr>
-<td class="py-4 font-body-md font-semibold text-on-surface">Industrial</td>
-<td class="py-4 text-right font-body-md text-on-surface">3,115</td>
-<td class="py-4 text-right text-error font-body-sm">
-<span class="flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[16px]">trending_down</span> 4%</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Representative Performance (Complex Table) -->
-<div class="lg:col-span-8 bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-surface-container">
-<div class="p-stack-md border-b border-surface-container bg-surface-bright flex justify-between items-center">
-<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
-<span class="material-symbols-outlined">badge</span>
-                        Representative Performance
-                    </h3>
-<button class="text-primary-container font-label-caps flex items-center hover:underline">
-                        View All <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left min-w-[600px]">
-<thead>
-<tr class="bg-surface-container-low border-b border-surface-container">
-<th class="font-label-caps text-on-surface-variant p-stack-md">Agent Name</th>
-<th class="font-label-caps text-on-surface-variant p-stack-md text-right">Listings</th>
-<th class="font-label-caps text-on-surface-variant p-stack-md text-right">Avg. Days</th>
-<th class="font-label-caps text-on-surface-variant p-stack-md text-right">Revenue</th>
-<th class="font-label-caps text-on-surface-variant p-stack-md text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container">
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="p-stack-md">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">SM</div>
-<div>
-<div class="font-body-md font-semibold text-on-surface">Sarah Mitchell</div>
-<div class="font-body-sm text-on-surface-variant">Senior Associate</div>
-</div>
-</div>
-</td>
-<td class="p-stack-md text-right font-body-md">24</td>
-<td class="p-stack-md text-right font-body-md">18</td>
-<td class="p-stack-md text-right font-body-md font-bold text-primary">$4.2M</td>
-<td class="p-stack-md text-right">
-<span class="inline-block bg-primary-fixed text-on-primary-fixed-variant px-2 py-1 rounded text-[11px] font-bold uppercase tracking-widest">Top Performer</span>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="p-stack-md">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">JK</div>
-<div>
-<div class="font-body-md font-semibold text-on-surface">James Kowalski</div>
-<div class="font-body-sm text-on-surface-variant">Listing Specialist</div>
-</div>
-</div>
-</td>
-<td class="p-stack-md text-right font-body-md">16</td>
-<td class="p-stack-md text-right font-body-md">32</td>
-<td class="p-stack-md text-right font-body-md font-bold text-primary">$2.8M</td>
-<td class="p-stack-md text-right">
-<span class="inline-block bg-surface-container text-on-surface-variant px-2 py-1 rounded text-[11px] font-bold uppercase tracking-widest">Steady</span>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="p-stack-md">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold">LR</div>
-<div>
-<div class="font-body-md font-semibold text-on-surface">Linda Rhodes</div>
-<div class="font-body-sm text-on-surface-variant">Client Relations</div>
-</div>
-</div>
-</td>
-<td class="p-stack-md text-right font-body-md">11</td>
-<td class="p-stack-md text-right font-body-md">45</td>
-<td class="p-stack-md text-right font-body-md font-bold text-primary">$1.5M</td>
-<td class="p-stack-md text-right">
-<span class="inline-block bg-error-container text-on-error-container px-2 py-1 rounded text-[11px] font-bold uppercase tracking-widest">Action Required</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Client Activity (Asymmetric Row) -->
-<div class="lg:col-span-12 bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-surface-container">
-<div class="p-stack-md border-b border-surface-container bg-surface-bright flex justify-between items-center">
-<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
-<span class="material-symbols-outlined">monitoring</span>
-                        Recent Client Activity
-                    </h3>
-<div class="flex gap-2">
-<input class="bg-surface border-outline-variant rounded-lg px-stack-sm py-1 font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Search clients..." type="text"/>
-</div>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="font-label-caps text-on-surface-variant border-b border-surface-container">
-<th class="p-stack-md">Client</th>
-<th class="p-stack-md">Action</th>
-<th class="p-stack-md">Property Ref</th>
-<th class="p-stack-md">Timeline</th>
-<th class="p-stack-md">Conversion Prob.</th>
-<th class="p-stack-md">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container">
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="p-stack-md font-body-md text-on-surface font-medium">Eleanor Shellstrop</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">Scheduled Site Tour</td>
-<td class="p-stack-md font-body-sm font-mono text-primary-container">PS-9902-NY</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">2 hours ago</td>
-<td class="p-stack-md">
-<div class="w-full bg-surface-container-highest rounded-full h-2 max-w-[100px]">
-<div class="bg-primary h-full rounded-full" style="width: 85%"></div>
-</div>
-</td>
-<td class="p-stack-md">
-<span class="flex items-center gap-1 text-[12px] text-on-primary-fixed-variant font-bold">
-<span class="w-2 h-2 rounded-full bg-primary-container"></span> ACTIVE
-                                    </span>
-</td>
-</tr>
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="p-stack-md font-body-md text-on-surface font-medium">Tahani Al-Jamil</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">Requested Virtual Walk</td>
-<td class="p-stack-md font-body-sm font-mono text-primary-container">PS-8120-LA</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">5 hours ago</td>
-<td class="p-stack-md">
-<div class="w-full bg-surface-container-highest rounded-full h-2 max-w-[100px]">
-<div class="bg-primary h-full rounded-full" style="width: 45%"></div>
-</div>
-</td>
-<td class="p-stack-md">
-<span class="flex items-center gap-1 text-[12px] text-on-primary-fixed-variant font-bold">
-<span class="w-2 h-2 rounded-full bg-primary-container"></span> ACTIVE
-                                    </span>
-</td>
-</tr>
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="p-stack-md font-body-md text-on-surface font-medium">Jason Mendoza</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">Offer Submission</td>
-<td class="p-stack-md font-body-sm font-mono text-primary-container">PS-4432-FL</td>
-<td class="p-stack-md font-body-sm text-on-surface-variant">Yesterday, 14:30</td>
-<td class="p-stack-md">
-<div class="w-full bg-surface-container-highest rounded-full h-2 max-w-[100px]">
-<div class="bg-on-tertiary-container h-full rounded-full" style="width: 95%"></div>
-</div>
-</td>
-<td class="p-stack-md">
-<span class="flex items-center gap-1 text-[12px] text-on-tertiary-fixed-variant font-bold">
-<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> PENDING
-                                    </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- Highlight Section: Market Trends Image -->
-<section class="mt-section-padding rounded-xl overflow-hidden relative h-[400px] flex items-center">
-<img alt="Real Estate Market Trends" class="absolute inset-0 w-full h-full object-cover" data-alt="A cinematic, wide-angle interior view of a modern, glass-walled financial office overlooking a sun-drenched metropolitan skyline at sunset. The atmosphere is professional and sophisticated, with deep navy and royal blue accents echoing the corporate modernism style. High-key natural lighting creates clean, sharp shadows across a minimalist wooden meeting table. The mood is one of stability, professional excellence, and high-stakes real estate investment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFdCKTPAGwG1o-3S5iYhMNBtsH4rcR4mSxiVeR1IdSZEPypYAA06QVjrxkAWEadnRoqEWGxgnZVO1VOpCVKjrEhyS_aSnK8e-umcsWLP_mEtBZULoi36XIHQuhrMHjo6dhkdwXwcDu4V6ZHXvWgFjL1vMGlm8OT65c7K1bsOEOlcHn27dYzgXBXSsb_8YmEjCySYp9VSA4TeV2cV6WdShdouiZtolj5DUbyoP-gYO1W2nhefmt3XnjSCX0GHq0ULYOQ4HVuvHuWgVn"/>
-<div class="absolute inset-0 bg-primary/40 backdrop-blur-sm"></div>
-<div class="relative z-10 px-margin-page max-w-2xl text-on-primary">
-<h2 class="font-display text-display mb-stack-md">Predictive Market Insights</h2>
-<p class="font-body-lg mb-stack-lg">Our proprietary AI modeling suggests a 12% increase in Mid-Century modern interest over the next quarter. Optimize your listing portfolio today.</p>
-<a href="/property-listing/" class="bg-on-primary text-primary px-stack-lg py-4 rounded-lg font-bold hover:bg-on-primary-container hover:text-on-primary transition-all duration-300">Download Strategy Guide</a>
-</div>
-</section>
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<main class="container">
+    <!-- Reports Header & Filters -->
+    <div class="flex justify-between items-center mb-lg" style="flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 class="text-primary mb-sm">Performance Analytics</h1>
+            <p class="text-on-surface-variant" style="max-width: 600px;">Executive overview of market styles, agent performance, and engagement metrics for the current fiscal period.</p>
+        </div>
+        <div class="flex items-center gap-sm" style="flex-wrap: wrap;">
+            <div class="flex items-center gap-sm" style="background-color: var(--color-surface-container); border: 1px solid var(--color-outline-variant); border-radius: var(--radius-md); padding: 0.5rem 1rem;">
+                <span class="material-symbols-outlined text-on-surface-variant">calendar_today</span>
+                <span style="font-size: 0.875rem;">Oct 01, 2023 - Oct 31, 2023</span>
+            </div>
+            <div class="flex gap-sm">
+                <button class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">download</span> PDF
+                </button>
+                <button class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">csv</span> CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bento Grid Reports -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-lg">
+        <!-- Most Viewed Styles (High Density Card) -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02);">
+                <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
+                    <span class="material-symbols-outlined">architecture</span> Most Viewed Styles
+                </h3>
+            </div>
+            <div style="padding: 1.5rem;">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Style</th>
+                            <th style="text-align: right;">Views</th>
+                            <th style="text-align: right;">Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold; color: var(--color-on-surface);">Mid-Century</td>
+                            <td style="text-align: right;">12,402</td>
+                            <td style="text-align: right; color: #d32f2f; font-size: 0.875rem;">
+                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> 14%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: var(--color-on-surface);">Contemporary</td>
+                            <td style="text-align: right;">9,850</td>
+                            <td style="text-align: right; color: var(--color-secondary); font-size: 0.875rem;">
+                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> 8%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: var(--color-on-surface);">Victorian</td>
+                            <td style="text-align: right;">4,210</td>
+                            <td style="text-align: right; color: var(--color-on-surface-variant); font-size: 0.875rem;">
+                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_flat</span> 0%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: var(--color-on-surface);">Industrial</td>
+                            <td style="text-align: right;">3,115</td>
+                            <td style="text-align: right; color: #d32f2f; font-size: 0.875rem;">
+                                <span class="flex items-center" style="justify-content: flex-end; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 16px;">trending_down</span> 4%</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Representative Performance (Complex Table) -->
+        <div class="card md:col-span-2" style="padding: 0; overflow: hidden;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center;">
+                <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
+                    <span class="material-symbols-outlined">badge</span> Representative Performance
+                </h3>
+                <button style="background: none; border: none; color: var(--color-secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; cursor: pointer;">
+                    View All <span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
+                </button>
+            </div>
+            <div class="table-container" style="padding: 0;">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr style="background-color: var(--color-surface-container-high);">
+                            <th>Agent Name</th>
+                            <th style="text-align: right;">Listings</th>
+                            <th style="text-align: right;">Avg. Days</th>
+                            <th style="text-align: right;">Revenue</th>
+                            <th style="text-align: right;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-md">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">SM</div>
+                                    <div>
+                                        <div style="font-weight: bold;">Sarah Mitchell</div>
+                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Senior Associate</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align: right;">24</td>
+                            <td style="text-align: right;">18</td>
+                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$4.2M</td>
+                            <td style="text-align: right;">
+                                <span class="badge" style="background-color: rgba(10,25,47,0.1); color: var(--color-primary);">TOP PERFORMER</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-md">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-secondary); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">JK</div>
+                                    <div>
+                                        <div style="font-weight: bold;">James Kowalski</div>
+                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Listing Specialist</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align: right;">16</td>
+                            <td style="text-align: right;">32</td>
+                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$2.8M</td>
+                            <td style="text-align: right;">
+                                <span class="badge">STEADY</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-md">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-outline); color: var(--color-on-surface); display: flex; align-items: center; justify-content: center; font-weight: bold;">LR</div>
+                                    <div>
+                                        <div style="font-weight: bold;">Linda Rhodes</div>
+                                        <div style="font-size: 0.875rem; color: var(--color-on-surface-variant);">Client Relations</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align: right;">11</td>
+                            <td style="text-align: right;">45</td>
+                            <td style="text-align: right; font-weight: bold; color: var(--color-primary);">$1.5M</td>
+                            <td style="text-align: right;">
+                                <span class="badge" style="background-color: rgba(211,47,47,0.1); color: #d32f2f;">ACTION REQUIRED</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Activity (Asymmetric Row) -->
+    <div class="card mb-lg" style="padding: 0; overflow: hidden;">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-surface-container); background-color: rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <h3 class="text-primary flex items-center gap-sm" style="margin: 0;">
+                <span class="material-symbols-outlined">monitoring</span> Recent Client Activity
+            </h3>
+            <div class="flex gap-sm">
+                <input type="text" placeholder="Search clients..." style="width: auto; min-width: 200px;">
+            </div>
+        </div>
+        <div class="table-container" style="padding: 0;">
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Action</th>
+                        <th>Property Ref</th>
+                        <th>Timeline</th>
+                        <th>Conversion Prob.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;">Eleanor Shellstrop</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Scheduled Site Tour</td>
+                        <td style="font-family: monospace; color: var(--color-secondary);">PS-9902-NY</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">2 hours ago</td>
+                        <td>
+                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 85%; height: 100%; background-color: var(--color-primary);"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary);">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-primary);"></span> ACTIVE
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Tahani Al-Jamil</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Requested Virtual Walk</td>
+                        <td style="font-family: monospace; color: var(--color-secondary);">PS-8120-LA</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">5 hours ago</td>
+                        <td>
+                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 45%; height: 100%; background-color: var(--color-primary);"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary);">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-primary);"></span> ACTIVE
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Jason Mendoza</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Offer Submission</td>
+                        <td style="font-family: monospace; color: var(--color-secondary);">PS-4432-FL</td>
+                        <td style="color: var(--color-on-surface-variant); font-size: 0.875rem;">Yesterday, 14:30</td>
+                        <td>
+                            <div style="width: 100%; max-width: 100px; height: 8px; background-color: var(--color-surface-container-high); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 95%; height: 100%; background-color: var(--color-secondary);"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="flex items-center gap-sm" style="font-size: 0.75rem; font-weight: bold; color: var(--color-secondary);">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-secondary);"></span> PENDING
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Highlight Section: Market Trends Image -->
+    <div style="margin-top: 3rem; border-radius: var(--radius-xl); overflow: hidden; position: relative; height: 400px; display: flex; align-items: center;">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFdCKTPAGwG1o-3S5iYhMNBtsH4rcR4mSxiVeR1IdSZEPypYAA06QVjrxkAWEadnRoqEWGxgnZVO1VOpCVKjrEhyS_aSnK8e-umcsWLP_mEtBZULoi36XIHQuhrMHjo6dhkdwXwcDu4V6ZHXvWgFjL1vMGlm8OT65c7K1bsOEOlcHn27dYzgXBXSsb_8YmEjCySYp9VSA4TeV2cV6WdShdouiZtolj5DUbyoP-gYO1W2nhefmt3XnjSCX0GHq0ULYOQ4HVuvHuWgVn" alt="Real Estate Market Trends" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+        <div style="position: absolute; inset: 0; background: rgba(10, 25, 47, 0.7); backdrop-filter: blur(4px);"></div>
+        
+        <div style="position: relative; z-index: 1; padding: 0 4rem; max-width: 800px; color: white;">
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1.5rem;">Predictive Market Insights</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">Our proprietary AI modeling suggests a 12% increase in Mid-Century modern interest over the next quarter. Optimize your listing portfolio today.</p>
+            <a href="{% url 'property_listing' %}" class="btn" style="background-color: white; color: var(--color-primary); padding: 1rem 2rem; font-size: 1rem;">Download Strategy Guide</a>
+        </div>
+    </div>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-highest dark:bg-inverse-surface">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-page py-section-padding max-w-container-max mx-auto">
-<div class="flex flex-col gap-stack-md">
-<span class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary">PrimeSquare</span>
-<p class="font-body-sm text-on-surface-variant">Redefining residential excellence through data-driven transparency and professional service.</p>
-</div>
-<div class="flex flex-col gap-stack-sm">
-<span class="font-label-caps text-on-surface font-bold">Marketplace</span>
-<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
-<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Property Guides</a>
-</div>
-<div class="flex flex-col gap-stack-sm">
-<span class="font-label-caps text-on-surface font-bold">Resources</span>
-<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Market Trends</a>
-<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
-</div>
-<div class="flex flex-col gap-stack-sm">
-<span class="font-label-caps text-on-surface font-bold">Legal</span>
-<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
-<p class="font-body-sm text-on-surface-variant mt-stack-md">© 2024 PrimeSquare Real Estate. Excellence in Residential Living.</p>
-</div>
-</div>
-</footer>
-</body></html>
+{% endblock content %}

@@ -1,247 +1,166 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Reports | Inquiries Dashboard</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #2980b9;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --text: #333;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        header {
-            background: var(--primary);
-            color: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; }
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-        .card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent);
-        }
-        h2 {
-            color: var(--primary);
-            font-size: 18px;
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th {
-            background-color: #f8f9fa;
-            color: var(--primary);
-            text-align: left;
-            padding: 12px;
-            font-size: 14px;
-            border-bottom: 2px solid #dee2e6;
-        }
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-        tr:hover { background-color: #fcfcfc; }
-        .highlight-row { background-color: #e8f4fd; font-weight: bold; }
-        .empty-msg {
-            text-align: center;
-            color: #999;
-            padding: 20px;
-            font-style: italic;
-        }
-        .badge {
-            background: var(--accent);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
 <div class="container">
-    <header>
-        <h1>Residential Property Marketplace - Analytics Dashboard</h1>
-        <p style="margin-top: 10px; opacity: 0.9;">Raw SQL Inquiries Results</p>
+    <header class="mb-lg">
+        <h1 class="text-primary">Residential Property Marketplace - Analytics Dashboard</h1>
+        <p class="text-on-surface-variant mt-sm" style="font-size: 0.875rem;">Raw SQL Inquiries Results</p>
     </header>
 
-    <div class="grid-container">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
 
         <div class="card">
-            <h2>1. Most Requested Property Style (Tours)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Property Style</th>
-                        <th>Total Tour Requests</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry1 %}
-                    <tr class="highlight-row">
-                        <td>{{ item.STYLE }}</td>
-                        <td><span class="badge">{{ item.TOTAL_TOURS }} Tours</span></td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="2" class="empty-msg">No data available for this inquiry.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h2 class="text-primary mb-md">1. Most Requested Property Style (Tours)</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Property Style</th>
+                            <th>Total Tour Requests</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry1 %}
+                        <tr>
+                            <td>{{ item.0 }}</td>
+                            <td><span class="badge" style="background-color: var(--color-primary); color: white;">{{ item.2 }} Tours</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" style="text-align: center; color: var(--color-on-surface-variant);">No data available for this inquiry.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card">
-            <h2>2. Property Listings with No Tours Scheduled (Last Month)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Property ID</th>
-                        <th>Address</th>
-                        <th>Style</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry2 %}
-                    <tr>
-                        <td>#{{ item.PROPERTY_ID }}</td>
-                        <td>{{ item.ADDRESS }}</td>
-                        <td>{{ item.STYLE }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="3" class="empty-msg">All properties have scheduled tours.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h2 class="text-primary mb-md">2. Property Listings with No Tours Scheduled (Last Month)</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Property ID</th>
+                            <th>Address</th>
+                            <th>Style</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry2 %}
+                        <tr>
+                            <td style="font-weight: bold; color: var(--color-primary);">#{{ item.0 }}</td>
+                            <td>{{ item.1 }}</td>
+                            <td>{{ item.2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" style="text-align: center; color: var(--color-on-surface-variant);">All properties have scheduled tours.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card">
-            <h2>3. Representative with Highest Total Sales Value (Last Month)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Representative Name</th>
-                        <th>Total Value of Finalized Agreements</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry3 %}
-                    <tr class="highlight-row" style="background-color: #d4edda;">
-                        <td>{{ item.FULL_NAME }}</td>
-                        <td>{{ item.TOTAL_SALES }} EGP</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="2" class="empty-msg">No finalized sales recorded for last month.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h2 class="text-primary mb-md">3. Representative with Highest Total Sales Value (Last Month)</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Representative Name</th>
+                            <th>Total Value of Finalized Agreements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry3 %}
+                        <tr style="background-color: rgba(10, 25, 47, 0.05);">
+                            <td style="font-weight: bold;">{{ item.0 }}</td>
+                            <td style="font-weight: bold; color: var(--color-primary);">{{ item.1 }} EGP</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" style="text-align: center; color: var(--color-on-surface-variant);">No finalized sales recorded for last month.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card">
-            <h2>4. Registered Clients with No Property Tour Requests (Last Month)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Client Full Name</th>
-                        <th>Email Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry4 %}
-                    <tr>
-                        <td>{{ item.FULL_NAME }}</td>
-                        <td>{{ item.CLIENT_EMAIL }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="2" class="empty-msg">No inactive clients found.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h2 class="text-primary mb-md">4. Registered Clients with No Property Tour Requests (Last Month)</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Client Full Name</th>
+                            <th>Email Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry4 %}
+                        <tr>
+                            <td style="font-weight: bold;">{{ item.1 }}</td>
+                            <td>{{ item.2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" style="text-align: center; color: var(--color-on-surface-variant);">No inactive clients found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>5. Available Housing Units Managed by Each Representative</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Representative</th>
-                        <th>Address & Style</th>
-                        <th>Market Valuation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry5 %}
-                    <tr>
-                        <td><strong>{{ item.REP_NAME }}</strong></td>
-                        <td>{{ item.ADDRESS }} ({{ item.STYLE }})</td>
-                        <td>{{ item.MARKET_VALUE }} EGP</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="3" class="empty-msg">No available housing units found.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card md:col-span-2">
+            <h2 class="text-primary mb-md">5. Available Housing Units Managed by Each Representative</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Representative</th>
+                            <th>Address & Style</th>
+                            <th>Market Valuation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry5 %}
+                        <tr>
+                            <td style="font-weight: bold;">{{ item.0 }}</td>
+                            <td>{{ item.2 }} ({{ item.3 }})</td>
+                            <td style="font-weight: bold; color: var(--color-secondary);">{{ item.4 }} EGP</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" style="text-align: center; color: var(--color-on-surface-variant);">No available housing units found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>6. Client Information and Total Tours Attended</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Client Name</th>
-                        <th>Contact Info (Phone/Email)</th>
-                        <th>Total Tours</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in inquiry6 %}
-                    <tr>
-                        <td>{{ item.FULL_NAME }}</td>
-                        <td>{{ item.CLIENT_PHONE }} | {{ item.CLIENT_EMAIL }}</td>
-                        <td style="text-align: center;"><strong>{{ item.TOTAL_TOURS }}</strong></td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="3" class="empty-msg">No client records found.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card md:col-span-2">
+            <h2 class="text-primary mb-md">6. Client Information and Total Tours Attended</h2>
+            <div class="table-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Contact Info (Phone/Email)</th>
+                            <th style="text-align: center;">Total Tours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiry6 %}
+                        <tr>
+                            <td style="font-weight: bold;">{{ item.0 }}</td>
+                            <td>{{ item.1 }} | {{ item.2 }}</td>
+                            <td style="text-align: center; font-weight: bold; color: var(--color-primary);">{{ item.3 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" style="text-align: center; color: var(--color-on-surface-variant);">No client records found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
-    
-    <footer style="text-align: center; margin-top: 50px; color: #7f8c8d; font-size: 13px;">
-        <p>© 2026 Residential Property Marketplace</p>
-    </footer-
 </div>
-
-</body>
-</html>
+{% endblock content %}

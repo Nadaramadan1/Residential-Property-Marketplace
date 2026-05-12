@@ -80,7 +80,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
  
-DATABASES = {}
+DATABASES = {
+    'default': {
+        'ENGINE': 'mssql',
+        'NAME': 'RealEstate',
+        'HOST': 'DESKTOP-MEKUU7J',
+        'trusted_connection': 'true',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        }
+    }
+}
  
 
 
@@ -119,3 +129,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]

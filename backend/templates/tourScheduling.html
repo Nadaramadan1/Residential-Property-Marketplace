@@ -1,292 +1,131 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Schedule a Tour | PrimeSquare</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed-dim": "#c5c7c8",
-                        "on-primary-fixed-variant": "#1f477b",
-                        "primary-fixed": "#d5e3ff",
-                        "secondary": "#5c5f60",
-                        "on-secondary-container": "#626566",
-                        "on-secondary-fixed-variant": "#454748",
-                        "inverse-on-surface": "#f1f0f5",
-                        "primary-container": "#003366",
-                        "secondary-container": "#e1e3e4",
-                        "tertiary": "#381300",
-                        "on-tertiary": "#ffffff",
-                        "outline-variant": "#c3c6d1",
-                        "error-container": "#ffdad6",
-                        "tertiary-fixed": "#ffdbca",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed-dim": "#ffb690",
-                        "on-error-container": "#93000a",
-                        "on-surface": "#1a1c1f",
-                        "surface-container-low": "#f4f3f8",
-                        "primary": "#001e40",
-                        "tertiary-container": "#592300",
-                        "on-surface-variant": "#43474f",
-                        "inverse-surface": "#2f3034",
-                        "inverse-primary": "#a7c8ff",
-                        "on-primary": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary-container": "#799dd6",
-                        "on-tertiary-container": "#d8885c",
-                        "surface-container": "#eeedf2",
-                        "on-tertiary-fixed": "#341100",
-                        "surface-container-highest": "#e2e2e7",
-                        "surface-bright": "#f9f9fe",
-                        "surface": "#f9f9fe",
-                        "on-secondary-fixed": "#191c1d",
-                        "background": "#f9f9fe",
-                        "on-background": "#1a1c1f",
-                        "surface-dim": "#dad9de",
-                        "on-tertiary-fixed-variant": "#723610",
-                        "on-error": "#ffffff",
-                        "surface-container-high": "#e8e8ed",
-                        "surface-tint": "#3a5f94",
-                        "secondary-fixed": "#e1e3e4",
-                        "error": "#ba1a1a",
-                        "on-primary-fixed": "#001b3c",
-                        "outline": "#737780",
-                        "surface-variant": "#e2e2e7",
-                        "primary-fixed-dim": "#a7c8ff"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "unit": "8px",
-                        "stack-md": "16px",
-                        "margin-page": "40px",
-                        "container-max": "1280px",
-                        "stack-lg": "32px",
-                        "stack-sm": "8px",
-                        "gutter": "24px",
-                        "section-padding": "80px"
-                    },
-                    "fontFamily": {
-                        "h1": ["Inter"],
-                        "body-sm": ["Inter"],
-                        "display": ["Inter"],
-                        "h2": ["Inter"],
-                        "body-md": ["Inter"],
-                        "h3": ["Inter"],
-                        "label-caps": ["Inter"],
-                        "body-lg": ["Inter"]
-                    },
-                    "fontSize": {
-                        "h1": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
-                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
-                    }
-                }
-            }
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .shadow-ambient {
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-        }
-        .bg-brand-gradient {
-            background: linear-gradient(to right, #001e40, #003366);
-        }
-    </style>
-</head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="bg-gradient-to-r from-primary to-primary-container docked full-width top-0 shadow-md z-50">
-<div class="flex justify-between items-center px-margin-page py-unit w-full max-w-container-max mx-auto">
-<div class="flex items-center gap-stack-lg">
-<span class="font-h2 text-h2 font-bold tracking-tight text-on-primary">PrimeSquare</span>
-<div class="hidden md:flex items-center bg-white/10 rounded-lg px-stack-md py-1 border border-white/20">
-<span class="material-symbols-outlined text-on-primary text-body-md" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-on-primary placeholder-on-primary/60 text-body-sm w-48" placeholder="Search areas, agents..." type="text"/>
-</div>
-</div>
-<nav class="hidden md:flex items-center gap-stack-lg">
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Buy</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Rent</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Sell</a>
-<a class="text-on-primary border-b-2 border-on-primary-container pb-1 font-bold" href="#">Agents</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Mortgage</a>
-</nav>
-<div class="flex items-center gap-stack-md">
-<a href="/profile/" class="hidden lg:block text-on-primary-fixed-variant font-label-caps hover:text-on-primary-container transition-all">Sign In</a>
-<a href="/property-manager/" class="bg-white text-primary px-stack-md py-2 rounded-lg font-label-caps hover:bg-surface-container-low transition-all scale-98 active:scale-95">List Property</a>
-</div>
-</div>
-</header>
-<main class="flex-grow w-full max-w-container-max mx-auto px-margin-page py-section-padding">
-<div class="mb-stack-lg">
-<a class="flex items-center gap-unit text-on-surface-variant hover:text-primary transition-colors mb-stack-sm" href="#">
-<span class="material-symbols-outlined text-[18px]" data-icon="arrow_back">arrow_back</span>
-<span class="font-label-caps">Back to Property Details</span>
-</a>
-<h1 class="font-h1 text-h1 text-primary">Schedule Your Private Tour</h1>
-<p class="text-on-surface-variant font-body-md mt-unit">Experience 428 Skyline Drive with a dedicated PrimeSquare representative.</p>
-</div>
-<!-- Scheduling Interface: Asymmetric Bento Grid Layout -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Column 1: Date & Time Selection (Left - 8 columns) -->
-<div class="lg:col-span-8 space-y-gutter">
-<!-- Date Picker Card -->
-<div class="bg-surface-container-lowest rounded-xl p-stack-lg shadow-ambient">
-<div class="flex items-center gap-unit mb-stack-md">
-<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
-<h2 class="font-h3 text-h3">1. Select Preferred Date</h2>
-</div>
-<div class="grid grid-cols-7 gap-2 text-center">
-<!-- Simple Calendar Implementation -->
-<div class="text-label-caps text-on-surface-variant py-2">S</div>
-<div class="text-label-caps text-on-surface-variant py-2">M</div>
-<div class="text-label-caps text-on-surface-variant py-2">T</div>
-<div class="text-label-caps text-on-surface-variant py-2">W</div>
-<div class="text-label-caps text-on-surface-variant py-2">T</div>
-<div class="text-label-caps text-on-surface-variant py-2">F</div>
-<div class="text-label-caps text-on-surface-variant py-2">S</div>
-<!-- Empty states for alignment -->
-<div class="py-4 text-on-surface-variant/20 font-body-sm">26</div>
-<div class="py-4 text-on-surface-variant/20 font-body-sm">27</div>
-<div class="py-4 text-on-surface-variant/20 font-body-sm">28</div>
-<div class="py-4 text-on-surface-variant/20 font-body-sm">29</div>
-<div class="py-4 text-on-surface-variant/20 font-body-sm">30</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">1</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">2</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">3</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">4</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">5</div>
-<div class="py-4 font-body-sm rounded-lg bg-primary text-on-primary shadow-md font-bold transition-all">6</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">7</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">8</div>
-<div class="py-4 font-body-sm rounded-lg hover:bg-surface-container-low cursor-pointer border border-transparent transition-all">9</div>
-</div>
-</div>
-<!-- Time Slot Grid -->
-<div class="bg-surface-container-lowest rounded-xl p-stack-lg shadow-ambient">
-<div class="flex items-center gap-unit mb-stack-md">
-<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
-<h2 class="font-h3 text-h3">2. Available Time Slots</h2>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-md">
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">09:00 AM</button>
-<button class="py-stack-md border-2 border-primary-container text-primary-container bg-primary-fixed/30 rounded-lg font-bold flex items-center justify-center gap-unit">
-                            10:30 AM <span class="material-symbols-outlined text-[16px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">12:00 PM</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">01:30 PM</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">03:00 PM</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md opacity-50 cursor-not-allowed bg-surface-container text-on-surface-variant line-through">04:30 PM</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">06:00 PM</button>
-<button class="py-stack-md border border-outline-variant rounded-lg font-body-md hover:border-primary-container hover:text-primary-container transition-all">07:30 PM</button>
-</div>
-</div>
-</div>
-<!-- Column 2: Representative & Summary (Right - 4 columns) -->
-<div class="lg:col-span-4 space-y-gutter">
-<!-- Representative Card -->
-<div class="bg-surface-container-lowest rounded-xl p-stack-lg shadow-ambient border-t-4 border-primary">
-<div class="flex items-center gap-unit mb-stack-md">
-<span class="material-symbols-outlined text-primary" data-icon="support_agent">support_agent</span>
-<h2 class="font-h3 text-h3">3. Your Guide</h2>
-</div>
-<div class="flex flex-col gap-stack-md">
-<div class="flex items-center gap-stack-md p-stack-sm rounded-lg border-2 border-primary-container bg-primary-fixed/10">
-<img alt="Agent" class="w-16 h-16 rounded-lg object-cover" data-alt="A professional male real estate agent in his late 30s wearing a sharp navy blue business suit and white shirt. He has a warm, confident smile and is standing in a brightly lit, modern architectural office with large windows. The lighting is soft and airy, emphasizing a high-trust professional modernist atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEwejwQNW39vJUrMj6kyjHjE81UAxTBT7Dz3K9xSnJ60OEarzFOk6PAd7TjhbLkfMzp1bACdxBKLW5kpejTmfqfmJjTKAfRCQ16-C4jKHeV5fup2EQbcjZadVWpsIsCOrB7VEorNJNqtbCcE5TWlLb3dKBj5czL8q14GPYb4gVftDIuP4vUaYtgPJjmF8m0gmcXGkQ8HLpWl77kF2JhEXoElti8fjXEiBoGPFHiUT_WhW5_QaFlE3MSMuTIxc5wQWKXonKneVY3MFZ"/>
-<div>
-<p class="font-h3 text-primary text-[18px]">Julian Sterling</p>
-<p class="text-body-sm text-on-surface-variant">Senior Property Partner</p>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-tertiary-container text-[14px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-label-caps text-on-surface">4.9 (124 reviews)</span>
-</div>
-</div>
-</div>
-<div class="space-y-stack-sm">
-<label class="text-label-caps text-on-surface-variant block">Quick Note to Julian</label>
-<textarea class="w-full rounded-lg border-outline-variant focus:ring-primary focus:border-primary text-body-sm" placeholder="Any specific features you want to focus on?" rows="3"></textarea>
-</div>
-</div>
-</div>
-<!-- Final Action Card -->
-<div class="bg-primary text-on-primary rounded-xl p-stack-lg shadow-lg relative overflow-hidden">
-<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
-<h2 class="font-h3 mb-stack-md relative z-10">Tour Summary</h2>
-<div class="space-y-stack-md relative z-10 mb-stack-lg">
-<div class="flex justify-between border-b border-white/20 pb-2">
-<span class="text-on-primary/70 text-body-sm">Property</span>
-<span class="font-bold text-body-sm">428 Skyline Drive</span>
-</div>
-<div class="flex justify-between border-b border-white/20 pb-2">
-<span class="text-on-primary/70 text-body-sm">Date</span>
-<span class="font-bold text-body-sm">Oct 06, 2024</span>
-</div>
-<div class="flex justify-between border-b border-white/20 pb-2">
-<span class="text-on-primary/70 text-body-sm">Time</span>
-<span class="font-bold text-body-sm">10:30 AM</span>
-</div>
-</div>
-<button class="w-full bg-brand-gradient text-on-primary py-stack-md rounded-lg font-h3 shadow-md hover:brightness-110 transition-all scale-98 active:scale-95 flex items-center justify-center gap-stack-sm">
-                        Confirm Tour
-                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-</button>
-<p class="text-center text-[10px] text-on-primary/60 mt-stack-md font-label-caps">BY CLICKING CONFIRM, YOU AGREE TO OUR SERVICE TERMS.</p>
-</div>
-</div>
-</div>
+{% block title %}Tour Scheduling{% endblock %}
+
+{% block content %}
+<main class="container">
+    <div class="mb-lg">
+        <a class="flex items-center gap-sm text-on-surface-variant hover-primary mb-md" href="#" style="text-decoration: none;">
+            <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+            <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold; letter-spacing: 0.05em;">Back to Property Details</span>
+        </a>
+        <h1 class="text-primary">Schedule Your Private Tour</h1>
+        <p class="text-on-surface-variant mt-sm">Experience 428 Skyline Drive with a dedicated PrimeSquare representative.</p>
+    </div>
+
+    <!-- Scheduling Interface -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <!-- Date & Time Selection -->
+        <div class="md:col-span-2 flex-col gap-lg" style="display: flex;">
+            <!-- Date Picker Card -->
+            <div class="card">
+                <div class="flex items-center gap-sm mb-md">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <h2 class="text-primary">1. Select Preferred Date</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center;">
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">S</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">M</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">T</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">W</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">T</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">F</div>
+                    <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-on-surface-variant); padding: 0.5rem 0;">S</div>
+                    
+                    <div style="padding: 1rem 0; color: rgba(0,0,0,0.2);">26</div>
+                    <div style="padding: 1rem 0; color: rgba(0,0,0,0.2);">27</div>
+                    <div style="padding: 1rem 0; color: rgba(0,0,0,0.2);">28</div>
+                    <div style="padding: 1rem 0; color: rgba(0,0,0,0.2);">29</div>
+                    <div style="padding: 1rem 0; color: rgba(0,0,0,0.2);">30</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">1</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">2</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">3</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">4</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">5</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; background-color: var(--color-primary); color: white; font-weight: bold;">6</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">7</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">8</div>
+                    <div style="padding: 1rem 0; border-radius: 0.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='var(--color-surface-container-high)'" onmouseout="this.style.backgroundColor='transparent'">9</div>
+                </div>
+            </div>
+
+            <!-- Time Slot Grid -->
+            <div class="card">
+                <div class="flex items-center gap-sm mb-md">
+                    <span class="material-symbols-outlined text-primary">schedule</span>
+                    <h2 class="text-primary">2. Available Time Slots</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-outline" style="padding: 1rem;">09:00 AM</button>
+                    <button class="btn" style="padding: 1rem; border: 2px solid var(--color-primary); background-color: rgba(10, 25, 47, 0.1); color: var(--color-primary); display: flex; gap: 0.5rem; align-items: center; justify-content: center;">
+                        10:30 AM <span class="material-symbols-outlined" style="font-size: 16px;">check_circle</span>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 1rem;">12:00 PM</button>
+                    <button class="btn btn-outline" style="padding: 1rem;">01:30 PM</button>
+                    <button class="btn btn-outline" style="padding: 1rem;">03:00 PM</button>
+                    <button class="btn btn-outline" style="padding: 1rem; opacity: 0.5; cursor: not-allowed; text-decoration: line-through;">04:30 PM</button>
+                    <button class="btn btn-outline" style="padding: 1rem;">06:00 PM</button>
+                    <button class="btn btn-outline" style="padding: 1rem;">07:30 PM</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Representative & Summary -->
+        <div class="flex-col gap-lg" style="display: flex;">
+            <!-- Representative Card -->
+            <div class="card" style="border-top: 4px solid var(--color-primary);">
+                <div class="flex items-center gap-sm mb-md">
+                    <span class="material-symbols-outlined text-primary">support_agent</span>
+                    <h2 class="text-primary">3. Your Guide</h2>
+                </div>
+                <div class="flex-col gap-md">
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 2px solid var(--color-outline-variant); border-radius: var(--radius-md); background-color: var(--color-surface-container-high); margin-bottom: 1rem;">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEwejwQNW39vJUrMj6kyjHjE81UAxTBT7Dz3K9xSnJ60OEarzFOk6PAd7TjhbLkfMzp1bACdxBKLW5kpejTmfqfmJjTKAfRCQ16-C4jKHeV5fup2EQbcjZadVWpsIsCOrB7VEorNJNqtbCcE5TWlLb3dKBj5czL8q14GPYb4gVftDIuP4vUaYtgPJjmF8m0gmcXGkQ8HLpWl77kF2JhEXoElti8fjXEiBoGPFHiUT_WhW5_QaFlE3MSMuTIxc5wQWKXonKneVY3MFZ" alt="Agent" style="width: 64px; height: 64px; border-radius: 8px; object-fit: cover;">
+                        <div>
+                            <p class="text-primary" style="font-weight: bold; font-size: 1.125rem;">Julian Sterling</p>
+                            <p class="text-on-surface-variant" style="font-size: 0.875rem;">Senior Property Partner</p>
+                            <div class="flex items-center gap-sm mt-sm">
+                                <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-secondary);">star</span>
+                                <span style="font-size: 0.75rem; text-transform: uppercase;">4.9 (124 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Quick Note to Julian</label>
+                        <textarea rows="3" placeholder="Any specific features you want to focus on?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Action Card -->
+            <div class="card" style="background-color: var(--color-primary); color: white; border: none; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+                
+                <h2 style="color: white; margin-bottom: 1.5rem; position: relative; z-index: 1;">Tour Summary</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; position: relative; z-index: 1;">
+                    <div class="flex justify-between" style="border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem;">
+                        <span style="opacity: 0.7; font-size: 0.875rem;">Property</span>
+                        <span style="font-weight: bold; font-size: 0.875rem;">428 Skyline Drive</span>
+                    </div>
+                    <div class="flex justify-between" style="border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem;">
+                        <span style="opacity: 0.7; font-size: 0.875rem;">Date</span>
+                        <span style="font-weight: bold; font-size: 0.875rem;">Oct 06, 2024</span>
+                    </div>
+                    <div class="flex justify-between" style="border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem;">
+                        <span style="opacity: 0.7; font-size: 0.875rem;">Time</span>
+                        <span style="font-weight: bold; font-size: 0.875rem;">10:30 AM</span>
+                    </div>
+                </div>
+                
+                <button class="btn" style="width: 100%; background: linear-gradient(to right, var(--color-secondary), var(--color-secondary-variant)); color: var(--color-primary); padding: 1rem; font-size: 1rem; position: relative; z-index: 1; display: flex; justify-content: center; gap: 0.5rem;">
+                    Confirm Tour
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+                
+                <p style="text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.6); margin-top: 1rem; letter-spacing: 0.1em;">BY CLICKING CONFIRM, YOU AGREE TO OUR SERVICE TERMS.</p>
+            </div>
+        </div>
+    </div>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-highest dark:bg-inverse-surface mt-section-padding">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-page py-section-padding max-w-container-max mx-auto">
-<div class="md:col-span-1">
-<span class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary">PrimeSquare</span>
-<p class="mt-stack-md text-on-surface-variant text-body-sm">Leading the industry in premium residential excellence through professional expertise and technological transparency.</p>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Navigation</h4>
-<ul class="space-y-unit">
-<li><a class="text-on-surface-variant font-body-sm hover:text-primary transition-colors" href="#">About Us</a></li>
-<li><a class="text-on-surface-variant font-body-sm hover:text-primary transition-colors" href="#">Property Guides</a></li>
-<li><a class="text-on-surface-variant font-body-sm hover:text-primary transition-colors" href="#">Market Trends</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Support</h4>
-<ul class="space-y-unit">
-<li><a class="text-on-surface-variant font-body-sm hover:text-primary transition-colors" href="#">Contact Support</a></li>
-<li><a class="text-on-surface-variant font-body-sm hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Connect</h4>
-<div class="flex gap-stack-md">
-<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="share">share</span>
-<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="language">language</span>
-<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="mail">mail</span>
-</div>
-<p class="mt-stack-lg text-on-surface-variant text-body-sm">© 2024 PrimeSquare Real Estate. Excellence in Residential Living.</p>
-</div>
-</div>
-</footer>
-</body></html>
+{% endblock content %}

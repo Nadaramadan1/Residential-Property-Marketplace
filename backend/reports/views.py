@@ -1,8 +1,15 @@
 from django.shortcuts import render
-from test_connection import execute_query
+from django.db import connection
+
+def execute_query(sql_statement, params=None):
+    with connection.cursor() as cursor:
+        if params:
+            cursor.execute(sql_statement, params)
+        else:
+            cursor.execute(sql_statement)
+        return cursor.fetchall()
 
 def report_dashboard(request):
-    # Q1 — Most requested property style (by tours)
     q1 = """
     SELECT TOP 1
         P.STYLE,
@@ -15,7 +22,6 @@ def report_dashboard(request):
     ORDER BY TOTAL_TOURS DESC, TOTAL_VIEWS DESC
     """
 
-    # Q2 — Properties that had no tours last month
     q2 = """
     SELECT P.PROPERTY_ID, P.ADDRESS, P.STYLE
     FROM PROPERTY P
@@ -25,7 +31,6 @@ def report_dashboard(request):
     )
     """
 
-    # Q3 — Top performing representative last month (by completed sales)
     q3 = """
     SELECT TOP 1
         R.FULL_NAME,
@@ -38,7 +43,6 @@ def report_dashboard(request):
     ORDER BY TOTAL_SALES DESC
     """
 
-    # Q4 — Registered clients with no tours last month
     q4 = """
     SELECT C.CLIENT_ID, C.FULL_NAME, C.CLIENT_EMAIL
     FROM CLIENT C
@@ -48,7 +52,6 @@ def report_dashboard(request):
     )
     """
 
-    # Q5 — Available properties per representative
     q5 = """
     SELECT
         R.FULL_NAME AS REP_NAME,
@@ -62,7 +65,6 @@ def report_dashboard(request):
     ORDER BY R.FULL_NAME
     """
 
-    # Q6 — All clients with their total tour count
     q6 = """
     SELECT
         C.FULL_NAME,

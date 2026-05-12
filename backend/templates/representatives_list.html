@@ -1,42 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Representatives</title>
-</head>
-<body>
-<h2>Representatives List</h2>
+{% extends 'base.html' %}
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>License Number</th>
-    </tr>
+{% block title %}Representatives List{% endblock %}
 
-    {% for representative in representatives %}
-    <tr>
-        <td>{{ representative.0 }}</td>
-        <td>{{ representative.1 }}</td>
-        <td>{{ representative.2 }}</td>
-        <td>{{ representative.3 }}</td>
-        <td>{{ representative.4 }}</td>
-        <td>
-            <a href="{% url 'update_representative' representative %}">
-                Edit
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="flex justify-between items-center mb-lg">
+            <h2 class="text-primary">Representatives List</h2>
+            <a href="{% url 'add_representative' %}" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined">add</span> Add New Representative
             </a>
-        </td>
-        
-        <td>
-            <a href="{% url 'delete_representative' representative %}">
-                Delete
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+        </div>
 
-</body>
-</html>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--color-outline-variant); text-align: left;">
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold;">ID</th>
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold;">Name</th>
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold;">Phone</th>
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold;">Email</th>
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold;">License Number</th>
+                        <th style="padding: 1rem; color: var(--color-on-surface-variant); font-weight: bold; text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reps-table-body">
+                    <tr>
+                        <td colspan="6" style="padding: 2rem; text-align: center; color: var(--color-on-surface-variant);">Loading representatives...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadRepresentatives();
+    });
+
+    function loadRepresentatives() {
+        fetch('/users/api/representatives/')
+            .then(response => response.json())
+            .then(data => renderRepresentatives(data))
+            .catch(error => {
+                console.error('Error fetching representatives:', error);
+                document.getElementById('reps-table-body').innerHTML = '<tr><td colspan="6" style="padding: 2rem; text-align: center; color: red;">Error loading representatives.</td></tr>';
+            });
+    }
+
+    function renderRepresentatives(reps) {
+        const tbody = document.getElementById('reps-table-body');
+        tbody.innerHTML = '';
+
+        if (reps.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="padding: 2rem; text-align: center; color: var(--color-on-surface-variant);">No representatives found.</td></tr>';
+            return;
+        }
+
+        reps.forEach(rep => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--color-outline-variant)';
+            
+            tr.innerHTML = `
+                <td style="padding: 1rem;">${rep.representative_id}</td>
+                <td style="padding: 1rem; font-weight: bold; color: var(--color-primary);">${rep.full_name}</td>
+                <td style="padding: 1rem;">${rep.phone}</td>
+                <td style="padding: 1rem;">${rep.email}</td>
+                <td style="padding: 1rem;"><span class="badge" style="background-color: var(--color-surface-container-high);">${rep.license_number}</span></td>
+                <td style="padding: 1rem; text-align: right;">
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <a href="/users/updateRepresentative/${rep.representative_id}/" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Edit</a>
+                        <button onclick="deleteRepresentative(${rep.representative_id})" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem; color: red; border-color: red;">Delete</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function deleteRepresentative(id) {
+        if (!confirm('Are you sure you want to delete this representative?')) return;
+
+        fetch(`/users/api/representatives/delete/${id}/`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || 'Representative deleted');
+            loadRepresentatives();
+        })
+        .catch(error => console.error('Error deleting representative:', error));
+    }
+</script>
+{% endblock content %}

@@ -1,147 +1,8 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>PrimeSquare | Profile &amp; Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed-dim": "#c5c7c8",
-                        "on-primary-fixed-variant": "#1f477b",
-                        "primary-fixed": "#d5e3ff",
-                        "secondary": "#5c5f60",
-                        "on-secondary-container": "#626566",
-                        "on-secondary-fixed-variant": "#454748",
-                        "inverse-on-surface": "#f1f0f5",
-                        "primary-container": "#003366",
-                        "secondary-container": "#e1e3e4",
-                        "tertiary": "#381300",
-                        "on-tertiary": "#ffffff",
-                        "outline-variant": "#c3c6d1",
-                        "error-container": "#ffdad6",
-                        "tertiary-fixed": "#ffdbca",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed-dim": "#ffb690",
-                        "on-error-container": "#93000a",
-                        "on-surface": "#1a1c1f",
-                        "surface-container-low": "#f4f3f8",
-                        "primary": "#001e40",
-                        "tertiary-container": "#592300",
-                        "on-surface-variant": "#43474f",
-                        "inverse-surface": "#2f3034",
-                        "inverse-primary": "#a7c8ff",
-                        "on-primary": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary-container": "#799dd6",
-                        "on-tertiary-container": "#d8885c",
-                        "surface-container": "#eeedf2",
-                        "on-tertiary-fixed": "#341100",
-                        "surface-container-highest": "#e2e2e7",
-                        "surface-bright": "#f9f9fe",
-                        "surface": "#f9f9fe",
-                        "on-secondary-fixed": "#191c1d",
-                        "background": "#f9f9fe",
-                        "on-background": "#1a1c1f",
-                        "surface-dim": "#dad9de",
-                        "on-tertiary-fixed-variant": "#723610",
-                        "on-error": "#ffffff",
-                        "surface-container-high": "#e8e8ed",
-                        "surface-tint": "#3a5f94",
-                        "secondary-fixed": "#e1e3e4",
-                        "error": "#ba1a1a",
-                        "on-primary-fixed": "#001b3c",
-                        "outline": "#737780",
-                        "surface-variant": "#e2e2e7",
-                        "primary-fixed-dim": "#a7c8ff"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "unit": "8px",
-                        "stack-md": "16px",
-                        "margin-page": "40px",
-                        "container-max": "1280px",
-                        "stack-lg": "32px",
-                        "stack-sm": "8px",
-                        "gutter": "24px",
-                        "section-padding": "80px"
-                    },
-                    "fontFamily": {
-                        "h1": ["Inter"],
-                        "body-sm": ["Inter"],
-                        "display": ["Inter"],
-                        "h2": ["Inter"],
-                        "body-md": ["Inter"],
-                        "h3": ["Inter"],
-                        "label-caps": ["Inter"],
-                        "body-lg": ["Inter"]
-                    },
-                    "fontSize": {
-                        "h1": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
-                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        .bento-card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .bento-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);
-        }
-        .navy-gradient {
-            background: linear-gradient(to right, #001e40, #003366);
-        }
-    </style>
-</head>
-<body class="bg-surface-bright text-on-surface font-body-md">
-<!-- TopAppBar -->
-<header class="bg-gradient-to-r from-primary to-primary-container fixed full-width top-0 w-full z-50 shadow-md">
-<div class="flex justify-between items-center px-margin-page py-unit w-full max-w-container-max mx-auto">
-<div class="flex items-center gap-stack-lg">
-<span class="font-h2 text-h2 font-bold tracking-tight text-on-primary">PrimeSquare</span>
-<nav class="hidden md:flex gap-gutter">
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Buy</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Rent</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Sell</a>
-<a class="text-on-primary border-b-2 border-on-primary-container pb-1 font-bold" href="#">Agents</a>
-<a class="text-on-primary-fixed-variant font-body-md hover:text-on-primary-container transition-all duration-200" href="#">Mortgage</a>
-</nav>
-</div>
-<div class="flex items-center gap-stack-md">
-<a href="/profile/" class="text-on-primary-fixed-variant font-label-caps hover:text-on-primary-container transition-all">Sign In</a>
-<a href="/property-manager/" class="bg-on-primary text-primary px-stack-md py-stack-sm rounded-lg font-label-caps scale-98 active:scale-95 transition-transform">List Property</a>
-</div>
-</div>
-</header>
+{% block title %}User_Rep_Profile{% endblock %}
+
+{% block content %}
 <main class="pt-[100px] pb-section-padding px-margin-page max-w-container-max mx-auto">
 <!-- Hero Profile Header -->
 <section class="mb-section-padding flex flex-col md:flex-row gap-gutter items-center md:items-end">
@@ -175,7 +36,7 @@
 <h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
 <span class="material-symbols-outlined">calendar_today</span> Upcoming Property Tours
                     </h3>
-<a href="/property-listing/" class="text-primary font-label-caps hover:underline">View All</a>
+<a href="{% url 'property_listing' %}" class="text-primary font-label-caps hover:underline">View All</a>
 </div>
 <div class="space-y-stack-md">
 <div class="flex items-center gap-gutter p-stack-md rounded-xl hover:bg-surface-container transition-colors group">
@@ -251,7 +112,7 @@
 <h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
 <span class="material-symbols-outlined">favorite</span> Saved Properties
                     </h3>
-<a href="/property-listing/" class="text-primary font-label-caps hover:underline">Explore More</a>
+<a href="{% url 'property_listing' %}" class="text-primary font-label-caps hover:underline">Explore More</a>
 </div>
 <div class="grid grid-cols-2 gap-stack-md">
 <div class="group cursor-pointer">
@@ -305,43 +166,11 @@
 </label>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md pt-stack-md">
-<a href="/agreement/" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Privacy Policy</a>
-<a href="/agreement/" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Security Center</a>
+<a href="{% url 'legal_agreement' %}" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Privacy Policy</a>
+<a href="{% url 'legal_agreement' %}" class="bg-surface-container-highest text-on-surface p-stack-md rounded-xl font-label-caps text-center hover:bg-outline-variant transition-colors">Security Center</a>
 </div>
 </div>
 </div>
 </div>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-page py-section-padding max-w-container-max mx-auto">
-<div class="col-span-1 md:col-span-1">
-<span class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary">PrimeSquare</span>
-<p class="mt-stack-md font-body-sm text-on-surface-variant">Elevating the standards of residential real estate through transparency and excellence.</p>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Resources</h4>
-<ul class="space-y-2 font-body-sm text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Property Guides</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Market Trends</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Support</h4>
-<ul class="space-y-2 font-body-sm text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">Contact Support</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-caps text-on-surface mb-stack-md">Contact</h4>
-<p class="font-body-sm text-on-surface-variant">info@primesquare.com</p>
-<p class="font-body-sm text-on-surface-variant">+1 (555) 000-8888</p>
-</div>
-</div>
-<div class="px-margin-page py-stack-lg border-t border-outline-variant max-w-container-max mx-auto text-center">
-<p class="font-body-sm text-on-surface-variant">© 2024 PrimeSquare Real Estate. Excellence in Residential Living.</p>
-</div>
-</footer>
-</body></html>
+{% endblock content %}

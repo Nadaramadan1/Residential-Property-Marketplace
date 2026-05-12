@@ -1,0 +1,214 @@
+:root {
+    --primary: #1f477b;
+    --primary-container: #d5e3ff;
+    --on-primary: #ffffff;
+    --surface: #fbf9f9;
+    --on-surface: #191c1d;
+    --on-surface-variant: #40484c;
+    --outline-variant: #c0c8cc;
+    --navy-gradient: linear-gradient(90deg, #1f477b 0%, #355f94 100%);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    margin: 0;
+    padding: 0;
+}
+
+.container-max {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 24px 60px;
+}
+
+/* Header Section */
+.profile-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 60px;
+}
+
+.profile-img-container {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    object-cover: cover;
+}
+
+.verified-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+}
+
+.profile-info h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--primary);
+}
+
+.badge {
+    background: var(--primary-container);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.bio {
+    color: var(--on-surface-variant);
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+/* Bento Grid */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+.bento-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    border: 1px solid var(--outline-variant);
+}
+
+.span-8 { grid-column: span 8; }
+.span-4 { grid-column: span 4; }
+.span-6 { grid-column: span 6; }
+
+/* Stats Card */
+.stats-card {
+    background: var(--navy-gradient);
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stat-box .value {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.stat-box .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* Tours & Properties */
+.tour-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    transition: 0.3s;
+}
+
+.tour-item:hover { background: #f0f4f8; }
+
+.thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.properties-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.img-wrapper {
+    position: relative;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.img-wrapper:hover img { transform: scale(1.1); }
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input { display: none; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: var(--primary); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+}
+
+.btn-primary { background: var(--navy-gradient); color: white; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+
+@media (max-width: 768px) {
+    .span-8, .span-4, .span-6 { grid-column: span 12; }
+    .profile-header { text-align: center; justify-content: center; }
+}

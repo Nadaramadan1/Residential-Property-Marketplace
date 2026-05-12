@@ -1,28 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Representative</title>
-</head>
-<body>
-<form method="POST">
-    {% csrf_token %}
+{% extends 'base.html' %}
 
-    <input type="text" name="name" value="{{ representative.1 }}" placeholder="Name">
-    <br><br>
+{% block title %}Update Representative{% endblock %}
 
-    <input type="text" name="phone" value="{{ representative.2 }}" placeholder="Phone">
-    <br><br>
+{% block content %}
+<div class="container" style="max-width: 600px;">
+    <div class="card">
+        <h2 class="text-primary mb-lg text-center">Update Representative</h2>
+        
+        <form id="update-rep-form" onsubmit="updateRepresentative(event)">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" required placeholder="e.g. Jane Smith">
+            </div>
+            
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="phone" required placeholder="e.g. (555) 987-6543">
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required placeholder="e.g. jane.smith@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>License Number</label>
+                <input type="text" id="license_num" required placeholder="e.g. LIC-123456">
+            </div>
+            
+            <div class="mt-lg flex justify-between items-center">
+                <a href="{% url 'representatives_list' %}" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Update Representative</button>
+            </div>
+        </form>
+        
+        <p id="msg" class="text-center mt-md font-bold text-primary"></p>
+    </div>
+</div>
 
-    <input type="email" name="email" value="{{ representative.3 }}" placeholder="Email">
-    <br><br>
+<script>
+    const repId = "{{ representative_id }}";
 
-    <input type="text" name="license_num" value="{{ representative.4 }}" placeholder="License number">
-    <br><br>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch(`/users/api/representatives/${repId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    alert(data.error);
+                    window.location.href = "{% url 'representatives_list' %}";
+                    return;
+                }
+                document.getElementById('name').value = data.full_name;
+                document.getElementById('phone').value = data.phone;
+                document.getElementById('email').value = data.email;
+                document.getElementById('license_num').value = data.license_number;
+            })
+            .catch(error => console.error('Error fetching representative details:', error));
+    });
 
-    <button type="submit">Update</button>
+    function updateRepresentative(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerText = 'Updating...';
+        
+        const data = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            license_num: document.getElementById('license_num').value
+        };
 
-</form>
-
-</body>
-</html>
+        fetch(`/users/api/representatives/update/${repId}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('msg').innerText = data.message || 'Representative updated successfully!';
+            document.getElementById('msg').style.color = 'var(--color-primary)';
+            
+            setTimeout(() => {
+                window.location.href = "{% url 'representatives_list' %}";
+            }, 1000);
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            document.getElementById('msg').innerText = 'Error updating representative.';
+            document.getElementById('msg').style.color = 'red';
+            btn.disabled = false;
+            btn.innerText = 'Update Representative';
+        });
+    }
+</script>
+{% endblock content %}

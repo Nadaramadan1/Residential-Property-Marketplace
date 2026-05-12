@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    
+    <!-- Custom CSS strictly instead of Tailwind -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/42d5adcbca.js"></script>
+
+    <title>{% block title %}PrimeSquare{% endblock %}</title>
+</head>
+<body>
+    <!-- TopAppBar -->
+    <header class="header">
+        <div class="header-container">
+            <div class="flex items-center gap-lg">
+                <a href="{% url 'home' %}" class="brand">PrimeSquare</a>
+                <nav class="nav-links">
+                    <a class="nav-link active" href="{% url 'property_listing' %}">Buy</a>
+                    <a class="nav-link" href="{% url 'property_listing' %}">Rent</a>
+                    <a class="nav-link" href="{% url 'property_manager' %}">Sell</a>
+                    <a class="nav-link" href="{% url 'user_rep_profile' %}">Agents</a>
+                    <a class="nav-link" href="{% url 'property_listing' %}">Mortgage</a>
+                </nav>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'user_rep_profile' %}" class="nav-link">SIGN IN</a>
+                <a href="{% url 'property_manager' %}" class="btn btn-outline" style="color: white; border-color: white;">LIST PROPERTY</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <span class="brand text-primary">PrimeSquare</span>
+                <p class="text-on-surface-variant mt-md">Setting the gold standard in residential real estate through corporate modernism and professional excellence.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <a class="footer-link" href="{% url 'property_listing' %}">Property Guides</a>
+                <a class="footer-link" href="{% url 'reports' %}">Market Trends</a>
+                <a class="footer-link" href="{% url 'property_listing' %}">Mortgage Calculator</a>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <a class="footer-link" href="{% url 'home' %}">About Us</a>
+                <a class="footer-link" href="{% url 'user_rep_profile' %}">Contact Support</a>
+                <a class="footer-link" href="{% url 'home' %}">Careers</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a class="footer-link" href="{% url 'legal_agreement' %}">Privacy Policy</a>
+                <a class="footer-link" href="{% url 'legal_agreement' %}">Terms of Service</a>
+                <a class="footer-link" href="{% url 'home' %}">Accessibility</a>
+            </div>
+        </div>
+        <div class="container text-center text-on-surface-variant mt-lg" style="border-top: 1px solid var(--color-outline-variant); padding-top: var(--spacing-md);">
+            <p>© 2026 PrimeSquare Real Estate. Excellence in Residential Living.</p>
+        </div>
+    </footer>
+</body>
+</html>
