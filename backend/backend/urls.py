@@ -21,6 +21,14 @@ urlpatterns = [
     path('representatives/add/', user_views.add_representative_page, name='add_representative'),
     path('representatives/update/<int:id>/', user_views.update_representative_page, name='update_representative'),
     path('representatives/delete/<int:id>/', user_views.delete_representative, name='delete_representative'),
+
+    #Tour pages
+    path('tours/', tours_views.tour_page, name='tour_page'),
+    path('tours/add-page/', tours_views.add_tour_page, name='add_tour_page'),
+    
+    # Agreement Pages
+    path('tours/agreements/', tours_views.agreement_page, name='agreement_page'),
+    path('tours/agreements/add-page/', tours_views.add_agreement_page, name='add_agreement_page'),
     
     # --- General Pages ---
     path('', views.view_home, name='home'),
