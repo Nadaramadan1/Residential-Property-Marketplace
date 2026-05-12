@@ -3,6 +3,8 @@ from django.urls import include, path
 from . import views
 from users import views as user_views
 from reports import views as report_views
+from Tours import views as Tours_views
+from Agreement import views as Agr_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,12 +25,13 @@ urlpatterns = [
     path('representatives/delete/<int:id>/', user_views.delete_representative, name='delete_representative'),
 
     #Tour pages
-    path('tours/', tours_views.tour_page, name='tour_page'),
-    path('tours/add-page/', tours_views.add_tour_page, name='add_tour_page'),
+    path('tours/', Tours_views.tour_page, name='tour_page'),
+    path('tours/add-page/', Tours_views.add_tour_page, name='add_tour_page'),
     
     # Agreement Pages
-    path('tours/agreements/', tours_views.agreement_page, name='agreement_page'),
-    path('tours/agreements/add-page/', tours_views.add_agreement_page, name='add_agreement_page'),
+    path('tours/agreements/', Agr_views.agreement_page, name='agreement_page'),
+    path('tours/agreements/add-page/', Agr_views.add_agreement_page, name='add_agreement_page'),
+    path('tours/delete/<int:tour_id>/', Tours_views.delete_tour, name='delete_tour'),
     
     # --- General Pages ---
     path('', views.view_home, name='home'),

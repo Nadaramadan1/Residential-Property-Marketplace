@@ -12,7 +12,7 @@
 </div>
 
 <div class="mb-3">
-    <a href="{% url 'tours:add_tour' %}" class="btn btn-primary">+ Schedule New Tour</a>
+    <a href="{% url 'add_tour_page' %}" class="btn btn-primary">+ Schedule New Tour</a>
 </div>
 
 <div class="table-responsive">
@@ -34,7 +34,7 @@
                 <td>{{ tour.5 }}</td>
                 <td>{{ tour.6 }}</td>
                 <td>
-                    <a href="{% url 'tours:delete_tour' tour.0 %}" class="btn btn-sm btn-danger" 
+                    <a href="{% url 'delete_tour' tour.0 %}" class="btn btn-sm btn-danger"
                        onclick="return confirm('Delete this tour?')">Delete</a>
                 </td>
             </tr>

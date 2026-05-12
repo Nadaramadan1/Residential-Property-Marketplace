@@ -3,22 +3,35 @@ import json
 from django.http import JsonResponse
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # ===================== PAGES (HTML) =====================
 
 def tour_page(request):
-    """صفحة قائمة الجولات"""
-    return render(request, "tours/tour_list.html")
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT t.TOUR_ID, c.FULL_NAME, p.ADDRESS,  p.STYLE,
+                   r.FULL_NAME, CONVERT(VARCHAR, t.TOUR_DATE, 23),
+                   CONVERT(VARCHAR, t.TOUR_TIME, 108) FROM TOUR t  JOIN CLIENT c
+                ON t.CLIENT_ID = c.CLIENT_ID JOIN PROPERTY p
+                ON t.PROPERTY_ID = p.PROPERTY_ID JOIN REPRESENTATIVE r
+                ON t.REPRESENTATIVE_ID = r.REPRESENTATIVE_ID
+            ORDER BY t.TOUR_DATE DESC, t.TOUR_TIME DESC
+        """)
+
+        tours = cursor.fetchall()
+
+    return render(request, "tour_list.html", {
+        "tours": tours
+    })
 
 def add_tour_page(request):
-    """صفحة إضافة جولة جديدة"""
-    return render(request, "tours/add_tour.html")
+    return render(request, "add_tour.html")
 
 # ===================== TOURS APIs =====================
 
 def list_tours(request):
-    """GET: جلب جميع الجولات مع بيانات العميل والعقار والموظف"""
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT t.TOUR_ID, 
@@ -54,13 +67,13 @@ def list_tours(request):
 
 @csrf_exempt
 def add_tour(request):
-    """POST: إضافة جولة جديدة"""
     if request.method == "POST":
         data = json.loads(request.body)
 
         with connection.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO TOUR (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
+                INSERT INTO TOUR 
+                (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
                 VALUES (%s, %s, %s, %s, %s)
             """, [
                 data.get("client_id"),
@@ -69,6 +82,7 @@ def add_tour(request):
                 data.get("tour_date"),
                 data.get("tour_time")
             ])
+
             cursor.execute("SELECT @@IDENTITY")
             new_id = cursor.fetchone()[0]
 
@@ -77,12 +91,15 @@ def add_tour(request):
             "tour_id": new_id
         })
 
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
-@csrf_exempt
+
 def delete_tour(request, tour_id):
-    
-    if request.method == "DELETE":
-        with connection.cursor() as cursor:
-            cursor.execute("DELETE FROM TOUR WHERE TOUR_ID = %s", [tour_id])
 
-        return JsonResponse({"message": "Tour deleted successfully"})
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM TOUR WHERE TOUR_ID = %s",
+            [tour_id]
+        )
+
+    return redirect('tour_page')

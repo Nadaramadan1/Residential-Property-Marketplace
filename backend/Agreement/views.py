@@ -7,12 +7,25 @@ from django.shortcuts import render
 # ===================== PAGES (HTML) =====================
 
 def agreement_page(request):
-    
-    return render(request, "tours/agreement_list.html")
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT a.AGREE_ID,  c.FULL_NAME,  p.ADDRESS,  p.STYLE,
+                   a.FINAL_PRICE, CONVERT(VARCHAR, a.EFFECTIVE_DATE, 23)
+            FROM AGREEMENT a JOIN CLIENT c ON a.CLIENT_ID = c.CLIENT_ID
+            JOIN PROPERTY p ON a.PROPERTY_ID = p.PROPERTY_ID
+            ORDER BY a.EFFECTIVE_DATE DESC
+        """)
+
+        agreements = cursor.fetchall()
+
+    return render(request, "agreement_list.html", {
+        "agreements": agreements
+    })
 
 def add_agreement_page(request):
     
-    return render(request, "tours/add_agreement.html")
+    return render(request, "add_agreement.html")
 
 # ===================== AGREEMENTS APIs =====================
 
@@ -50,15 +63,17 @@ def list_agreements(request):
 
 @csrf_exempt
 def add_agreement(request):
-    
+
     if request.method == "POST":
         data = json.loads(request.body)
+
         property_id = data.get("property_id")
 
         with connection.cursor() as cursor:
-            # إضافة الاتفاقية
+
             cursor.execute("""
-                INSERT INTO AGREEMENT (CLIENT_ID, PROPERTY_ID, FINAL_PRICE, EFFECTIVE_DATE)
+                INSERT INTO AGREEMENT
+                (CLIENT_ID, PROPERTY_ID, FINAL_PRICE, EFFECTIVE_DATE)
                 VALUES (%s, %s, %s, %s)
             """, [
                 data.get("client_id"),
@@ -66,16 +81,19 @@ def add_agreement(request):
                 data.get("final_price"),
                 data.get("effective_date")
             ])
+
             cursor.execute("SELECT @@IDENTITY")
             new_id = cursor.fetchone()[0]
 
-           
             cursor.execute("""
-                UPDATE PROPERTY SET PROPERTY_STATUS = 'Sold'
+                UPDATE PROPERTY
+                SET PROPERTY_STATUS = 'Sold'
                 WHERE PROPERTY_ID = %s
             """, [property_id])
 
         return JsonResponse({
-            "message": "Agreement added successfully. Property marked as Sold.",
+            "message": "Agreement added successfully",
             "agree_id": new_id
         })
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
