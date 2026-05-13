@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // التعامل مع مفاتيح التبديل (Toggles)
     const toggles = document.querySelectorAll('.toggle-input');
     
     toggles.forEach(toggle => {
@@ -9,17 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             console.log(`${settingName} has been ${status}`);
             
-            // يمكنك هنا إضافة طلب Fetch لإرسال التحديث للسيرفر مستقبلاً
         });
     });
 
-    // زر تعديل الملف الشخصي (مثال بسيط)
     const editBtn = document.querySelector('.btn-outline');
     editBtn.addEventListener('click', () => {
         alert('Edit Profile mode activated!');
     });
 
-    // زر المشاركة
     const shareBtn = document.querySelector('.btn-primary');
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
