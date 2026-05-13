@@ -24,12 +24,13 @@
         {% endfor %}
     {% endif %}
     
+    <div id="message"></div>
     <form id="tourForm" method="POST">
         {% csrf_token %}
         
         <div class="form-group">
             <label class="form-label">Client</label>
-            <select id="client_id" class="form-control" required>
+            <select id="client_id" name="client_id" class="form-control" required>
                 <option value="">Select Client</option>
                 {% for client in clients %}
                     <option value="{{ client.0 }}">{{ client.1 }}</option>
@@ -39,7 +40,7 @@
         
         <div class="form-group">
             <label class="form-label">Property</label>
-            <select id="property_id" class="form-control" required>
+            <select id="property_id" name="property_id" class="form-control" required>
                 <option value="">Select Property (Available only)</option>
                 {% for prop in properties %}
                     <option value="{{ prop.0 }}">{{ prop.1 }} - {{ prop.2 }} ({{ prop.3 }} EGP)</option>
@@ -49,7 +50,7 @@
         
         <div class="form-group">
             <label class="form-label">Representative</label>
-            <select id="representative_id" class="form-control" required>
+            <select id="representative_id" name="representative_id" class="form-control" required>
                 <option value="">Select Representative</option>
                 {% for rep in reps %}
                     <option value="{{ rep.0 }}">{{ rep.1 }}</option>
@@ -60,11 +61,11 @@
         <div class="form-two-col">
             <div class="form-group">
                 <label class="form-label">Tour Date</label>
-                <input type="date" id="tour_date" class="form-control" required>
+                <input type="date" id="tour_date" name="tour_date" class="form-control" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Tour Time</label>
-                <input type="time" id="tour_time" class="form-control" required>
+                <input type="time" id="tour_time" name="tour_time" class="form-control" required>
             </div>
         </div>
         
@@ -76,55 +77,6 @@
 </div>
 
 <script>
-    // Load dropdown data
-    function loadClients() {
-        fetch('/tours/clients/')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('client_id');
-                select.innerHTML = '<option value="">Select Client</option>';
-                data.forEach(client => {
-                    const option = document.createElement('option');
-                    option.value = client.client_id;
-                    option.textContent = client.full_name;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error loading clients:', error));
-    }
-    
-    function loadProperties() {
-        fetch('/tours/properties/')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('property_id');
-                select.innerHTML = '<option value="">Select Property (Available only)</option>';
-                data.forEach(prop => {
-                    const option = document.createElement('option');
-                    option.value = prop.property_id;
-                    option.textContent = `${prop.address} - ${prop.style} (${prop.market_value} EGP)`;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error loading properties:', error));
-    }
-    
-    function loadRepresentatives() {
-        fetch('/tours/representatives/')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('representative_id');
-                select.innerHTML = '<option value="">Select Representative</option>';
-                data.forEach(rep => {
-                    const option = document.createElement('option');
-                    option.value = rep.representative_id;
-                    option.textContent = rep.full_name;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error loading representatives:', error));
-    }
-    
     // Submit form
     document.getElementById('tourForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -143,7 +95,7 @@
             return;
         }
         
-        fetch('/tours/add/', {
+        fetch('/api/tours/add/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -158,10 +110,12 @@
                 // Clear form
                 document.getElementById('tourForm').reset();
                 
-                // Optional: Redirect after 2 seconds
+                // Redirect after 1.5 seconds
                 setTimeout(() => {
-                    window.location.href = '/tours/';
+                    window.location.href = '{% url "tour_page" %}';
                 }, 1500);
+            } else if (data.error) {
+                document.getElementById('message').innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
             }
         })
         .catch(error => {
@@ -169,12 +123,6 @@
             document.getElementById('message').innerHTML = '<div class="alert alert-danger">Error adding tour</div>';
         });
     });
-    
-    // Load all dropdowns when page loads
-    document.addEventListener('DOMContentLoaded', () => {
-        loadClients();
-        loadProperties();
-        loadRepresentatives();
-    });
 </script>
+
 {% endblock %}

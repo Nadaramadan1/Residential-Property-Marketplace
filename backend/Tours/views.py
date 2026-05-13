@@ -146,28 +146,33 @@ def list_tours(request):
 @csrf_exempt
 def add_tour(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+            client_id = data.get("client_id")
+            property_id = data.get("property_id")
+            representative_id = data.get("representative_id")
+            tour_date = data.get("tour_date")
+            tour_time = data.get("tour_time")
 
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO TOUR 
-                (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME)
-                VALUES (%s, %s, %s, %s, %s)
-            """, [
-                data.get("client_id"),
-                data.get("property_id"),
-                data.get("representative_id"),
-                data.get("tour_date"),
-                data.get("tour_time")
-            ])
+            if not all([client_id, property_id, representative_id, tour_date, tour_time]):
+                return JsonResponse({"error": "Missing required fields"}, status=400)
 
-            cursor.execute("SELECT @@IDENTITY")
-            new_id = cursor.fetchone()[0]
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO TOUR 
+                    (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, TOUR_DATE, TOUR_TIME, TOUR_STATUS)
+                    VALUES (%s, %s, %s, %s, %s, 'Scheduled')
+                """, [client_id, property_id, representative_id, tour_date, tour_time])
 
-        return JsonResponse({
-            "message": "Tour added successfully",
-            "tour_id": new_id
-        })
+                cursor.execute("SELECT @@IDENTITY")
+                new_id = cursor.fetchone()[0]
+
+            return JsonResponse({
+                "message": "Tour added successfully",
+                "tour_id": new_id
+            })
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 

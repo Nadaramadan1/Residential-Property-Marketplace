@@ -32,11 +32,15 @@ def add_agreement_page(request):
         effective_date = request.POST.get("effective_date")
 
         with connection.cursor() as cursor:
+            # 0. Get representative from property
+            cursor.execute("SELECT REPRESENTATIVE_ID FROM PROPERTY WHERE PROPERTY_ID = %s", [property_id])
+            rep_id = cursor.fetchone()[0]
+
             # 1. إضافة الاتفاقية
             cursor.execute("""
-                INSERT INTO AGREEMENT (CLIENT_ID, PROPERTY_ID, FINAL_PRICE, EFFECTIVE_DATE)
-                VALUES (%s, %s, %s, %s)
-            """, [client_id, property_id, final_price, effective_date])
+                INSERT INTO AGREEMENT (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, FINAL_PRICE, EFFECTIVE_DATE)
+                VALUES (%s, %s, %s, %s, %s)
+            """, [client_id, property_id, rep_id, final_price, effective_date])
             
             # 2. تحديث حالة العقار إلى مباع
             cursor.execute("""
@@ -45,10 +49,6 @@ def add_agreement_page(request):
             """, [property_id])
 
             # 3. تسجيل المعاملة المالية تلقائياً
-            # نأخذ هوية المندوب من العقار
-            cursor.execute("SELECT REPRESENTATIVE_ID FROM PROPERTY WHERE PROPERTY_ID = %s", [property_id])
-            rep_id = cursor.fetchone()[0]
-
             cursor.execute("""
                 INSERT INTO TRANSACTIONS (CLIENT_ID, REPRESENTATIVE_ID, TRANSACTION_AMOUNT, TRANSACTION_STATUS, TRANSACTION_DATE)
                 VALUES (%s, %s, %s, 'Completed', %s)
@@ -112,42 +112,52 @@ def list_agreements(request):
 
 @csrf_exempt
 def add_agreement(request):
-    
     if request.method == "POST":
-        data = json.loads(request.body)
-        property_id = data.get("property_id")
-        client_id = data.get("client_id")
-        final_price = data.get("final_price")
-        effective_date = data.get("effective_date")
+        try:
+            data = json.loads(request.body)
+            property_id = data.get("property_id")
+            client_id = data.get("client_id")
+            final_price = data.get("final_price")
+            effective_date = data.get("effective_date")
 
-        with connection.cursor() as cursor:
-            # 1. إضافة الاتفاقية
-            cursor.execute("""
-                INSERT INTO AGREEMENT (CLIENT_ID, PROPERTY_ID, FINAL_PRICE, EFFECTIVE_DATE)
-                VALUES (%s, %s, %s, %s)
-            """, [client_id, property_id, final_price, effective_date])
-            
-            cursor.execute("SELECT @@IDENTITY")
-            new_id = cursor.fetchone()[0]
+            if not all([property_id, client_id, final_price, effective_date]):
+                return JsonResponse({"error": "Missing required fields"}, status=400)
 
-            # 2. تحديث حالة العقار إلى مباع
-            cursor.execute("""
-                UPDATE PROPERTY
-                SET PROPERTY_STATUS = 'Sold'
-                WHERE PROPERTY_ID = %s
-            """, [property_id])
+            with connection.cursor() as cursor:
+                # 0. Get representative from property
+                cursor.execute("SELECT REPRESENTATIVE_ID FROM PROPERTY WHERE PROPERTY_ID = %s", [property_id])
+                rep_id_row = cursor.fetchone()
+                if not rep_id_row:
+                    return JsonResponse({"error": "Property not found"}, status=404)
+                rep_id = rep_id_row[0]
 
-            # 3. تسجيل المعاملة المالية تلقائياً
-            cursor.execute("SELECT REPRESENTATIVE_ID FROM PROPERTY WHERE PROPERTY_ID = %s", [property_id])
-            rep_id = cursor.fetchone()[0]
+                # 1. إضافة الاتفاقية
+                cursor.execute("""
+                    INSERT INTO AGREEMENT (CLIENT_ID, PROPERTY_ID, REPRESENTATIVE_ID, FINAL_PRICE, EFFECTIVE_DATE)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, [client_id, property_id, rep_id, final_price, effective_date])
+                
+                cursor.execute("SELECT @@IDENTITY")
+                new_id = cursor.fetchone()[0]
 
-            cursor.execute("""
-                INSERT INTO TRANSACTIONS (CLIENT_ID, REPRESENTATIVE_ID, TRANSACTION_AMOUNT, TRANSACTION_STATUS, TRANSACTION_DATE)
-                VALUES (%s, %s, %s, 'Completed', %s)
-            """, [client_id, rep_id, final_price, effective_date])
+                # 2. تحديث حالة العقار إلى مباع
+                cursor.execute("""
+                    UPDATE PROPERTY
+                    SET PROPERTY_STATUS = 'Sold'
+                    WHERE PROPERTY_ID = %s
+                """, [property_id])
 
-        return JsonResponse({
-            "message": "Agreement and Transaction recorded successfully. Property marked as Sold.",
-            "agree_id": new_id
-        })
+                # 3. تسجيل المعاملة المالية تلقائياً
+                cursor.execute("""
+                    INSERT INTO TRANSACTIONS (CLIENT_ID, REPRESENTATIVE_ID, TRANSACTION_AMOUNT, TRANSACTION_STATUS, TRANSACTION_DATE)
+                    VALUES (%s, %s, %s, 'Completed', %s)
+                """, [client_id, rep_id, final_price, effective_date])
+
+            return JsonResponse({
+                "message": "Agreement and Transaction recorded successfully. Property marked as Sold.",
+                "agree_id": new_id
+            })
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
