@@ -5,8 +5,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
 def add_property_page(request):
-    return render(request, "addProperty.html")
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT REPRESENTATIVE_ID, FULL_NAME
+            FROM REPRESENTATIVE
+            ORDER BY REPRESENTATIVE_ID
+        """)
+        reps = cursor.fetchall()
 
+    return render(request, "addProperty.html", {
+        "reps": reps
+    })
 def property_page(request):
     return render(request, "property.html")
 

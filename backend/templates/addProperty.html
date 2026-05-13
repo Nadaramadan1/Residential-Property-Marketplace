@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block title %}Add Property — PrimeSquare{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">{% endblock %}
 {% block nav_properties %}active{% endblock %}
 
 {% block content %}
@@ -18,9 +19,13 @@
         <div class="form-group">
             <label class="form-label">Representative</label>
             <select class="form-control" id="rep_id">
-                <option value="1">Representative 1</option>
-                <option value="2">Representative 2</option>
-                <option value="3">Representative 3</option>
+                <option value="">Select Representative</option>
+
+                {% for rep in reps %}
+                <option value="{{ rep.0 }}">
+                    {{ rep.1 }}
+                </option>
+                {% endfor %}
             </select>
         </div>
     </div>
@@ -57,7 +62,10 @@
 
     <div class="form-actions">
         <button class="btn btn-primary" onclick="addProperty()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
             Add Property
         </button>
         <a href="/properties/" class="btn btn-secondary">Cancel</a>
@@ -67,40 +75,40 @@
 </div>
 
 <script>
-const base = "/properties/";
+    const base = "/properties/";
 
-function addProperty() {
-    fetch(base + "add/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            representative_id: document.getElementById("rep_id").value,
-            style:             document.getElementById("style").value,
-            latitude:          document.getElementById("lat").value,
-            longitude:         document.getElementById("lng").value,
-            address:           document.getElementById("address").value,
-            market_value:      document.getElementById("price").value,
-            property_status:   document.getElementById("status").value,
+    function addProperty() {
+        fetch(base + "add/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                representative_id: document.getElementById("rep_id").value,
+                style: document.getElementById("style").value,
+                latitude: document.getElementById("lat").value,
+                longitude: document.getElementById("lng").value,
+                address: document.getElementById("address").value,
+                market_value: document.getElementById("price").value,
+                property_status: document.getElementById("status").value,
+            })
         })
-    })
-    .then(res => {
-        if (!res.ok) {
-            return res.json().then(err => { throw err; });
-        }
-        return res.json();
-    })
-    .then(data => {
-        const msg = document.getElementById("msg");
-        msg.className = "msg-box msg-success";
-        msg.textContent = data.message || "Property added successfully!";
-        ["rep_id","style","lat","lng","address","price","status"].forEach(id => document.getElementById(id).value = "");
-    })
-    .catch((err) => {
-        const msg = document.getElementById("msg");
-        msg.className = "msg-box msg-error";
-        msg.textContent = err.error || err.message || "Error adding property. Please try again.";
-    });
-}
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
+                }
+                return res.json();
+            })
+            .then(data => {
+                const msg = document.getElementById("msg");
+                msg.className = "msg-box msg-success";
+                msg.textContent = data.message || "Property added successfully!";
+                ["rep_id", "style", "lat", "lng", "address", "price", "status"].forEach(id => document.getElementById(id).value = "");
+            })
+            .catch((err) => {
+                const msg = document.getElementById("msg");
+                msg.className = "msg-box msg-error";
+                msg.textContent = err.error || err.message || "Error adding property. Please try again.";
+            });
+    }
 </script>
 
 {% endblock %}
